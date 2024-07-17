@@ -11,17 +11,51 @@
                    <img src="/img/car.png" alt="">
                </div>
                <div class="form">
-                   <FormGues />
+                   <FormSort />
                </div>
                <div class="rectangle rectangle_right one"></div>
                <div class="rectangle rectangle_right"></div>
            </div>
        </div>
-       <div class="services text-center p-80">
-           <h2 class="heading">Онлайн заявка</h2>
-           <div class="service__content container text-center forguest ">
-                <h2>Оцените свой автомобиль за пару секунд. Укажите марку, модель. Предварительную стоимость отправим на email Анализируем наши данные по продажам таких автомобилей, как ваш, мониторим разные источники, учитываем рыночные индексы спроса. Предварительная оценка — это не финальная цена. Итоговая стоимость зависит от состояния авто и интереса дилеров на аукционе.</h2>
-           </div>
+       <div class="services text-center p-80" style="background-color: #F9F9F9;">
+           <h2 class="heading">Расширенный поиск по типу авто</h2>
+           <div class="services__search container text-center ">
+                <a href="#" class="services__search--items">
+                    <div class="inside">
+                        <img src="/img/kompakt.jpg" alt="">
+                        <p>Компакт</p>
+                    </div>
+                    
+                </a>
+                <a href="#" class="services__search--items">
+                    <div class="inside">
+                        <img src="/img/sedan.jpg" alt="">
+                        <p>Седан</p>
+                    </div>
+                    
+                </a>
+                <a href="#" class="services__search--items">
+                    <div class="inside">
+                        <img src="/img/vnedorojnik.jpg" alt="">
+                        <p>Внедорожник</p>
+                    </div>
+                    
+                </a>
+                <a href="#" class="services__search--items">
+                    <div class="inside">
+                        <img src="/img/kabriolet.jpg" alt="">
+                        <p>Кабриолет</p>
+                    </div>
+                    
+                </a>
+                <a href="#" class="services__search--items">
+                    <div class="inside">
+                        <img src="/img/kupe.jpg" alt="">
+                        <p>Купе</p>
+                    </div>
+                    
+                </a>
+            </div>
        </div>
        <ServiceSold />
        <ChooseUs />
@@ -105,14 +139,14 @@
 </template>
 <script>
 import ReviewSlider from '@/components/ReviewSlider.vue';
-import FormGues from '@/components/FormGuest.vue';
+import FormSort from '@/components/FormSort.vue';
 import ChooseUs from '@/components/ChooseUs.vue';
 import BuyEarly from '@/components/BuyEarly.vue';
 import ServiceSold from '@/components/ServiceSold.vue';
 export default {
    components: {
            ReviewSlider,
-           FormGues,
+           FormSort,
            ChooseUs,
            BuyEarly,
            ServiceSold,

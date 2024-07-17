@@ -126,6 +126,86 @@
             flex-wrap: wrap;
             justify-content: space-around;
         }
+        &.forguest{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            .aukstion__block--items{
+                flex: 0 0 24%;
+                flex-direction: column;
+                .mobile__view{
+                    display: flex;
+                    padding-bottom: 0;
+                    padding-top: 10px;
+                    .charakter{
+                        justify-content: space-between;
+                        width: 100%;
+                        @include respond-1300{
+                            .items:last-child{
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                .poster{
+                    display: block;
+                    width: 100%;
+                    border-bottom-left-radius: 0;
+                    height: 194px;
+                }
+                .info{
+                    padding-left: 10px;
+                    white-space: initial;
+                }
+                .info__title{
+                    font-size: 17px;
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                }
+                .actions{
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    padding-left: 10px;
+                    .actions__price--origin{
+                        flex-wrap: wrap;
+                        .info{
+                            display: none;
+                        }
+                        .price{
+                            width: auto;
+                            font-size: 17px;
+                            padding-left: 0px;
+                            padding-right: 10px;
+                            font-weight: 500;
+                        }
+                    }
+                    .actions__price--blits{
+                        
+                            flex: initial;
+                            justify-content: flex-start;
+                            flex-wrap: wrap;
+                        
+                        .info{
+                            font-weight: 500;
+                            font-size: 17px;
+                            color: $red;
+                            white-space: nowrap;
+                            padding-right: 10px;
+                            padding-left: 0;
+                            text-align: left;
+                            
+                        }
+                        .price{
+                            font-size: 17px;
+                            font-weight: 500;
+                            padding-left: 0px;
+                           
+                            
+                        }
+                    }
+                }
+            }
+        }
         &--items{
             border: 1px solid #6767673D;
             border-radius: 15px;

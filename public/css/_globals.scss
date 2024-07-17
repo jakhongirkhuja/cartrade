@@ -285,6 +285,7 @@ form{
     input{
         margin: 25px 0px;
     }
+    
 }
 @mixin respond-phone-min {
     @media screen and (max-width: 350px){ @content }

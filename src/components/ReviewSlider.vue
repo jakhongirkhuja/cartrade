@@ -1,7 +1,7 @@
 <template>
   <div class="reviews p-80">
   <h2 class="heading text-center">Отзывы от наших клиентов</h2>
-  <div class="container">
+  <div class="">
     <swiper
       class="custom-swiper"
      
