@@ -1,0 +1,119 @@
+footer{
+    background-color: $black;
+    .line{
+        border: 1px solid #5F6973;
+        width: 100%;
+    }
+}
+.footer{
+    padding-bottom: 40px;
+    color: white;
+    &__logo{
+        margin-right: 75px;
+        a{
+            display: block;
+            padding: 26px 0;
+            svg{
+                width: 250px;
+                height: 50px;
+                @include respond-tab{
+                    width: 220px;
+                    height: auto;
+                }
+                @include respond-phone{
+                    width: 210px;
+                }
+            }
+        }
+    }
+    &__items{
+        ul li a{
+            display: block;
+            margin-right: 15px;
+            color: white;
+            &:hover{
+                color: $red;
+            }
+            @include respond-tab{
+                padding-bottom: 20px;
+            }
+        }
+    }
+    &__info{
+        margin-top: 40px;
+        margin-bottom: 20px;
+        &--items{
+            a{
+                color: white;
+                font-weight: 400;
+                font-size: 13px;
+                display: block;
+            }
+            h2{
+                font-weight: 500;
+                font-size: 17px;
+                text-transform: uppercase;
+                padding-bottom: 15px;
+
+            }
+            &.office a{
+
+                padding-top: 15px;
+                @include respond-tab{
+                    padding-bottom: 15px;
+                    padding-right: 10px;
+                }
+            }
+            &.contactNumber{
+                a{
+                    font-weight: 500;
+                    &.num{
+                        font-size: 24px;
+                        @include respond-1000{
+                            font-size: 18px;
+                        }
+                    }
+                    &:last-child{
+                        color: $red;
+                        font-size: 13px;
+                        padding-top: 5px;
+                    }
+                }
+            }
+            &.workTime{
+                p{
+                    padding-bottom: 5px;
+                    font-size: 13px;
+                }
+                @include respond-phone{
+                    h2{
+                        margin-top: 20px;
+                    }
+                }
+            }
+            &.social{
+                a{
+                    margin-right: 20px;
+                }
+                @include respond-phone{
+                    h2{
+                        margin-top: 20px;
+                    }
+                }
+            }
+            
+            @include respond-tab{
+                flex: 0 0 50%;
+            }
+            @include respond-phone{
+                flex: 0 0 95%;
+            }
+        }
+    }
+    &__copyright{
+        p{
+            font-size: 13px;
+            color: #FFFFFFB2;
+        }        
+    }
+}

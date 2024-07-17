@@ -1,0 +1,354 @@
+.mainPage{
+    
+
+    .hero{
+        
+        overflow: hidden;
+        &__content{
+            padding: 83px 0px;
+            position: relative;
+            @include respond-1000{
+                justify-content: center;
+            }
+            .content{
+                @include respond-1000{
+                    display: none;
+                }
+            }
+            h1{
+                color: white;
+                font-weight: 700;
+                font-size: 60px;
+                line-height: 70px;
+                margin-bottom: 50px;
+                @include respond-1200{
+                    font-size: 50px;
+                    line-height: 50px;
+                }
+            }
+            
+            
+        }
+    }
+    
+    
+    .services{
+        .forguest{
+            
+            h2{
+                font-weight: 400;
+                font-size: 24px;
+                max-width: 700px;
+                margin: 0 auto;
+                line-height: 29.26px;
+                @include respond-phone{
+                    max-width: 90%;
+                    font-size: 16px;
+                    line-height: 19.5px;
+                }
+            }
+        }
+        
+        h3{
+            font-size: 24px;
+            color: $red;
+            padding: 34px 0;
+            font-weight: 500;
+            @include respond-tab{
+                padding: 15px 0;
+                font-size: 18px;
+            }
+            @include respond-phone{
+                padding: 10px 0;
+                font-size: 18px;
+            }
+            
+        }
+        p{
+            font-size: 17px;
+            max-width: 70%;
+            margin: 0 auto;
+            @include respond-phone{
+                font-size: 13px;
+            }
+        }
+        svg{
+            @include respond-tab{
+                width: 80px;
+            }
+        }
+    }
+    .benefit{
+        position: relative;
+        overflow: hidden;
+        &__content{
+            
+            padding: 10px 0;
+            &--bg{
+                
+                
+                @include respond-phone{
+                    display: none;
+                }
+                &-mobi{
+                    display: none;
+                    position: relative;
+                    left: -4%;
+                    @include respond-phone{
+                        display: block;
+                    }
+                }
+                img{
+                    position: absolute;
+                    left: 0;
+                    width: 48%;
+                    height: auto;
+                    top: 50%;
+                    transform: translate(0, -50%);
+                    
+                    &.origin{
+                        width: 360px;
+                        left: 28%;
+                    }
+                    &.car{
+                        width: auto;
+                        left: -25%;
+                        height: 366px;
+                        margin-top: 39px;
+                        z-index: 1;
+                        @include respond-1300{
+                            left: -40%;
+                        }
+                        @include respond-1200{
+                            left: -65%;
+                        }
+                        @include respond-1100{
+                            left: -75%;
+                        }
+                    }
+                }
+            }
+        }
+        .body__container{
+            padding-top: 30px;
+            @include respond-phone{
+                flex-wrap: wrap;
+            }
+        }
+        .body__items{
+            @include respond-phone{
+                margin-bottom: 30px;
+            }
+            &:first-child{
+                padding-right: 30px;
+            }
+            &--each {
+                margin-bottom: 60px;
+                &:last-child{
+                    margin-bottom: 0;
+                }
+                p{
+                    padding-left: 15px;
+                    font-size: 17px;
+                    line-height: 20.72px;
+                }
+            }
+        }
+    }
+    .dealer{
+        .line{
+            position: absolute;
+            height: 1px;
+            background-color: #6767673D;
+            width: 65%;
+            left: 50%;
+            transform: translate(-50%,0);
+            margin-top: 50px;
+        }
+        &__container{
+            margin-top: 30px;
+        }
+        &__container--items{
+            position: relative;
+            .numbers{
+                background-color: $red;
+                border-radius: 15px;
+                color: white;
+                font-size: 60px;
+                width: 100px;
+                height: 100px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
+                position: relative;
+                z-index: 1;
+                
+                &-behind{
+                    display: block;
+                    background-color: white;
+                    width: 140px;
+                    height: 120px;
+                    position: absolute;
+                    z-index: 1;
+                    left: 50%;
+                    top: -10px;
+                    transform: translate(-50%, 0);
+                }
+            }
+            p{
+                text-align: center;
+                
+                font-weight: 500;
+                font-size: 24px;
+                max-width: 70%;
+                margin:30px  auto 0 ;
+            }
+        }
+        
+    }
+    .reviews{
+        background-color: #F9F9F9;
+    }
+    .buyearly{
+        &__block{
+            display: flex;
+            &--each{
+                flex: 0 0 33.3%;
+                padding: 0 12px;
+                &:nth-child(3){
+                    @include respond-phone{
+                        display: none;
+                    }
+                }
+                @include respond-phone{
+                    flex: 0 0 50%;
+                }
+                .inside{
+                    border: 1px solid #EAEAEA;
+                    border-radius: 8px;
+                    padding: 11px;
+                    .poster{
+                        border-radius: 8px;
+                        width: 100%;
+                        aspect-ratio: 2/1;
+                        background-size: cover;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                    }
+                    p{
+                        padding: 70px 10px;
+                        font-weight: 500;
+                        font-size: 17px;
+                        @include respond-1100{
+                            padding: 40px 10px;
+                        }
+                        @include respond-tab{
+                            font-size: 14px;
+                            padding: 25px 10px;
+                        }
+                        @include respond-phone{
+                            font-size: 13px;
+                            padding: 15px 0px;
+                        }
+                    }
+                }
+            }
+        }
+        .btn{
+            display: flex;
+            width: fit-content;
+            margin: 30px auto 0 auto;
+        }
+    }
+    .checking{
+        &__container{
+            display: flex;
+            flex-direction: column;
+        }
+        &__items{
+            @include respond-tab{
+                img{
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+                &:nth-child(1){
+                    order: 2;
+                }
+                &:nth-child(2){
+                    order: 1;
+                }
+                &:nth-child(3){
+                    order: 3;
+                }
+            }
+            @include respond-phone{
+                display: block;
+            }
+            .inside{
+                text-align: left;
+                @include respond-tab{
+                    flex: 0 0 50%;
+                    margin-bottom: 20px;
+                    
+                    &.fx-1{
+                        display: none;
+                    }
+                }
+                .ranks svg{
+                    margin-right: 6px;
+                }
+                h3{
+                    padding-top: 3px;
+                    padding-bottom: 15px;
+                    font-size: 24px;
+                    font-weight: 500;
+                    
+                    @include respond-tab{
+                        font-size: 18px;
+                        padding-bottom: 10px;
+
+                    }
+                    @include respond-phone{
+                        padding-bottom: 5px;
+                    }
+                }
+                ul li{
+                    font-size: 17px;
+                    @include respond-phone{
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+.rectangle{
+    display: block;
+    height: 150%;
+    width: 100px;
+    position: absolute;
+    background-color: #ffffff21;
+    top: -25%;
+    transform: rotateZ(37deg);
+    z-index: 0;
+    &_left:first-child{
+        left: -17%;
+    }
+    &_left:last-child{
+        left: 0%;
+    }
+    &_right.one{
+        right: 7%;
+    }
+    &_right:last-child{
+        right: -10%;
+    }
+    &_n{
+        left: 30%;
+    }
+    &_l{
+        left: -5%;
+    }
+    
+}

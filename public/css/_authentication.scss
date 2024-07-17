@@ -1,0 +1,275 @@
+.authentication{
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    display: none;
+    &.active{
+        display: flex;
+    }
+    &__form, &__poster{
+        flex: 0 0 50%;
+    }
+    &__form{
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include respond-tab{
+            flex: 0 0 100%;
+        }
+        &--self{
+            max-width: 480px;
+            position: relative;
+            @include respond-1000{
+                max-width: 90%;
+            }
+            .close{
+                position: absolute;
+                top: -33px;
+                cursor: pointer;
+                transition: all 0.4s ease;
+                &:hover{
+                    transform: rotate(90deg);
+                }
+            }
+            .line{
+                padding-top: 20px;
+                border-bottom: 1px solid #E0E0E0;
+            }
+            .reg_it{
+                font-size: 18px;
+                text-align: center;
+                padding-top: 20px;
+                @include respond-phone{
+                    font-size: 16px;
+                }
+                span{
+                    font-weight: 500;
+                    color: $red;
+                    padding-left: 10px;
+                }
+            }
+            h2{
+                font-weight: 500;
+                font-size: 34px;
+                padding-bottom: 20px;
+                @include respond-phone{
+                    font-size: 27px;
+                    
+                    text-align: center;
+                    padding-bottom: 10px;
+                }
+            }
+            p{
+                font-weight: 500;
+                font-size: 17px;
+                padding-bottom: 20px;
+                @include respond-phone{
+                    font-size: 13px;
+                    text-align: center;
+                    padding-bottom: 10px;
+                }
+            }
+            input.form-control{
+                height: 53px;
+                font-size: 18px;
+                font-weight: 500;
+                margin-bottom: 10px;
+                &:focus{
+                    border-color: $red;
+                }
+                @include respond-phone{
+                    height: 45px;
+                }
+            }
+            .containerc{
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 18px;
+                font-weight: 500;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                @include respond-phone{
+                    font-size: 16px;
+                }
+              }
+              
+              /* Hide the browser's default checkbox */
+              .containerc input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+              }
+              
+              /* Create a custom checkbox */
+              .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 25px;
+                width: 25px;
+                border: 1px solid #878080;
+                color: $red;
+                @include respond-phone{
+                    height: 20px;
+                    width: 20px;
+                }
+              }
+              
+              /* On mouse-over, add a grey background color */
+              .containerc:hover input ~ .checkmark {
+                background-color: #ccc;
+              }
+              
+              /* When the checkbox is checked, add a blue background */
+              .containerc input:checked ~ .checkmark {
+                background-color: $red;
+                border:1px solid $red;
+                color: $red;
+              }
+              
+              /* Create the checkmark/indicator (hidden when not checked) */
+              .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+              }
+              
+              /* Show the checkmark when checked */
+              .containerc input:checked ~ .checkmark:after {
+                display: block;
+              }
+              
+              /* Style the checkmark/indicator */
+              .containerc .checkmark:after {
+                left: 9px;
+                top: 5px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 3px 3px 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+                @include respond-phone{
+                    left: 6px;
+                    top: 2px;
+                }
+              }
+              .forgetpassword{
+                font-size: 18px;
+                font-weight: 500;
+                color: $red;
+                cursor: pointer;
+                @include respond-phone{
+                    font-size: 16px;
+                }
+              }
+            label{
+                position: relative;
+                svg,img{
+                    position: absolute;
+                    top: 17px;
+                    right: 17px;
+
+                }
+                img{
+                    width: 18px;
+                }
+            }
+            .actions{
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+                @include respond-phone-min{
+                    display: block;
+                }
+            }
+            .btn{
+                margin-top: 20px;
+            }
+            
+        }
+        
+    }
+    &__poster{
+        position: relative;
+        background: linear-gradient(254.48deg, #CB0000 35.47%, #970000 86.38%), linear-gradient(0deg, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0.17));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 40px;
+        overflow: hidden;
+        @include respond-tab{
+            display: none;
+        }
+        .bg{
+            background-color: rgba(255, 255, 255, 0.1);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        img{
+            position: relative;
+            width: 100%;
+            z-index: 1;
+        }
+        h3{
+            text-align: center;
+            position: relative;
+            font-weight: 700;
+            font-size: 60px;
+            line-height: 73px;
+            color: white;
+            margin-bottom: 73px;
+            z-index: 1;
+            @include respond-1200{
+                font-size: 45px;
+                line-height: 60px;
+            }
+            @include respond-1000{
+                font-size: 40px;
+                line-height: 53px;
+            }
+        }
+        .hl{
+            position: absolute;
+            display: block;
+            width: 115px;
+            height: 100%;
+            background-color: #FFFFFF30;
+            transform: rotate(37deg);
+            &.l1{
+                left: 22%;
+                top: -36%;
+                height: 130%;
+            }
+            &.l2{
+                left: 0px;
+                top: -33%;
+            }
+            &.r1{
+                height: 152%;
+                right: 2px;
+                bottom: -28%;
+            }
+            &.r2{
+                right: -50px;
+                bottom: -30%;
+            }
+        }
+    }
+}

@@ -1,0 +1,64 @@
+.documents{
+    p{
+        font-weight: 500;
+        font-size: 24px;
+        padding-top: 30px;
+        line-height: 29px;
+        width: 80%;
+        margin: 0 auto;
+        @include respond-tab{
+            font-size: 20px;
+            line-height: 20px;
+        }
+        @include respond-phone{
+            font-size: 18px;
+            padding-top: 0px;
+        }
+    }
+    
+    @include respond-phone{
+        .fx-1{
+            flex: 0 0 100%;
+        }
+        &__files--itmes{
+            margin-bottom: 60px;
+            display: flex;
+            justify-content: flex-start;
+            text-align: left;
+            align-items: center;
+            
+        }
+    }
+    &__list{
+        @include respond-phone{
+           padding-top: 30px;
+        }
+        &--items{
+            max-width: 1035px;
+            height: 72px;
+            border-radius: 12px;
+            border: 2px solid #6767673D;
+            margin-bottom: 17px;
+            margin:0 auto 17px auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 24px;
+            font-weight: 500;
+            padding-left: 35px;
+            padding-right: 35px;
+            &:hover{
+                color: $red;
+                cursor: pointer;
+                path{
+                    fill: $red;
+                }
+            }
+            @include respond-phone{
+                height: 72px;
+                font-size: 18px;
+                
+            }
+        }
+    }
+}

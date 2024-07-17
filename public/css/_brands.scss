@@ -1,0 +1,33 @@
+.brands{
+    &__block{
+        justify-content: space-between;
+        display: flex;
+        flex-wrap: wrap;
+        &--each{
+            flex: 0 0 33.3%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            @include respond-1000{
+                flex:  0 0 50%;
+            }
+            @include respond-1000{
+                flex:  0 0 100%;
+               
+            }
+            img{
+                width: 100px;
+                height: auto;
+                margin-right: 15px;
+            }
+            p{
+                font-weight: 500;
+                font-size: 17px;
+               span{
+                display: block;
+               }
+            }
+        }    
+    }
+    
+}
