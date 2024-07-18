@@ -1,5 +1,7 @@
 .header{
     border-bottom: 1px solid #C1C1C1B2;
+    position: relative;
+    z-index: 1;
     &__logo{
         a{
             display: block;
@@ -57,6 +59,8 @@
     }
 }
 .headerMenu{
+    position: relative;
+    z-index: 1;
     ul li{
         position: relative;
         .inside{

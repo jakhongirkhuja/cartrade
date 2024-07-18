@@ -86,6 +86,11 @@ const routes =  [
                 name: 'main.auksionguest',
                 component:  ()=>import ('@/modules/guest/AuksionGuest.vue'),
             },
+            {
+                path: 'auksion/:id',
+                name: 'main.auksion.inside',
+                component:  ()=>import ('@/modules/guest/AuksionInside.vue'),
+            },
         ]
     },
     

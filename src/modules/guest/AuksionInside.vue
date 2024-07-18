@@ -128,8 +128,15 @@
                         </div>
                     </div>
                     <div class="car__block--actions">
-                        <p class="title">Завершение аукциона через:</p>
-                        <BetComponent></BetComponent>
+                        <div class="owning" v-if="owner">
+                            <div class="btn btn-primary w-100">Удалить объявление</div>
+                            <div class="btn btn-primary-outline w-100">Редактировать объявление</div>
+                        </div>
+                        <div v-else>
+                            <p class="title">Завершение аукциона через:</p>
+                            <BetComponent></BetComponent>
+                        </div>
+                        
                     </div>
                 </div>
                 
@@ -145,6 +152,7 @@ export default {
     },
     data() {
         return {
+            owner: true,
             resultCount: 4733,
             features:['Бензин','Автомат','77329','Седан','Новый','2006 г.','бежевый металлик','Полный привод'],
             image: 'https://s3-alpha-sig.figma.com/img/ba1c/77b7/f508483313763af78e063463927acbac?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IYKtLpDVn8pjL9fK4bngMlNRU4ErX~xXRUZr~DfHNgFE8BAchrFnQ4PlYQjHuA~Leffe17gvsF~Z~CaXGff9xVFT7QqTYihCklVAJw81bKKffPfKpSzLvuK8XLra-R7Fd4yG9u05FUl7ipMmUU5FQZ3Dy2ASR356v-C0v-02QnXKnDzYjBPi2-0QXNqSAjjI-7KR2UxymFG~3Z25N6vh7Db2Owj5eE91F3xpMPpxPCefsvOKkoRNKLcmdvQ9LfsK1HVsR6Kbx3j1NtPrHFGYziD6uaLKQ2uRVe3mJnuzyOPFLNRbJMhBx1263k-~GSe5Y5oIU4iC7VY5SB0I37hw8w__',
@@ -155,11 +163,11 @@ export default {
         }
     },
     mounted() {
-      this.adjustSlides();
-      window.addEventListener('resize', this.adjustSlides);
+    //   this.adjustSlides();
+    //   window.addEventListener('resize', this.adjustSlides);
     },
     beforeUnmount() {
-      window.removeEventListener('resize', this.adjustSlides);
+    //   window.removeEventListener('resize', this.adjustSlides);
     },
     methods: {
         handleMouseDown(e) {

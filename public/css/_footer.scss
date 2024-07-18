@@ -1,5 +1,7 @@
 footer{
     background-color: $black;
+    position: relative;
+    z-index: 1;
     .line{
         border: 1px solid #5F6973;
         width: 100%;

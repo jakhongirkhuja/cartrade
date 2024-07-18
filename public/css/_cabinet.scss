@@ -1,0 +1,161 @@
+.auth{
+    background-color: #F9F9F9;
+    display: flex;
+    &__fixed{
+        width: 300px;
+        background-color: white;
+        padding:60px 34px;
+        margin-right: 30px;
+        position: fixed;
+        left: 0;
+        top: 0;
+        height: 100vh;
+        padding-top: 200px;
+        z-index: 0;
+        &--items{
+            display: block;
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 30px;
+            &:hover{
+                color: $red;
+            }
+        }
+    }
+    &__userInfo{
+        &.dealer{
+            margin-left: 360px;
+        }
+        .user{
+            background-color: white;
+            border: 1px solid #6767673D;
+            border-radius: 15px;
+            padding: 50px;
+            align-items: center;
+            @include respond-phone{
+                padding: 10px;
+            }
+            .avatar{
+                    margin-right: 50px;
+                    width: 160px;
+                    height: 160px;
+                    border-radius: 50%;
+                    background-position: center;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    @include respond-phone{
+                        margin-bottom: 20px;
+                    }
+            }
+            .info{
+                .name{
+                    font-size: 34px;
+                    font-weight: 500;
+                    padding-bottom: 30px;
+                }
+                .body{
+                    display: flex;
+                    @include respond-phone{
+                        display: block;
+                    }
+                    div{
+                        max-width: 380px;
+                        @include respond-phone{
+                            display: block;
+                        }
+                        @include respond-phone-min{
+                            margin-bottom: 10px;
+                        }
+                        &:first-child{
+                            margin-right: 30px;
+                        }
+                    }
+                }
+            }
+        }
+        .user__ads{
+            padding: 50px;
+            background-color: white;
+            border-radius: 15px;
+            margin-top: 60px;
+            border: 1px solid #6767673D;
+            @include respond-phone{
+                padding: 10px;
+            }
+            .aukstion__block--items{
+                @include respond-phone-min{
+                    flex: 0 0 100%;
+                }
+            }
+            .title{
+                font-weight: 500;
+                font-size: 34px;
+                margin-bottom: 30px;
+                display: flex;
+                justify-content: space-between;
+                @include respond-phone{
+                    align-items: center;
+                        flex-wrap: wrap;
+                    
+                }
+                span{
+                    &:first-child{
+                        @include respond-phone{
+                            font-size: 20px;
+                            padding-left: 10px;
+                        }
+                        @include respond-phone-min{
+                            margin-bottom: 10px;
+                        }
+                    }
+                    &:last-child{
+                        font-size: 16px;
+                       
+                       
+                        
+                    }
+                }
+            }
+        }
+        .edit{
+            .btn{
+                padding: 16px 50px;
+                margin-right: 30px;
+            }
+            .info{
+                span{
+                    font-weight: 500;
+                    font-size: 13px;
+                }
+            }
+            .userform{
+                margin-top: 50px;
+                
+                &--each{
+                    flex:  0 0 50%;
+                    display: flex;
+                    @include respond-phone{
+                        display: block;
+                    }
+                }
+                input{
+                    max-width: 385px;
+                    margin-right: 30px;
+                    margin-bottom: 30px;
+                    
+                }
+            }
+            &.savepassword{
+                margin-top: 60px;
+                .title{
+                    font-size: 34px;
+                    font-weight: 500;
+
+                }
+                input{
+                    max-width: 800px;
+                }
+            }
+        }
+    }
+}
