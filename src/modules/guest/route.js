@@ -6,16 +6,50 @@ const routes =  [
         name: 'main', 
         component:  IndexVue,
         children:[
+            
             {
                 path: '',
-                name: 'main.index',
-                component:  ()=>import ('@/modules/guest/MainPage.vue'),
-            },
-            {
-                path: 'guest',
                 name: 'main.guest',
                 component:  ()=>import ('@/modules/guest/MainPageGuest.vue'),
             },
+            {
+                path: '/dealer',
+                name: 'main.index.dealer',
+                component:  ()=>import ('@/modules/guest/MainPage.vue'),
+            },
+            {
+                path: 'dealer/documents',
+                name: 'main.documents.dealer',
+                component:  ()=>import ('@/modules/guest/Documents.vue'),
+            },
+            {
+                path: 'dealer/contacts',
+                name: 'main.contacts.dealer',
+                component:  ()=>import ('@/modules/guest/Contacts.vue'),
+            },
+            {
+                path: 'dealer/legal-information',
+                name: 'main.legalinformation.dealer',
+                component:  ()=>import ('@/modules/guest/Legal.vue'),
+            },
+            {
+                path: 'dealer/auksion',
+                name: 'main.auksion.dealer',
+                component:  ()=>import ('@/modules/guest/Auksion.vue'),
+            },
+            {
+                path: 'dealer/auksion/:id',
+                name: 'main.auksion.inside.dealer',
+                component:  ()=>import ('@/modules/guest/AuksionInside.vue'),
+            },
+
+
+
+
+
+
+
+
             {
                 path: 'documents',
                 name: 'main.documents',
@@ -46,18 +80,9 @@ const routes =  [
                 name: 'main.enqueryPage',
                 component:  ()=>import ('@/modules/guest/EnqueryPage.vue'),
             },
+            
             {
                 path: 'auksion',
-                name: 'main.auksion',
-                component:  ()=>import ('@/modules/guest/Auksion.vue'),
-            },
-            {
-                path: 'auksion/:id',
-                name: 'main.auksion.inside',
-                component:  ()=>import ('@/modules/guest/AuksionInside.vue'),
-            },
-            {
-                path: 'auksionguest',
                 name: 'main.auksionguest',
                 component:  ()=>import ('@/modules/guest/AuksionGuest.vue'),
             },

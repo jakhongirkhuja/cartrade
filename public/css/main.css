@@ -693,15 +693,46 @@ h2.heading {
   }
 }
 
+.headerMenu ul li {
+  position: relative;
+}
+.headerMenu ul li .inside {
+  display: none;
+  position: absolute;
+  top: 45px;
+  background-color: white;
+  left: 0;
+  width: 100%;
+  padding: 9px 11px;
+  z-index: 2;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+.headerMenu ul li .inside a {
+  margin-right: 0;
+  font-size: 14px;
+  padding: 5px;
+}
+.headerMenu ul li.hover {
+  display: flex;
+  align-items: center;
+  margin-right: 35px;
+}
+.headerMenu ul li.hover svg {
+  margin-left: 5px;
+}
+.headerMenu ul li.hover:hover .inside {
+  display: block;
+}
 .headerMenu ul li a {
   display: block;
   margin-right: 35px;
   padding: 23px 0;
 }
-.headerMenu ul li a:hover {
+.headerMenu ul li a:hover, .headerMenu ul li a.router-link-active {
   color: #CB0000;
 }
-.headerMenu ul li a:hover svg path {
+.headerMenu ul li a:hover svg path, .headerMenu ul li a.router-link-active svg path {
   fill: #CB0000;
 }
 @media screen and (max-width: 900px) {

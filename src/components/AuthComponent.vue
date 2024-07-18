@@ -1,9 +1,11 @@
+<!-- eslint-disable no-undef -->
+<!-- eslint-disable no-undef -->
 <template>
-    <div class="authentication "> 
+    <div class="authentication " :class="{ active: isActive }"> 
         <div class="authentication__form">
             
             <div class="authentication__form--self" >
-                <svg class="close" width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg class="close" width="20" height="21" @click="closeAuth" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_161_2127)">
                     <path d="M1.02843 20.5C0.764982 20.5 0.501533 20.3998 0.301372 20.1982C-0.100457 19.7963 -0.100457 19.1449 0.301372 18.7431L18.243 0.801372C18.6449 0.399543 19.2963 0.399543 19.6982 0.801372C20.1 1.2032 20.1 1.85467 19.6982 2.25675L1.75675 20.1982C1.55508 20.3986 1.29163 20.5 1.02843 20.5Z" fill="#121212"/>
                     <path d="M18.9714 20.5C18.7079 20.5 18.4447 20.3998 18.2443 20.1982L0.301372 2.25675C-0.100457 1.85467 -0.100457 1.2032 0.301372 0.801372C0.703201 0.399543 1.35467 0.399543 1.75675 0.801372L19.6982 18.7431C20.1 19.1449 20.1 19.7963 19.6982 20.1982C19.4965 20.3986 19.2333 20.5 18.9714 20.5Z" fill="#121212"/>
@@ -56,12 +58,12 @@
                         <input type="checkbox" name="" id="saveuser"> Запомнить
                         <span class="checkmark"></span>
                     </label>
-                    <label for="" class="forgetpassword">Забыли пароль?</label>
+                    <label for="" class="forgetpassword" @click="regType=2">Забыли пароль?</label>
                 </div>
                 <div class="btn btn-primary w-100">Войти</div>
                 <div class="line" v-if="regType==0"></div>
                 <div class="reg_it" v-if="regType==0">
-                    Не зарегестрированы? <span>Создать аккаунт</span>
+                    Не зарегестрированы? <span @click="regType=1">Создать аккаунт</span>
                 </div>
             </div>
         </div>
@@ -78,7 +80,37 @@
 </template>
 <script>
 import {mask} from 'vue-the-mask'
+import { useAuthStore } from '../stores/auth';
+import { watch, ref } from 'vue';
 export default {
+    setup() {
+        const authStore = useAuthStore(); // Access your Pinia store instance
+
+        // Use a ref to wrap isActive for reactive watching
+        const isActive = ref(authStore.isActive);
+
+        // Watch isActive using a getter function
+        watch(
+        () => authStore.isActive,
+        // eslint-disable-next-line no-unused-vars
+        (newValue, oldValue) => {
+            console.log('isActive changed:', newValue);
+            isActive.value = newValue; // Update isActive ref
+            // Perform actions based on isActive changes
+        }
+        );
+
+        const closeAuth = () => {
+            
+            authStore.setActive(false); // Update isActive state in the store
+        };
+
+        // You can return data and methods to the template if needed
+        return {
+            isActive,
+            closeAuth,
+        };
+    },
     directives: {mask},
     // components: {
     //     directives: {mask}
@@ -105,6 +137,17 @@ export default {
         }
     },
     methods: {
+        closeAuth() {
+            const authStore = useAuthStore();
+            authStore.setActive(false); // Assuming setActive manages the isActive state in the store
+        }
+    },
+    created() {
+        const authStore = useAuthStore();
+        console.log(authStore.isActive);
+       
+    },
+    watch: {
         
     }
 }

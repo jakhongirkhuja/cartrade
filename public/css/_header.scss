@@ -57,14 +57,48 @@
     }
 }
 .headerMenu{
-    ul li a{
-        display: block;
-        margin-right: 35px;
-        padding: 23px 0;
-        &:hover{
-            color: $red;
-            svg path{
-                fill: $red;
+    ul li{
+        position: relative;
+        .inside{
+            display: none;
+            position: absolute;
+            top: 45px;
+            background-color: white;
+            left: 0;
+            width: 100%;
+            padding: 9px 11px;
+            z-index: 2;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            a{
+                margin-right: 0;
+                font-size: 14px;
+                padding: 5px;
+            }
+        }
+        &.hover{
+            display: flex;
+            align-items: center;
+            margin-right: 35px;
+            svg{
+                margin-left: 5px;
+            }
+            &:hover{
+                .inside{
+                    display: block;
+                }
+            }
+        }
+        a{
+            display: block;
+            margin-right: 35px;
+            padding: 23px 0;
+            
+            &:hover, &.router-link-active{
+                color: $red;
+                svg path{
+                    fill: $red;
+                }
             }
         }
     }
