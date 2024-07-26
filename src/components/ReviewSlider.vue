@@ -1,6 +1,7 @@
 <template>
   <div class="reviews p-80">
   <h2 class="heading text-center">Отзывы от наших клиентов</h2>
+  
   <div class="">
     <swiper
       class="custom-swiper"
@@ -18,10 +19,13 @@
       <swiper-slide v-for="(slide, index) in slides" :key="index">
         <div class="author">
                 <div class="user fx">
-                    <img :src="slide.avatar">
+                    <img v-if="slide.avatar" :src="slide.avatar">
+                    <img v-else src="/logo/logo_trade.svg" alt="avatar">
                     <div class="info text-left">
-                        <h4>{{slide.name}}</h4>
-                        <p>{{slide.role}}</p>
+                        <h4>{{slide.fullName}}</h4>
+                        <p><svg v-for="n in slide.stars" :key="n.id" width="15" height="14" viewBox="0 0 15 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z" fill="#CB0000"/>
+                            </svg></p>
                     </div>
                 </div>
                 <div class="comment text-left">
@@ -54,6 +58,7 @@
     },
     data() {
       return {
+        url: import.meta.env.VITE_APP_REST_ENDPOINT, 
         slides: [{
                 name: 'Brooklyn Simmons',
                 role:'google отзывы',
@@ -98,6 +103,32 @@
       adjustSlides() {
         // this.slidesPerView = window.innerWidth <= 640 ? 1 : 2;
       },
+      async loadReviews(){
+           
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/reviews/', {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+              
+                if(json.data.length>0){
+                   this.slides = json.data;
+                }
+                
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+    },
+    created() {
+        this.loadReviews();
     },
   };
   </script>
@@ -136,7 +167,7 @@
     border-radius: 50%;
     display: block;
     margin-right: 25px;
-    margin-bottom: 28px;
+    
   }
   .author .user .info h4{
     font-size: 16px;

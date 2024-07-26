@@ -53,7 +53,7 @@ const routes =  [
             {
                 path: 'documents',
                 name: 'main.documents',
-                component:  ()=>import ('@/modules/guest/Documents.vue'),
+                component:  ()=>import ('@/modules/guest/DocumentGuest.vue'),
             },
             {
                 path: 'contacts',
@@ -65,6 +65,27 @@ const routes =  [
                 name: 'main.legalinformation',
                 component:  ()=>import ('@/modules/guest/Legal.vue'),
             },
+            {
+                path: 'legal-information/oferta',
+                name: 'main.legalinformation.oferta',
+                component:  ()=>import ('@/modules/guest/LegalOferta.vue'),
+            },
+            {
+                path: 'legal-information/term-of-use',
+                name: 'main.legalinformation.termofuse',
+                component:  ()=>import ('@/modules/guest/LegalTermOfUse.vue'),
+            },
+            {
+                path: 'legal-information/personal-data',
+                name: 'main.legalinformation.personaldata',
+                component:  ()=>import ('@/modules/guest/LegalPersonalData.vue'),
+            },
+            {
+                path: 'legal-information/privacy-policy',
+                name: 'main.legalinformation.privacypolicy',
+                component:  ()=>import ('@/modules/guest/LegalPrivacyPolicy.vue'),
+            },
+           
             {
                 path: 'reviews',
                 name: 'main.reviews',
@@ -91,6 +112,7 @@ const routes =  [
                 name: 'main.auksion.inside',
                 component:  ()=>import ('@/modules/guest/AuksionInside.vue'),
             },
+            
         ]
     },
     

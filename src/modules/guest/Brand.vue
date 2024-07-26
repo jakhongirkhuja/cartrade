@@ -88,6 +88,132 @@
                     <span>Mazda</span>
                 </p>
             </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/porsche.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Porsche</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/mini.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>MINI</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/mitsubishi.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Mitsubishi</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/subaru.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Subaru</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/opel.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Opel</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/peugiot.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Peugeot</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/volswagen.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Volkswagen</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/reanult.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Renault</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/skoda.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Skoda</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/bmw.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>BMW</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/suzuki.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Suzuki</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/toyota.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Toyota</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/infinity.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Infiniti</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/volvo.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Volvo</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/gaz.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>ГАЗ</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/chevrolet.png" alt="Выкуп автомобилей Nissan">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Chevrolet</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/hyundai.png" alt="Выкуп автомобилей ВАЗ (Lada)">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Hyundai</span>
+                </p>
+            </a>
+            <a href="#" class="brands__block--each fx">
+                <img src="/logo/ford.png" alt="Выкуп автомобилей Mazda">
+                <p>
+                    <span>Выкуп автомобилей</span>
+                    <span>Ford</span>
+                </p>
+            </a>
         </div>
     </div>
 </template>

@@ -35,23 +35,36 @@
         }
         &--items{
             max-width: 1035px;
-            height: 72px;
+            display: block;
             border-radius: 12px;
             border: 2px solid #6767673D;
             margin-bottom: 17px;
             margin:0 auto 17px auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             font-size: 24px;
             font-weight: 500;
-            padding-left: 35px;
-            padding-right: 35px;
+            padding: 25px 35px;
             &:hover{
                 color: $red;
                 cursor: pointer;
                 path{
                     fill: $red;
+                }
+            }
+            .title{
+                display: flex;
+                justify-content: space-between;
+            }
+            .body{
+                display: none;
+                font-size: 16px;
+                padding-top: 15px;
+            }
+            &.active{
+                .title svg{
+                    transform: rotate(90deg);
+                }
+                .body{
+                    display: block;
                 }
             }
             @include respond-phone{

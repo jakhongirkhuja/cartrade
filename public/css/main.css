@@ -1292,18 +1292,14 @@ h2.heading {
 }
 .documents__list--items {
   max-width: 1035px;
-  height: 72px;
+  display: block;
   border-radius: 12px;
   border: 2px solid rgba(103, 103, 103, 0.2392156863);
   margin-bottom: 17px;
   margin: 0 auto 17px auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   font-size: 24px;
   font-weight: 500;
-  padding-left: 35px;
-  padding-right: 35px;
+  padding: 25px 35px;
 }
 .documents__list--items:hover {
   color: #CB0000;
@@ -1311,6 +1307,21 @@ h2.heading {
 }
 .documents__list--items:hover path {
   fill: #CB0000;
+}
+.documents__list--items .title {
+  display: flex;
+  justify-content: space-between;
+}
+.documents__list--items .body {
+  display: none;
+  font-size: 16px;
+  padding-top: 15px;
+}
+.documents__list--items.active .title svg {
+  transform: rotate(90deg);
+}
+.documents__list--items.active .body {
+  display: block;
 }
 @media screen and (max-width: 700px) {
   .documents__list--items {
@@ -1366,6 +1377,12 @@ h2.heading {
   /* 
 
    Auksion inside 
+
+
+  */
+  /* 
+
+   Auksion edit 
 
 
   */
@@ -2149,6 +2166,10 @@ h2.heading {
     height: 50px;
   }
 }
+.aukstion__edit .foto__each {
+  display: flex;
+  flex-wrap: wrap;
+}
 
 .owning {
   margin-top: 25px;
@@ -2190,7 +2211,6 @@ h2.heading {
   font-weight: 500;
   font-size: 16px;
   color: #CB0000;
-  white-space: nowrap;
 }
 .reviews__each .info .date {
   font-weight: 500;

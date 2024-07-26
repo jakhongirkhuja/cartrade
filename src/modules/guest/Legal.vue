@@ -4,27 +4,34 @@
         
         <div class="documents__list p-80 container">
             <h2 class="heading text-center">Необходимая информация о нашей компании</h2>
-            <div class="documents__list--items">
-                <span>Оферта</span>
+            <router-link :to="{ name: 'main.legalinformation.oferta' }" class="documents__list--items">
+                <div class="title">
+                    <span>Оферта</span>
                 <svg width="17" height="30" viewBox="0 0 17 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.4142 16.4142C17.1953 15.6332 17.1953 14.3668 16.4142 13.5858L3.68629 0.857864C2.90524 0.0768156 1.63891 0.0768156 0.857864 0.857864C0.0768156 1.63891 0.0768156 2.90524 0.857864 3.68629L12.1716 15L0.857864 26.3137C0.0768156 27.0948 0.0768156 28.3611 0.857864 29.1421C1.63891 29.9232 2.90524 29.9232 3.68629 29.1421L16.4142 16.4142ZM14 17H15V13H14V17Z" fill="#060E29"/>
                 </svg>
-            </div>
-            <div class="documents__list--items"><span>Пользовательское соглашение</span>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'main.legalinformation.termofuse' }" class="documents__list--items"><div class="title">
+                    <span>Пользовательское соглашение</span>
+                    <svg width="17" height="30" viewBox="0 0 17 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.4142 16.4142C17.1953 15.6332 17.1953 14.3668 16.4142 13.5858L3.68629 0.857864C2.90524 0.0768156 1.63891 0.0768156 0.857864 0.857864C0.0768156 1.63891 0.0768156 2.90524 0.857864 3.68629L12.1716 15L0.857864 26.3137C0.0768156 27.0948 0.0768156 28.3611 0.857864 29.1421C1.63891 29.9232 2.90524 29.9232 3.68629 29.1421L16.4142 16.4142ZM14 17H15V13H14V17Z" fill="#060E29"/>
+                    </svg>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'main.legalinformation.personaldata' }" class="documents__list--items"><div class="title">
+                <span>Обработка персональных данных</span>
                 <svg width="17" height="30" viewBox="0 0 17 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.4142 16.4142C17.1953 15.6332 17.1953 14.3668 16.4142 13.5858L3.68629 0.857864C2.90524 0.0768156 1.63891 0.0768156 0.857864 0.857864C0.0768156 1.63891 0.0768156 2.90524 0.857864 3.68629L12.1716 15L0.857864 26.3137C0.0768156 27.0948 0.0768156 28.3611 0.857864 29.1421C1.63891 29.9232 2.90524 29.9232 3.68629 29.1421L16.4142 16.4142ZM14 17H15V13H14V17Z" fill="#060E29"/>
                 </svg>
-            </div>
-            <div class="documents__list--items"><span>Обработка персональных данных</span>
+                </div>
+            </router-link>
+            <router-link :to="{ name: 'main.legalinformation.privacypolicy' }" class="documents__list--items">
+                <div class="title"><span>Политика конфиденциальности</span>
                 <svg width="17" height="30" viewBox="0 0 17 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16.4142 16.4142C17.1953 15.6332 17.1953 14.3668 16.4142 13.5858L3.68629 0.857864C2.90524 0.0768156 1.63891 0.0768156 0.857864 0.857864C0.0768156 1.63891 0.0768156 2.90524 0.857864 3.68629L12.1716 15L0.857864 26.3137C0.0768156 27.0948 0.0768156 28.3611 0.857864 29.1421C1.63891 29.9232 2.90524 29.9232 3.68629 29.1421L16.4142 16.4142ZM14 17H15V13H14V17Z" fill="#060E29"/>
-                </svg>
-            </div>
-            <div class="documents__list--items"><span>Политика конфиденциальности</span>
-                <svg width="17" height="30" viewBox="0 0 17 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.4142 16.4142C17.1953 15.6332 17.1953 14.3668 16.4142 13.5858L3.68629 0.857864C2.90524 0.0768156 1.63891 0.0768156 0.857864 0.857864C0.0768156 1.63891 0.0768156 2.90524 0.857864 3.68629L12.1716 15L0.857864 26.3137C0.0768156 27.0948 0.0768156 28.3611 0.857864 29.1421C1.63891 29.9232 2.90524 29.9232 3.68629 29.1421L16.4142 16.4142ZM14 17H15V13H14V17Z" fill="#060E29"/>
-                </svg>
-            </div>
+                </svg></div>
+            </router-link>
         </div>
     </div>
 </template>

@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
     <div class="contacts">
         <BreadVue bread="Наши контакты" />
@@ -5,7 +6,7 @@
         <div class="contacts__block p-80 container">
             <h2 class="heading text-center">Локации нашей компании</h2>
             <div class="contacts__map">
-                <img src="/img/map.jpg" alt="">
+                <GoogleMap />
             </div>
             <h2 class="heading text-center">Контакты по которым вы можете с нами связаться</h2>
             <div class="contacts__form fx space_between">
@@ -35,10 +36,12 @@
 <script>
 import BreadVue from "@/components/Bread.vue";
 import FormVue from '@/components/Form.vue';
+import GoogleMap from '@/components/GoogleMap.vue';
 export default {
     components: {
         BreadVue,
-        FormVue
+        FormVue,
+        GoogleMap
     },
 }
 </script>

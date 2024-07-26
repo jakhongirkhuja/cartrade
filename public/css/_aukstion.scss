@@ -728,9 +728,19 @@
         }
     }
 
+    /* 
+
+    Auksion edit 
 
 
+   */
 
+   &__edit{
+        .foto__each{
+            display: flex;
+            flex-wrap: wrap;
+        }
+   }
 }
 .owning{
     margin-top: 25px;

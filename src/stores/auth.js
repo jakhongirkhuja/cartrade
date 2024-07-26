@@ -11,7 +11,6 @@ export const useAuthStore = defineStore({
       this.isActive = !this.isActive;
     },
     setActive(status) {
-     
       this.isActive = status;
     },
   },

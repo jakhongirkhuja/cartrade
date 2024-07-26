@@ -20,41 +20,41 @@
        <div class="services text-center p-80" style="background-color: #F9F9F9;">
            <h2 class="heading">Расширенный поиск по типу авто</h2>
            <div class="services__search container text-center ">
-                <a href="#" class="services__search--items">
+               <router-link :to="{ name: 'main.auksionguest', query: { type: 4 } }" class="services__search--items">
                     <div class="inside">
                         <img src="/img/kompakt.jpg" alt="">
                         <p>Компакт</p>
                     </div>
                     
-                </a>
-                <a href="#" class="services__search--items">
+                </router-link>
+                <router-link :to="{ name: 'main.auksionguest', query: { type: 8 } }" class="services__search--items">
                     <div class="inside">
                         <img src="/img/sedan.jpg" alt="">
                         <p>Седан</p>
                     </div>
                     
-                </a>
-                <a href="#" class="services__search--items">
+                </router-link>
+                <router-link :to="{ name: 'main.auksionguest', query: { type: 7 } }"  class="services__search--items">
                     <div class="inside">
                         <img src="/img/vnedorojnik.jpg" alt="">
                         <p>Внедорожник</p>
                     </div>
                     
-                </a>
-                <a href="#" class="services__search--items">
+                </router-link>
+                <router-link :to="{ name: 'main.auksionguest', query: { type: 1 } }" class="services__search--items">
                     <div class="inside">
                         <img src="/img/kabriolet.jpg" alt="">
                         <p>Кабриолет</p>
                     </div>
                     
-                </a>
-                <a href="#" class="services__search--items">
+                </router-link>
+                <router-link :to="{ name: 'main.auksionguest', query: { type: 3 } }" class="services__search--items">
                     <div class="inside">
                         <img src="/img/kupe.jpg" alt="">
                         <p>Купе</p>
                     </div>
                     
-                </a>
+                </router-link>
             </div>
        </div>
        <ServiceSold />
@@ -153,8 +153,66 @@ export default {
    },
    data() {
         return {
+            url: import.meta.env.VITE_APP_REST_ENDPOINT, 
+            marks: [],
             imageEaryle:'https://s3-alpha-sig.figma.com/img/f4b3/84d4/1dafdfe426668c8439a158835e201cce?Expires=1722211200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=l0sfYs27HusQEndMlPwNEOGwSQ~fGx651KCWEAH2QZyN2gWmaB9yhxsi23V108pIShS91n5goC8wkyzvDs2ilcqZ4VJ8kflFe1SDgI~DXWd6woQ1RfBrwKvOkyxf4OM2~IZ2GHAFnP-rzi439JFZIg1tFJ3bx9PwuLu4OsvFsUpj9I1rvZHCCDPwRkU7hh03w8PPFqFrk8VG99XalDPRNHnN8NRaIR4KVtAnMxmGZRSE3P-TtdTn2qnbaK5MuL5UDRLDov6qIv~plCfCyZ1knSLgMng2xrRjbCMos-04tBUegr-~WV5o-5SYG4~kV1CmkCX0fukWuNaVjmgwMa8FPA__',
         }
+   },
+   methods: {
+        async loadMarks(){
+            try {
+              let token = localStorage.getItem('token');
+              const response = await fetch(this.url+'api/loadMark/', {
+              method: 'GET',
+              headers: {
+               "Content-Type" : "application/json",
+                "accept" : "application/json",
+                'Authorization': 'Bearer '+token, 
+              }
+            });
+            const json = await response.json();
+            this.marks = json;
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+
+
+        //     try {
+        //       let token = localStorage.getItem('token');
+             
+        //       const response = await fetch(this.url+'api/v1/groups/groupDelete/'+this.modelUserId, {
+        //       method: 'POST', // или 'PUT'
+        //       body: JSON.stringify(finalResult), // данные могут быть 'строкой' или {объектом}!
+        //       headers: {
+        //        "Content-Type" : "application/json",
+        //         "accept" : "application/json",
+        //         'Authorization': 'Bearer '+token, 
+        //       }
+        //     });
+        //     const json = await response.json();
+            
+        //     if(json.error){
+              
+        //       if(typeof json.message == 'object'){
+        //             this.resError = json.message;
+        //           }else{
+        //             this.resStringError = json.message;
+        //           }
+        //     }else{
+        //       this.resSuccess  = 'Successfully Deleted';
+        //       this.requestApi(1);
+        //       this.submitButton = false;
+        //     }
+            
+        //   } catch (error) {
+        //     console.error('Ошибка:', error);
+        //   }
+
+        }
+   },
+   created() {
+        // this.loadMarks();
    },
 }
 </script>
