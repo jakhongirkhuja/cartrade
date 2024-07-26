@@ -39,8 +39,8 @@
 
             </div>
             <div class="header__auth guest fx vertical_center fx-1" v-else>
-                <div class="btn btn-primary" @click="addClass">Войти</div>
-                <div class="btn btn-primary-outline" @click="addClass">Регистрация</div>
+                <div class="btn btn-primary" @click="addClass(0)">Войти</div>
+                <div class="btn btn-primary-outline" @click="addClass(1)">Регистрация</div>
             </div>
             <div class="burger">
                 <svg width="44" height="24" viewBox="0 0 44 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -67,10 +67,10 @@ export default {
     },
     methods: {
         
-        addClass() {
+        addClass(type) {
             const authStore = useAuthStore();
             console.log('ere');
-            authStore.setActive(true);
+            authStore.setActive(true, type);
         },
     },
     created() {

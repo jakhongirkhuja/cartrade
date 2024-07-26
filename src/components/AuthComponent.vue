@@ -3,7 +3,7 @@
 <template>
     <div class="authentication " :class="{ active: isActive }"> 
         <div class="authentication__form">
-            
+           
             <div class="authentication__form--self" >
                 <svg class="close" width="20" height="21" @click="closeAuth" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_161_2127)">
@@ -26,7 +26,8 @@
                     <input type="text" id="familyname"  v-model="familyname" placeholder="Фамилия" class="form-control">
                 </label>
                 <label for="phone">
-                    <input type="text" id="phone" always-fill-mask="true" placeholder="+998 (__) ___ - __ - __" class="form-control" v-mask="'+998 (##) ### - ## - ##'" />
+                    <small class="info" v-if="phoneblock">смс отправлен: павторно можно отправить через {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}</small>
+                    <input type="text" id="phone" always-fill-mask="true" @input="phoneCheck" :disabled="phoneblock" v-model="phone" placeholder="+998 (__) ___ - __ - __" class="form-control" v-mask="'+998 (##) ### - ## - ##'" />
                    
                     <!-- <input type="text" id="phone" v-model="phone" @input="maskInput"   placeholder="+998 (__) ___ - __ - __" class="form-control"> -->
                 </label>
@@ -58,9 +59,11 @@
                         <input type="checkbox" name="" id="saveuser"> Запомнить
                         <span class="checkmark"></span>
                     </label>
-                    <label for="" class="forgetpassword" @click="regType=2">Забыли пароль?</label>
+                    <label for="" class="forgetpassword" @click="regType=2; this.phone=null;">Забыли пароль?</label>
                 </div>
-                <div class="btn btn-primary w-100">Войти</div>
+                <div class="btn btn-primary w-100" v-if="regType==0" @click="loginForm">Войти</div>
+                <div class="btn btn-primary w-100" v-else-if="regType==1" @click="registerForm">Регистрация</div>
+                <div class="btn btn-primary w-100" v-else @click="recoveryForm">Восстановить</div>
                 <div class="line" v-if="regType==0"></div>
                 <div class="reg_it" v-if="regType==0">
                     Не зарегестрированы? <span @click="regType=1">Создать аккаунт</span>
@@ -85,10 +88,11 @@ import { watch, ref } from 'vue';
 export default {
     setup() {
         const authStore = useAuthStore(); // Access your Pinia store instance
-
+        const regType = ref(0);
         // Use a ref to wrap isActive for reactive watching
         const isActive = ref(authStore.isActive);
-
+        const istype = ref(authStore.type);
+       
         // Watch isActive using a getter function
         watch(
         () => authStore.isActive,
@@ -99,15 +103,25 @@ export default {
             // Perform actions based on isActive changes
         }
         );
+        watch(
+            () => authStore.type,
+            (newValue, oldValue) => {
+                console.log('type changed:', newValue);
+                istype.value = newValue; // Update istype ref
+                regType.value = newValue; // Update regType ref
+            }
+        );
 
         const closeAuth = () => {
             
-            authStore.setActive(false); // Update isActive state in the store
+            authStore.setActive(false,0); // Update isActive state in the store
         };
 
         // You can return data and methods to the template if needed
         return {
             isActive,
+            istype,
+            regType,
             closeAuth,
         };
     },
@@ -117,6 +131,10 @@ export default {
     // },
     data() {
         return {
+            url: import.meta.env.VITE_APP_REST_ENDPOINT,
+            phoneblock: false,
+            timeLeft: 300, // 5 minutes in seconds
+            interval: null,
             heading:[
                 'Войдите в аккаунт',
                 'Регистрация',
@@ -127,19 +145,253 @@ export default {
                 'Зарегистрируйте свой мобильный номер телефона в нашем сервисе ',
                 'Напишите номер телефона и мы отправим вам СМС с кодом подтверждения',
             ],
-            regType:0,
+            
             show: true,
             phone: '',
             name:'',
             familyname:'',
             password:'',
             otp:'',
+            insideNew: false,
+            verify_number:null,
         }
     },
+    computed: {
+        minutes() {
+            return Math.floor(this.timeLeft / 60);
+        },
+        seconds() {
+            return this.timeLeft % 60;
+        },
+    },
+    beforeUnmount() {
+        clearInterval(this.interval);
+    },
     methods: {
+        startCountdown() {
+            this.interval = setInterval(() => {
+                if (this.timeLeft > 0) {
+                    this.timeLeft--;
+                } else {
+                clearInterval(this.interval);
+                }
+            }, 1000);
+        },
         closeAuth() {
             const authStore = useAuthStore();
-            authStore.setActive(false); // Assuming setActive manages the isActive state in the store
+            authStore.setActive(false,0); // Assuming setActive manages the isActive state in the store
+            this.phoneblock = false;
+            clearInterval(this.interval);
+            this.timeLeft = 300;
+        },
+        phoneCheck(event){
+            let phone = event.target.value.replace(/\D/g, "");
+            if(phone.length==12 && (this.regType==1 || this.regType==2) && !this.insideNew){
+                this.insideNew = true;
+                this.phoneblock = true;
+                this.inside = true;
+                this.startCountdown();
+                this.sendSMSForm();
+            }
+        },
+        async loginForm(){
+            const phoneNumber = this.phone.replace(/\D/g, "");
+            if(phoneNumber.length!=12 || this.password.length<=5) return;
+            
+            try {
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                        "password": this.password,
+                        "phoneNumber": phoneNumber,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/login', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(json.error){
+                    alert(json.message.ru);
+                }else{
+                    console.log(json);
+                }
+                
+               
+                
+                
+            
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+        },
+        async registerForm(){
+            const phoneNumber = this.phone.replace(/\D/g, "");
+            if(this.name.length==0 || this.familyname.length==0 || this.password.length==0 || phoneNumber.length!=12) return;
+                try {
+                    
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                        'name': this.name,
+                        'familyName': this.familyname,
+                        'password': this.password,
+                        'verify_number': this.otp,
+                        "phoneNumber": phoneNumber,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/register', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(json.error){
+                    alert(json.message.ru);
+                }else{
+                    
+                    alert(json.message.response.ru);
+                    
+                }
+                this.phoneblock = false;
+                this.insideNew = false;
+                
+               
+                
+                
+            
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+        },
+        async recoveryForm(){
+            const phoneNumber = this.phone.replace(/\D/g, "");
+            if(phoneNumber.length!=12) return;
+                try {
+                    
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                        'verify_number': this.otp,
+                        "phoneNumber": phoneNumber,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/reset-password', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(json.error){
+                    alert(json.message.ru);
+                }else{
+                    
+                    alert(json);
+                    
+                }
+                this.phoneblock = false;
+                this.insideNew = false;
+                
+               
+                
+                
+            
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+        },
+        async sendSMSForm(){
+            const phoneNumber = this.phone.replace(/\D/g, "");
+            if(phoneNumber.length!=12) return;
+            if(this.timeLeft<3) return;
+            
+            try {
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                       
+                        "phoneNumber": phoneNumber,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/register/send-sms', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(json.error){
+                    alert(json.message.ru);
+                }else{
+                    console.log(json);
+                    alert(json.verify_number);
+                    
+                }
+                this.insideNew = false;
+                
+               
+                
+                
+            
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
         }
     },
     created() {
@@ -152,3 +404,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .info{
+        color: red;
+    }
+</style>

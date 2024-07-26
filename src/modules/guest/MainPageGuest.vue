@@ -152,6 +152,7 @@ export default {
            ServiceSold,
    },
    data() {
+    
         return {
             url: import.meta.env.VITE_APP_REST_ENDPOINT, 
             marks: [],

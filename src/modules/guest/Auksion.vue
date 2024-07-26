@@ -9,64 +9,54 @@
                 <div class="rectangle rectangle_left"></div>
                
                 <div class="filter" >
-                        <div class="auksion__type">
+                        <div class="auksion__type" v-if="authUserPrivilege">
                             <div class="auksion__type--each">Экспресс аукцион</div>
                             <div class="auksion__type--each">Долгосрочный аукцион</div>
                             <div class="auksion__type--each">Все аукционы</div>
                         </div>
                         <div class="auksion__select">
                             <div class="auksion__select--block">
-                                <div class="each">
-                                    <span>Марка</span>
+                                <div class="each" @click="toogleElement">
+                                    <span>{{  selectedMark?? 'Марка'}}</span>
                                     <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z" fill="#676767"/>
                                     </svg>
                                     <div class="list">
                                         <div class="list__items"></div>
-                                        <div class="list__items">Aurus</div>
-                                        <div class="list__items">BMW</div>
-                                        <div class="list__items">Audi</div>
-                                        <div class="list__items">Mercedes</div>
-                                        <div class="list__items">Porsche</div>
-                                        <div class="list__items">Volkswagen</div>
+                                        <div class="list__items" v-for="mark in marks" :key="mark.id" @click="selectMarkDrop(mark)">{{mark.name}}</div>
                                     </div>
                                 </div>
-                                <div class="each">
-                                    <span>Модель</span>
+                                <div class="each" :class="models.length==0? 'disabled' : ''"  @click="toogleElement">
+                                    <span>{{ selectedModel?? 'Модель'}}</span>
                                     <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z" fill="#676767"/>
                                     </svg>
                                     <div class="list">
                                         <div class="list__items"></div>
-                                        <div class="list__items">Седан</div>
-                                        <div class="list__items">Купе</div>
-                                        <div class="list__items">Хэтчбек</div>
-                                        <div class="list__items">Лифтбек</div>
+                                        <div class="list__items" v-for="model in models" :key="model.id" @click="selectModelDrop(model)">{{ model.name }}</div>
+                                        
                                     </div>
                                 </div>
                                 <input type="text" class="each" placeholder="Год">
-                                <div class="each">
-                                    <span>Тип</span>
+                                <div class="each" @click="toogleElement">
+                                    <span>{{ selectedType?? 'Тип' }}</span>
                                     <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z" fill="#676767"/>
                                     </svg>
                                     <div class="list">
                                         <div class="list__items"></div>
-                                        <div class="list__items">Седан</div>
-                                        <div class="list__items">Купе</div>
-                                        <div class="list__items">Хэтчбек</div>
-                                        <div class="list__items">Лифтбек</div>
+                                        <div class="list__items" v-for="type in types" :key="type.id" @click="selectTypeDrop(JSON.parse(type.name), JSON.parse(type.id))">{{JSON.parse(type.name)[0]}}</div>
                                     </div>
                                 </div>
-                                <div class="each">
-                                    <span>Состояние</span>
+                                <div class="each" @click="toogleElement">
+                                    <span>{{ selectedCondition?? 'Состояние' }} </span>
                                     <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z" fill="#676767"/>
                                     </svg>
                                     <div class="list">
                                         <div class="list__items"></div>
-                                        <div class="list__items">Новый</div>
-                                        <div class="list__items">Хороший</div>
+                                        <div class="list__items" v-for="condition in conditions" :key="condition.id" @click="selectConditionDrop(JSON.parse(condition.name), JSON.parse(condition.id))">{{JSON.parse(condition.name)[0]}}</div>
+                                        
                                     </div>
                                 </div>
                                 <input type="text" class="each" placeholder="Пробег км">
@@ -164,11 +154,143 @@ export default {
    
     data() {
         return {
+            url: import.meta.env.VITE_APP_REST_ENDPOINT, 
             resultCount: 4733,
             features:['Бензин','Автомат','77329','Седан','Новый','2006 г.','бежевый металлик','Полный привод'],
             image: 'https://s3-alpha-sig.figma.com/img/7779/2e6a/3cdfa39a42910327da49edfc1e447a21?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QmzJCiaVFkC0fRuAi6f2~OYgxS9E8OCZ0cGFrW3W1XLV~F1WrLddUub2n0FFTisAwUjzp9CUXu5wO2HTlC~lrNzQB6ygTeqfw2HiR1xqpYxhzIqMIezx~Jz6F7lWYqNqioHxIb~vyCGPDVkXSuTk8BtuTf1GwS5s~kYsSbxA31yi~HpCuSWtPBZUUoe3bqnAbkqCYCU3JDY3Qq4R4qxXrVFEXbTTiTwwEv6dRHSYt0a~1FWsJ5yoa3mC4S4lrL2Rymqqak2M5FoGvYhWEDKDGYVSnTZsfFPX5stA~~EZLL6frmiPu9zWxmCMPEyaue7L3pdk14A07~6Fm5yvUo3JvQ__',
-
+            marks:[],
+            selectedMark: null,
+            selectedModel: null,
+            selectedCondition: null,
+            selectedType: null,
+            conditions:[],
+            types:[],
+            selectedMark_id: 0,
+            selectedModel_id:0,
+            selectedType_id:0,
+            selectedCondition_id:0,
+            inside : false,
+            models:[],
+            auksions:[],
+            authUserPrivilege: false,
         }
     },
+    methods: {
+        toogleElement(event){
+            this.removeClassActive();
+            if(!event.currentTarget.classList.contains('disabled')){
+                if(!this.inside){
+                    event.currentTarget.classList.add('active');
+                    this.inside = true;
+                }
+                
+            }
+            
+        },
+        removeClassActive(){
+            document.querySelectorAll('.auksion__select--block .each.active').forEach(element => {
+                element.classList.remove('active');
+            });
+        },
+        setNewTimeOut(){
+            setTimeout(() => {
+                this.inside = false;
+            }, 1000);
+        },
+        selectMarkDrop(mark){
+            this.removeClassActive();
+            this.selectedMark = mark.name;
+            this.selectedMark_id = mark.id;
+            this.callModel(mark.id);
+            this.setNewTimeOut();
+            
+        },
+        selectModelDrop(model){
+            this.removeClassActive();
+            this.selectedModel = model.name;
+            this.selectedModel_id = model.id;
+            this.setNewTimeOut();
+        },
+        selectTypeDrop(type, id){
+            this.removeClassActive();
+            this.selectedType = type[0];
+            this.selectedType_id = id;
+            this.setNewTimeOut();
+        },
+        selectConditionDrop(condition, id){
+            this.removeClassActive();
+            this.selectedCondition = condition[0];
+            this.selectedCondition_id = id;
+            this.setNewTimeOut();
+        },
+        async loadMarks(){
+            try {
+              let token = localStorage.getItem('token');
+              const response = await fetch(this.url+'api/filters', {
+              method: 'GET',
+              headers: {
+               "Content-Type" : "application/json",
+                "accept" : "application/json",
+                'Authorization': 'Bearer '+token, 
+              }
+            });
+            const json = await response.json();
+            
+            this.marks = json.marks;
+            this.conditions = json.condition;
+            this.types = json.type;
+            
+          } catch (error) {
+            console.error('Ошибка:', error);
+          }
+
+        },
+        async callModel(id){
+            if(id==0) return ;
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/loadModel/'+id, {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+                this.models = json;
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+        async loadAuksion(){
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/auksion?page=1', {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+                this.auksions = json.data;
+                
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+        async userCheck(){
+            let token = localStorage.getItem('token');
+        }
+   },
+   created() {
+        this.loadMarks();
+        this.loadAuksion();
+        this.userCheck();
+   },
 }
 </script>

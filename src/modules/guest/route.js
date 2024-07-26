@@ -30,7 +30,27 @@ const routes =  [
             {
                 path: 'dealer/legal-information',
                 name: 'main.legalinformation.dealer',
-                component:  ()=>import ('@/modules/guest/Legal.vue'),
+                component:  ()=>import ('@/modules/guest/LegalDeiler.vue'),
+            },
+            {
+                path: 'dealer/legal-information/oferta',
+                name: 'main.legalinformation.oferta.dealer',
+                component:  ()=>import ('@/modules/guest/LegalOferta.vue'),
+            },
+            {
+                path: 'dealer/legal-information/term-of-use',
+                name: 'main.legalinformation.termofuse.dealer',
+                component:  ()=>import ('@/modules/guest/LegalTermOfUse.vue'),
+            },
+            {
+                path: 'dealer/legal-information/personal-data',
+                name: 'main.legalinformation.personaldata.dealer',
+                component:  ()=>import ('@/modules/guest/LegalPersonalData.vue'),
+            },
+            {
+                path: 'dealer/legal-information/privacy-policy',
+                name: 'main.legalinformation.privacypolicy.dealer',
+                component:  ()=>import ('@/modules/guest/LegalPrivacyPolicy.vue'),
             },
             {
                 path: 'dealer/auksion',
