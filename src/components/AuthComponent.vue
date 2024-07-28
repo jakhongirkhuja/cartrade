@@ -239,7 +239,10 @@ export default {
                 if(json.error){
                     alert(json.message.ru);
                 }else{
-                    console.log(json);
+                    alert(json.message.response.ru);
+                    localStorage.setItem('token',json.token );
+                    this.$router.push({name: 'cabinet.main', refresh: true });
+                    this.$router.refresh();121``
                 }
                 
                
