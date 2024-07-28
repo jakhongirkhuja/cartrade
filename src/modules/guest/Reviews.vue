@@ -82,44 +82,44 @@ export default {
        },
         async submitForm(){
             if(this.fullname.length==0 || this.body.length==0) return;
-                try {
-                    // eslint-disable-next-line no-unused-vars
-                    let token = localStorage.getItem('token');
-                    const finalResult = {
-                        "fullname": this.fullname,
-                        "email": this.email,
-                        "body": this.body,
-                }
+                    try {
+                        // eslint-disable-next-line no-unused-vars
+                        let token = localStorage.getItem('token');
+                        const finalResult = {
+                            "fullname": this.fullname,
+                            "email": this.email,
+                            "body": this.body,
+                    }
+                    
+
+                    var data = new FormData()
+                    
+                    for (const key in finalResult) {
+                        data.append(key, finalResult[key]);
+
+                    }
+
+
+                    const response = await fetch(this.url+'api/reviews', {
+                        method: 'POST',
+                        body: data,
+                        headers: {
+                            'Accept-Language': 'en-US,en;q=0.8',
+                            "accept": "application/json",
+                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                        },
+
+                    });
+                    const json = await response.json();
+                    console.log(json);
                 
-
-                var data = new FormData()
-                
-                for (const key in finalResult) {
-                    data.append(key, finalResult[key]);
-
-                }
-
-
-                const response = await fetch(this.url+'api/reviews', {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'Accept-Language': 'en-US,en;q=0.8',
-                        "accept": "application/json",
-                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
-                    },
-
-                });
-                const json = await response.json();
-                console.log(json);
-               
+                    
+                    
                 
                 
-            
-            
-          } catch (error) {
-            console.error('Ошибка:', error);
-          }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
         },
     },
     created() {

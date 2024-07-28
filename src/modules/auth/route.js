@@ -21,6 +21,11 @@ const routes =  [
                 name: 'cabinet.edit.auksion',
                 component:  ()=>import ('@/modules/auth/crud/AuksionEdit.vue'),
             },
+            {
+                path: 'auksion-add',
+                name: 'cabinet.add.auksion',
+                component:  ()=>import ('@/modules/auth/crud/AuksionAdd.vue'),
+            },
         ]
     },
     

@@ -73,14 +73,16 @@
         </div>
         <p class="aukstion__result container">Мы нашли  <span>{{resultCount}}</span> по вашему запросу</p>
         <div class="aukstion__block container">
-            <div class="aukstion__block--items" v-for="index in 5">
-                <a href="#" class="poster" v-bind:style="{ 'background-image': 'url(' + image + ')' }"></a>
+            <template v-for="car in cars">
+                <template v-if="car.car">
+                    <div class="aukstion__block--items" >
+                <a href="#" class="poster" v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+car.car.images[0].image + ')' }"></a>
                 <div class="info">
-                    <h2 class="info__title"><a href="#">Volvo XC90 - 2020</a></h2>
+                    <h2 class="info__title"><a href="#">{{car.car.car_mark.name}} {{car.car.car_model.name}} - {{car.car.year}}</a></h2>
                     <div class="info__rate fx">
                         <div class="name">Салон</div>
                         <div class="rates">
-                            <template  v-for="index in 6">
+                            <template  v-for="index in car.car.salon">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 0L9.78687 5.54059L15.6085 5.52786L10.8912 8.93941L12.7023 14.4721L8 11.04L3.29772 14.4721L5.10879 8.93941L0.391548 5.52786L6.21313 5.54059L8 0Z" fill="#CB0000"/>
                                 </svg>
@@ -90,7 +92,7 @@
                     <div class="info__rate fx">
                         <div class="name">Двигатель</div>
                         <div class="rates">
-                            <template  v-for="index in 6">
+                            <template  v-for="index in car.car.engine">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 0L9.78687 5.54059L15.6085 5.52786L10.8912 8.93941L12.7023 14.4721L8 11.04L3.29772 14.4721L5.10879 8.93941L0.391548 5.52786L6.21313 5.54059L8 0Z" fill="#CB0000"/>
                                 </svg>
@@ -100,7 +102,7 @@
                     <div class="info__rate fx">
                         <div class="name">Кузов</div>
                         <div class="rates">
-                            <template  v-for="index in 6">
+                            <template  v-for="index in car.car.carbody">
                                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M8 0L9.78687 5.54059L15.6085 5.52786L10.8912 8.93941L12.7023 14.4721L8 11.04L3.29772 14.4721L5.10879 8.93941L0.391548 5.52786L6.21313 5.54059L8 0Z" fill="#CB0000"/>
                                 </svg>
@@ -108,17 +110,23 @@
                         </div>
                     </div>
                     <div class="info__features row">
-                        <div class="items" v-for="feature in features" :key="feature">{{ feature }}</div>
+                        <div class="items" >{{ JSON.parse(car.car.car_fuil_type.name)[0] }}</div>
+                        <div class="items" >{{ JSON.parse(car.car.transmission.name)[0] }}</div>
+                        <div class="items" >{{ car.car.mileage}}</div>
+                        <div class="items" >{{ JSON.parse(car.car.condation.name)[0] }}</div>
+                        <div class="items" >{{ JSON.parse(car.car.car_body_type.name)[0] }}</div>
+                        <div class="items" >{{ JSON.parse(car.car.color.name)[0] }}</div>
+                        <div class="items" >{{ car.car.year}} г</div>
                     </div>
                 </div>
                 <div class="actions">
                     <div class="actions__price--origin fx">
                         <div class="info">Начальная ставка:</div>
-                        <div class="price">1.000.000 $</div>
+                        <div class="price">{{car.car.start_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}} сум</div>
                     </div>
                     <div class="actions__price--blits fx">
                         <div class="info">Блиц - цена:</div>
-                        <div class="price">1.500.000 $</div>
+                        <div class="price">{{car.car.buy_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}} сум</div>
                     </div>
                     <div class="action__price--bet">
                         <div class="btn btn-primary">Сделать ставку</div>
@@ -128,16 +136,19 @@
                     <div class="charakter fx">
                         <div class="items fx">
                             <img src="/icons/trail.svg" alt="">
-                            <p>77362</p>
+                            <p>{{car.car.mileage}}</p>
                         </div>
                         <div class="items fx">
                             <img src="/icons/fuil.svg" alt="">
-                            <p>Дизель</p>
+                            <p>{{JSON.parse(car.car.car_fuil_type.name)[0]}}</p>
                         </div>
                     </div>
 
                 </div>
             </div>
+                </template>
+            </template>
+           
             <div class="auksion__block--pagination">
                 <ul class="pagination">
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
@@ -155,7 +166,7 @@ export default {
     data() {
         return {
             url: import.meta.env.VITE_APP_REST_ENDPOINT, 
-            resultCount: 4733,
+            resultCount: 0,
             features:['Бензин','Автомат','77329','Седан','Новый','2006 г.','бежевый металлик','Полный привод'],
             image: 'https://s3-alpha-sig.figma.com/img/7779/2e6a/3cdfa39a42910327da49edfc1e447a21?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QmzJCiaVFkC0fRuAi6f2~OYgxS9E8OCZ0cGFrW3W1XLV~F1WrLddUub2n0FFTisAwUjzp9CUXu5wO2HTlC~lrNzQB6ygTeqfw2HiR1xqpYxhzIqMIezx~Jz6F7lWYqNqioHxIb~vyCGPDVkXSuTk8BtuTf1GwS5s~kYsSbxA31yi~HpCuSWtPBZUUoe3bqnAbkqCYCU3JDY3Qq4R4qxXrVFEXbTTiTwwEv6dRHSYt0a~1FWsJ5yoa3mC4S4lrL2Rymqqak2M5FoGvYhWEDKDGYVSnTZsfFPX5stA~~EZLL6frmiPu9zWxmCMPEyaue7L3pdk14A07~6Fm5yvUo3JvQ__',
             marks:[],
@@ -173,6 +184,7 @@ export default {
             models:[],
             auksions:[],
             authUserPrivilege: false,
+            cars:[],
         }
     },
     methods: {
@@ -276,8 +288,8 @@ export default {
                 }
                 });
                 const json = await response.json();
-                this.auksions = json.data;
-                
+                this.cars = json.data;
+                this.resultCount = json.total;
                 
             } catch (error) {
                 console.error('Ошибка:', error);
@@ -288,6 +300,7 @@ export default {
         }
    },
    created() {
+    
         this.loadMarks();
         this.loadAuksion();
         this.userCheck();

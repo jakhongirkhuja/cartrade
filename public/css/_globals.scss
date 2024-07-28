@@ -362,6 +362,7 @@ h2.heading{
     @include respond-tab{
         max-width: 96%;
     }
+    width: 100%;
 }
 .p-80{
     @include respond-tab{
@@ -433,6 +434,9 @@ h2.heading{
         cursor: pointer;
         transform: scale(1.1);
     }
+}
+.col-12{
+    width: 100%;
 }
 .col-4{
     @include respond-phone(){

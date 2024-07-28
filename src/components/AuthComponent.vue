@@ -19,6 +19,15 @@
 
                 <h2>{{heading[regType]}}</h2>
                 <p>{{underheading[regType]}}</p>
+                <div class="role" v-if="regType==1">
+                    
+                    <div class="role__block">
+                        <div class="role__each" @click="role=0" :class="role==0? 'active' : ''">Клиент</div>
+                        <div class="role__each" @click="role=1" :class="role==1? 'active' : ''">Автодилер</div>
+                        <div class="role__switch" :class="role==1? 'active' : ''"></div>
+                    </div>
+                    
+                </div>
                 <label for="name" v-if="regType==1">
                     <input type="text" id="name" v-model="name"   placeholder="Имя" class="form-control">
                 </label>
@@ -135,6 +144,7 @@ export default {
             phoneblock: false,
             timeLeft: 300, // 5 minutes in seconds
             interval: null,
+            role: 0,
             heading:[
                 'Войдите в аккаунт',
                 'Регистрация',
@@ -183,6 +193,7 @@ export default {
             this.phoneblock = false;
             clearInterval(this.interval);
             this.timeLeft = 300;
+            this.regType =0;
         },
         phoneCheck(event){
             let phone = event.target.value.replace(/\D/g, "");
@@ -251,6 +262,7 @@ export default {
                         'familyName': this.familyname,
                         'password': this.password,
                         'verify_number': this.otp,
+                        'role':this.role,
                         "phoneNumber": phoneNumber,
                 }
                 
@@ -279,7 +291,9 @@ export default {
                 }else{
                     
                     alert(json.message.response.ru);
-                    
+                    localStorage.setItem('token',json.token );
+                    this.$router.push({name: 'cabinet.main', refresh: true });
+                    this.$router.refresh();
                 }
                 this.phoneblock = false;
                 this.insideNew = false;

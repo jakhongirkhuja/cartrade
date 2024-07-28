@@ -344,6 +344,9 @@ h2.heading {
   }
 }
 
+.container {
+  width: 100%;
+}
 @media screen and (max-width: 1300px) {
   .container {
     max-width: 1120px;
@@ -432,6 +435,10 @@ h2.heading {
 .scale:hover {
   cursor: pointer;
   transform: scale(1.1);
+}
+
+.col-12 {
+  width: 100%;
 }
 
 @media screen and (max-width: 700px) {
@@ -2469,6 +2476,38 @@ footer .line {
     max-width: 90%;
   }
 }
+.authentication__form--self .role__block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #f4f4f4;
+  border-radius: 40px;
+  height: 54px;
+  margin-bottom: 12px;
+  position: relative;
+}
+.authentication__form--self .role__each {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+}
+.authentication__form--self .role__each.active {
+  color: white;
+}
+.authentication__form--self .role__switch {
+  position: absolute;
+  border-radius: 40px;
+  height: 54px;
+  width: 50%;
+  background-color: #CB0000;
+  transition: all 0.3s ease;
+}
+.authentication__form--self .role__switch.active {
+  margin-left: 50%;
+}
 .authentication__form--self .close {
   position: absolute;
   top: -33px;
@@ -2878,4 +2917,53 @@ footer .line {
 }
 .auth__userInfo .edit.savepassword input {
   max-width: 800px;
+}
+.auth .auksion__edit .form {
+  background-color: white;
+  margin: 40px 0;
+  padding: 20px;
+}
+.auth .auksion__edit .form .foto {
+  margin-top: 1.5rem;
+}
+.auth .auksion__edit .form .foto__each {
+  margin-top: 20px;
+}
+.auth .auksion__edit .form .col-4, .auth .auksion__edit .form .col-8, .auth .auksion__edit .form .col-6 {
+  padding: 10px;
+}
+.auth .auksion__edit .form label {
+  font-size: 15px;
+}
+.auth .auksion__edit .form .timing {
+  flex: 0 0 50%;
+  padding: 10px;
+}
+.auth .auksion__edit .form .textBody {
+  width: 100%;
+  padding: 10px;
+}
+.auth .auksion__edit .form .col-6 {
+  flex: 0 0 50%;
+}
+.auth .auksion__edit .form input, .auth .auksion__edit .form select, .auth .auksion__edit .form textarea {
+  margin-top: 7px;
+}
+.auth .auksion__edit .form h4 {
+  font-size: 20px;
+}
+.auth .auksion__edit .form h4.l-10 {
+  padding-left: 10px;
+}
+.auth .auksion__edit .form .function_body {
+  border: 1px dotted silver;
+  margin-top: 11px;
+  border-radius: 8px;
+}
+.auth .auksion__edit .form hr {
+  border-color: 1px solid silver;
+  margin: 40px 0;
+}
+.auth .auksion__edit .form .btn {
+  margin-top: 40px;
 }/*# sourceMappingURL=main.css.map */
