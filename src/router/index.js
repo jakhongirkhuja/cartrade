@@ -1,12 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import guestRoutes from '@/modules/guest/route.js'
 import authRoutes from '@/modules/auth/route.js'
+import authDealerRoutes from '@/modules/auth/dealer/route.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     ...guestRoutes,
-    ...authRoutes
+    ...authRoutes,
+    ...authDealerRoutes,
+
   ]
 })
 router.beforeEach((to, from, next) => {

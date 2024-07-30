@@ -111,6 +111,12 @@ export default {
 
                     });
                     const json = await response.json();
+                    if(json.errors){
+                        alert(json.message);
+                    }
+                    if(response.status == 201){
+                        alert("Отзыв был отправлен")
+                    }
                     console.log(json);
                 
                     

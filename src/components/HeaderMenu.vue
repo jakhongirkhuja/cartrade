@@ -54,7 +54,7 @@ export default {
     watch: {
         $route(to, from) {
             console.log('Route changed from', from.path, 'to', to.path);
-            if (to.path.startsWith('/dealer')) {
+            if (to.path.startsWith('/dealer') || to.path.startsWith('/cabinet-dealer')) {
                 this.role = 'dealer';
             } else {
                 this.role = 'guest';
@@ -62,7 +62,7 @@ export default {
         },
     },
     created() {
-        if (this.$route.path.startsWith('/dealer')) {
+        if (this.$route.path.startsWith('/dealer') || this.$route.path.startsWith('/cabinet-dealer')) {
             this.role = 'dealer';
         }else{
             this.role = 'guest';

@@ -76,9 +76,9 @@
             <template v-for="car in cars">
                 <template v-if="car.car">
                     <div class="aukstion__block--items" >
-                <a href="#" class="poster" v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+car.car.images[0].image + ')' }"></a>
+                        <router-link :to="{ name: 'main.auksion.inside.dealer', params: { id: car.id } }" class="poster" v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+car.car.images[0].image + ')' }"></router-link>
                 <div class="info">
-                    <h2 class="info__title"><a href="#">{{car.car.car_mark.name}} {{car.car.car_model.name}} - {{car.car.year}}</a></h2>
+                    <h2 class="info__title"><router-link :to="{ name: 'main.auksion.inside.dealer', params: { id: car.id } }">{{car.car.car_mark.name}} {{car.car.car_model.name}} - {{car.car.year}}</router-link></h2>
                     <div class="info__rate fx">
                         <div class="name">Салон</div>
                         <div class="rates">
@@ -129,7 +129,7 @@
                         <div class="price">{{car.car.buy_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}} сум</div>
                     </div>
                     <div class="action__price--bet">
-                        <div class="btn btn-primary">Сделать ставку</div>
+                        <router-link :to="{ name: 'main.auksion.inside.dealer', params: { id: car.id } }" class="btn btn-primary">Сделать ставку</router-link>
                     </div>
                 </div>
                 <div class="mobile__view">

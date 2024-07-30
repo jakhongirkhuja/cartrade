@@ -35,8 +35,35 @@
             <div class="header__phone">
                 <a class="no-wrap" href="tel:+998880093377">+998 88 009 33 77</a>
             </div>
-            <div class="header__auth account fx vertical_center fx-1" v-if="token">
-
+            <div class="header__auth account fx vertical_center fx-1" v-if="user">
+                <div class="userInfo">
+                    <div v-if="user.avatar" class="avatar" v-bind:style="{ 'background-image': 'url(' + url+'/files/user/'+user.avatar + ')' }">  
+                    </div>
+                    <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">  
+                    </div>
+                    <div class="name">{{ user.name }} {{ user.familyName }}</div>
+                    <svg width="16" height="9" viewBox="0 0 16 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.29289 8.70711C7.68342 9.09763 8.31658 9.09763 8.70711 8.70711L15.0711 2.34315C15.4616 1.95262 15.4616 1.31946 15.0711 0.928932C14.6805 0.538408 14.0474 0.538408 13.6569 0.928932L8 6.58579L2.34315 0.928932C1.95262 0.538408 1.31946 0.538408 0.928932 0.928932C0.538408 1.31946 0.538408 1.95262 0.928932 2.34315L7.29289 8.70711ZM7 7L7 8L9 8L9 7L7 7Z" fill="#121212"/>
+                    </svg>
+                    <div class="dropdown">
+                        <template v-if="user && user.role=='client'">
+                            <router-link :to="{ name: 'cabinet.main'}" class="dropdown__items">Мой профиль</router-link>
+                            <router-link :to="{ name: 'cabinet.edit.user'}" class="dropdown__items">Настройки профиля</router-link>
+                            <div class="dropdown__items">Избранное</div>
+                            <div class="dropdown__items" @click="logout">Выход</div>
+                        </template>
+                        <template v-else-if="user && user.role=='dealer'">
+                            <router-link :to="{ name: 'cabinet.main.dealer'}" class="dropdown__items">Мои данные</router-link>
+                            <router-link :to="{ name: 'cabinet.edit.user.dealer'}" class="dropdown__items">Настройки</router-link>
+                            <div class="dropdown__items">Мои ставки</div>
+                            <div class="dropdown__items" @click="logout">Выход</div>
+                        </template>
+                        
+                        
+                    </div>
+                </div>
+                
+                
             </div>
             <div class="header__auth guest fx vertical_center fx-1" v-else>
                 <div class="btn btn-primary" @click="addClass(0)">Войти</div>
@@ -63,10 +90,52 @@ export default {
             url: import.meta.env.VITE_APP_REST_ENDPOINT,
             banner_ru: [],
             token: null,
+            user: null,
         }
     },
     methods: {
-        
+        async logout(){
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/user/logout', {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                
+                if(response.status==200){
+                    this.user = null;
+                    localStorage.removeItem('token');
+                    this.$router.replace({ name: 'main.guest', replace: true });
+                }
+            } catch (error) {
+               
+                console.log(error);
+            }
+        },
+        async checkUser(){
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/user', {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    this.user = json;
+                }
+            } catch (error) {
+               
+                console.log(error);
+            }
+        },
         addClass(type) {
             const authStore = useAuthStore();
             console.log('ere');
@@ -74,7 +143,7 @@ export default {
         },
     },
     created() {
-        
+        this.checkUser();
     },
 }
 </script>

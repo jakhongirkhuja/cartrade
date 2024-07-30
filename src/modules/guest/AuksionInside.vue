@@ -13,16 +13,16 @@
                 <h2 class="car__name">{{car.car_mark.name}} {{car.car_model.name}}</h2>
                 <div class="car__info">
                     <p>{{car.title}}</p>
-                    <p class="price">{{car.buy_price}} сум</p>
+                    <p class="price">{{car.start_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}} сум</p>
                 </div>
                 <div class="car__block">
                     <div class="car__block--info">
-                        <div class="car__poster" v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+car.images[0].image + ')' }">
+                        <div class="car__poster" v-bind:style="{ 'background-image': 'url(' + poster + ')' }">
                     
                         </div>
                         <div class="car__slider" ref="carSlider" @mousedown="handleMouseDown" @mouseleave="handleMouseLeave" @mouseup="handleMouseUp" @mousemove="handleMouseMove">
                             
-                            <div class="car__slider--each"  v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+imagecar.image + ')' }" v-for="imagecar in car.images"></div>
+                            <div class="car__slider--each" @click="changePoster(imagecar.image)"  v-bind:style="{ 'background-image': 'url(' + url+'/files/cars/'+imagecar.image + ')' }" v-for="imagecar in car.images"></div>
                         </div>
                         <div class="car__mobile">
                             <BetComponent></BetComponent>
@@ -107,9 +107,11 @@
                             <div class="btn btn-primary w-100" @click="removeCar">Удалить объявление</div>
                             <div class="btn btn-primary-outline w-100">Редактировать объявление</div>
                         </div>
+                        
                         <div v-else>
                             <p class="title">Завершение аукциона через:</p>
-                            <BetComponent></BetComponent>
+                          
+                            <BetComponent :buy_price="car.buy_price" :timeStart="time_start" :timeEnd="time_end"></BetComponent>
                         </div>
                         
                     </div>
@@ -130,6 +132,7 @@ export default {
             url: import.meta.env.VITE_APP_REST_ENDPOINT, 
             owner: false,
             loading: false,
+            poster: '',
             resultCount: 4733,
             features:['Бензин','Автомат','77329','Седан','Новый','2006 г.','бежевый металлик','Полный привод'],
             image: 'https://s3-alpha-sig.figma.com/img/ba1c/77b7/f508483313763af78e063463927acbac?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=IYKtLpDVn8pjL9fK4bngMlNRU4ErX~xXRUZr~DfHNgFE8BAchrFnQ4PlYQjHuA~Leffe17gvsF~Z~CaXGff9xVFT7QqTYihCklVAJw81bKKffPfKpSzLvuK8XLra-R7Fd4yG9u05FUl7ipMmUU5FQZ3Dy2ASR356v-C0v-02QnXKnDzYjBPi2-0QXNqSAjjI-7KR2UxymFG~3Z25N6vh7Db2Owj5eE91F3xpMPpxPCefsvOKkoRNKLcmdvQ9LfsK1HVsR6Kbx3j1NtPrHFGYziD6uaLKQ2uRVe3mJnuzyOPFLNRbJMhBx1263k-~GSe5Y5oIU4iC7VY5SB0I37hw8w__',
@@ -137,6 +140,8 @@ export default {
             startX: 0,
             scrollLeft: 0,
             car:null,
+            time_start:null,
+            time_end:null,
             images:['https://s3-alpha-sig.figma.com/img/91dc/8f0a/334d1aa1dca640d1260f281fb9c5a2d4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=juFeEiPA8CoP36ZD5BrMo2roIkPOEOEy2v0J5tQuK4cPQRA4wLJAO2XdE4aLwxkAaBgRq1PjNAdOKQ2RkM8Ys8ExkVtQii2rpdj0yBObRDu9Ob9nk93KKJsQwcESVyp2WE~IS8Dxd8bIif9oo5Rz7dJXVeckMW97W3iHDzx8KsP6QE1l-Catp6i3-PRmJ01bZpFymvSLZK0JHf-kQ6alsZDFZP7-u1mZlLZbCfsHvGnt9igaS87E1NvDvQRiNCNF1t-WlmAVf17c81zAmNQ0PiTWQEqr89DymCAu8WzDYuttUWJmrOliGGS-OZtcUmbqrSdogPONQj3v4sNsC5j~Zg__']
         }
     },
@@ -169,6 +174,9 @@ export default {
             const walk = (x - this.startX) * 1; // Scroll-fast
             this.$refs.carSlider.scrollLeft = this.scrollLeft - walk;
         },
+        changePoster(image){
+            this.poster =  this.url+'/files/cars/'+image;
+        },
         async checkUser(){
             try {
                 let token = localStorage.getItem('token');
@@ -198,7 +206,7 @@ export default {
         async getCars(){
             try {
                 let token = localStorage.getItem('token');
-                const response = await fetch(this.url+'api/cabinet/car?id='+this.$route.params.id, {
+                const response = await fetch(this.url+'api/auksion?id='+this.$route.params.id, {
                 method: 'GET',
                 headers: {
                     "Content-Type" : "application/json",
@@ -208,8 +216,12 @@ export default {
                 });
                 const json = await response.json();
                 if(response.status==200){
-                   
-                    this.car = json;
+                    if(json){
+                        this.car = json.car;
+                        this.time_start = json.time_start;
+                        this.time_end = json.time_end;
+                        this.poster= this.url+'/files/cars/'+json.car.images[0].image
+                    }
                     this.checkUser();
                 }
             } catch (error) {

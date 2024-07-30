@@ -240,9 +240,16 @@ export default {
                     alert(json.message.ru);
                 }else{
                     alert(json.message.response.ru);
-                    localStorage.setItem('token',json.token );
-                    this.$router.push({name: 'cabinet.main', refresh: true });
-                    this.$router.refresh();121``
+                   
+                    localStorage.setItem('token',json.message.token );
+                    // this.$router.push({name: 'cabinet.main', refresh: true });
+                    this.closeAuth();
+                    if(json.message.user.role=='client'){
+                        window.location.replace("http://localhost:5173/cabinet");
+                    }else{
+                        window.location.replace("http://localhost:5173/cabinet-dealer");
+                    }
+                    
                 }
                 
                
@@ -294,9 +301,16 @@ export default {
                 }else{
                     
                     alert(json.message.response.ru);
-                    localStorage.setItem('token',json.token );
+                    localStorage.setItem('token',json.message.token );
                     this.$router.push({name: 'cabinet.main', refresh: true });
-                    this.$router.refresh();
+                    this.closeAuth();
+                    if(this.role==0){
+                        window.location.replace("http://localhost:5173/cabinet");
+                    }
+                    if(this.role==1){
+                        window.location.replace("http://localhost:5173/cabinet-dealer");
+                    }
+                    
                 }
                 this.phoneblock = false;
                 this.insideNew = false;
@@ -346,7 +360,7 @@ export default {
                 }else{
                     
                     alert(json);
-                    
+                    this.regType = 0;
                 }
                 this.phoneblock = false;
                 this.insideNew = false;

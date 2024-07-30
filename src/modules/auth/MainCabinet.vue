@@ -5,7 +5,7 @@
         <div class="auth__userInfo container p-80">
             <div class="user row">
                 
-                <div v-if="avatar" class="avatar" v-bind:style="{ 'background-image': 'url(' + avatar + ')' }">  
+                <div v-if="avatar" class="avatar" v-bind:style="{ 'background-image': 'url(' + url+'/files/user/'+avatar + ')' }">  
                 </div>
                 <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">  
                 </div>
@@ -114,6 +114,7 @@ export default {
                 const json = await response.json();
                 if(response.status==200){
                     console.log(json);
+                    this.avatar= json.avatar;
                     this.name = json.name;
                     this.familyName  = json.familyName;
                     this.email = json.email;

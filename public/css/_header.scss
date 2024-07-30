@@ -1,7 +1,7 @@
 .header{
     border-bottom: 1px solid #C1C1C1B2;
     position: relative;
-    z-index: 1;
+    z-index: 2;
     &__logo{
         a{
             display: block;
@@ -55,6 +55,56 @@
         }
         @include respond-tab{
             display: none;
+        }
+        .userInfo{
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            .avatar{
+                display: block;
+                width: 50px;
+                height: 50px;
+                margin-right: 20px;
+                background-position: center;
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+            .name{
+                font-weight: 500;
+                font-size: 16px;
+            }
+            svg{
+                margin-left: 10px;
+                transition: all 0.3s ease;
+            }
+            .dropdown{
+                display: none;
+                position: absolute;
+                top: 50px;
+                background-color: white;
+                width: 100%;
+                left: 0;
+                z-index: 1;
+                &__items{
+                    font-weight: 500;
+                    font-size: 13px;
+                    padding: 15px;
+                    display: block;
+                    &:hover{
+                        background-color: #cb00001c;
+                    }
+                }
+            }
+            &:hover{
+                .dropdown{
+                    display: block;
+                }
+                svg{
+                    transform: rotate(180deg);
+                }
+            }
         }
     }
 }
