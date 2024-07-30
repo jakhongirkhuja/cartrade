@@ -8,8 +8,15 @@
             <div class="reviews__each" v-for="(slide, index) in slides" :key="index">
                 <div class="author fx">
                     <div class="avatar">
-                        <img v-if="slide.avatar" :src="slide.avatar">
-                        <img v-else src="/logo/logo_trade.svg" alt="avatar">
+                        
+                        <template v-if="slide.user && slide.user.avatar"> 
+                            <img  :src="url+'/files/user/'+slide.user.avatar">
+                        </template>
+                        <template v-else>
+                            <img src="/logo/logo_trade.svg" alt="avatar">
+                        </template>
+                       
+                        
                         
                     </div>
                     <div class="info" >
@@ -129,7 +136,7 @@ export default {
         },
     },
     created() {
-        this.loadReviews();
+        this.loadReviews(); 
     },
 }
 </script>

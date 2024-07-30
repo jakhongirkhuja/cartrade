@@ -1,8 +1,10 @@
 <template>
    <div class="btn btn-primary-outline timer"><span :class="mustSmall? 'small' : ''">{{ displayTime }}</span></div>
-    <input type="text"  placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
-    <div class="btn btn-primary w-100 bet" >Сделать ставку</div>
-    <div class="btn btn-primary w-100 buy">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
+    <input v-if="!auksionOver && auth" type="text"  placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
+    <div v-if="!auksionOver && auth" class="btn btn-primary w-100 bet" @click="betAuksion()">Сделать ставку</div>
+    <p v-if="!auth" style="font-size: 14px; padding-bottom: 20px;">Чтобы сделать ставку нужно пройти регистрацию как дилер</p>
+    <div v-if="!auksionOver"  class="btn btn-primary w-100 buy" @click="buyAuksion()">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
+    
     <div class="form__block">
         
         <FormVue title="Оставьте заявку и мы свяжемся с вами в ближайшее время"></FormVue>
@@ -22,6 +24,9 @@ export default {
         timeEnd: {
             type: String,
             required: true
+        },
+        auth: {
+            type: Boolean
         }
     },
     components: {
@@ -33,6 +38,7 @@ export default {
             displayTime: 'Загрузка...',
             intervalId: null,
             mustSmall:false,
+            auksionOver : false,
         }
     },
     mounted() {
@@ -81,11 +87,15 @@ export default {
                         clearInterval(this.intervalId);
                         this.mustSmall = true;
                         this.displayTime = 'Аукцион закончился';
+                        this.auksionOver = true;
                     } else {
-                        this.displayTime = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                        this.displayTime = `${days}д ${hours}ч ${minutes}м ${seconds}с`;
                     }
                 }, 1000);
             }
+        },
+        async betAuksion(){
+            let id =this.$route.params.id;
         }
 
     },

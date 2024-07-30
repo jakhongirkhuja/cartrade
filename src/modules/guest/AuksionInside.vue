@@ -102,7 +102,10 @@
                             
                         </div>
                     </div>
-                    <div class="car__block--actions" v-if="loading">
+                    <div class="car__block--actions" v-if="!loading">
+
+                    </div>
+                    <div class="car__block--actions"  v-else>
                         <div class="owning" v-if="owner">
                             <div class="btn btn-primary w-100" @click="removeCar">Удалить объявление</div>
                             <div class="btn btn-primary-outline w-100">Редактировать объявление</div>
@@ -111,7 +114,7 @@
                         <div v-else>
                             <p class="title">Завершение аукциона через:</p>
                           
-                            <BetComponent :buy_price="car.buy_price" :timeStart="time_start" :timeEnd="time_end"></BetComponent>
+                            <BetComponent :buy_price="car.buy_price" :timeStart="time_start" :timeEnd="time_end" :auth = auth></BetComponent>
                         </div>
                         
                     </div>
@@ -132,6 +135,7 @@ export default {
             url: import.meta.env.VITE_APP_REST_ENDPOINT, 
             owner: false,
             loading: false,
+            auth: false,
             poster: '',
             resultCount: 4733,
             features:['Бензин','Автомат','77329','Седан','Новый','2006 г.','бежевый металлик','Полный привод'],
@@ -141,6 +145,7 @@ export default {
             scrollLeft: 0,
             car:null,
             time_start:null,
+            
             time_end:null,
             images:['https://s3-alpha-sig.figma.com/img/91dc/8f0a/334d1aa1dca640d1260f281fb9c5a2d4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=juFeEiPA8CoP36ZD5BrMo2roIkPOEOEy2v0J5tQuK4cPQRA4wLJAO2XdE4aLwxkAaBgRq1PjNAdOKQ2RkM8Ys8ExkVtQii2rpdj0yBObRDu9Ob9nk93KKJsQwcESVyp2WE~IS8Dxd8bIif9oo5Rz7dJXVeckMW97W3iHDzx8KsP6QE1l-Catp6i3-PRmJ01bZpFymvSLZK0JHf-kQ6alsZDFZP7-u1mZlLZbCfsHvGnt9igaS87E1NvDvQRiNCNF1t-WlmAVf17c81zAmNQ0PiTWQEqr89DymCAu8WzDYuttUWJmrOliGGS-OZtcUmbqrSdogPONQj3v4sNsC5j~Zg__']
         }
@@ -196,8 +201,12 @@ export default {
                    }else{
                         this.owner = false;
                    }
-                   this.loading = true;
+                   if(json.role=='dealer'){
+                    this.auth = true;
+                   }
+                   
                 }
+                   this.loading = true;
             } catch (error) {
                 this.loading = true;
                 console.log(error);
