@@ -244,10 +244,13 @@ export default {
                     localStorage.setItem('token',json.message.token );
                     // this.$router.push({name: 'cabinet.main', refresh: true });
                     this.closeAuth();
-                    if(json.message.user.role=='client'){
-                        window.location.replace("http://localhost:5173/cabinet");
-                    }else{
+                    if(json.message.user.role=='dealer'){
                         window.location.replace("http://localhost:5173/cabinet-dealer");
+                        
+                    }else if(json.message.user.role=='admin'){
+                        window.location.replace("http://localhost:5173/cabinet/admin");
+                    }else{
+                        window.location.replace("http://localhost:5173/cabinet");
                     }
                     
                 }

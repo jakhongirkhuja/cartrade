@@ -210,4 +210,75 @@
             }
         }
     }
+    .tarif{
+        display: flex;
+        justify-content: space-between;
+        &__each{
+            flex: 0 0 50%;
+            
+        }
+        &__block{
+            max-width: 455px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+            &:hover{
+                box-shadow: 0 0 15px #c0c0c059;
+                cursor: pointer;
+            }
+            .month__choose{
+                display: flex;
+                align-items: center;
+                padding: 0 20px 20px 20px;
+                .select{
+                    flex: 1;
+                    padding-left: 15px;
+                    text-align: center;
+                }
+            }
+            .title{
+                height: 60px;
+                background-color: #6767673D;
+                font-size: 24px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                &.second{
+                    background-color: $red;
+                    color: white;
+                }
+            }
+            .body{
+                padding: 30px 20px;
+                min-height: 515px;
+                .items{
+                    padding-bottom: 30px;
+                    display: inline-flex;
+                    align-items: flex-start;
+                    img{
+                        margin-right: 20px;
+                        margin-top: 5px;
+                        display: block;
+                    }
+                    span{
+                        display: block;
+                        font-weight: 500;
+                        font-size: 17px;
+                    }
+                }
+            }
+            .price{
+                text-align: center;
+                font-weight: 700;
+                font-size: 24px;
+                padding: 20px 0;
+            }
+            .button{
+                padding: 0 20px 20px 20px;
+            }
+        }
+    }
 }

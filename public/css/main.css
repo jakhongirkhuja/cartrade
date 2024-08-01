@@ -89,6 +89,10 @@ h4, .h4 {
   border-color: #CB0000;
 }
 
+.btn-primary:disabled, .btn-primary[disabled=true] {
+  opacity: 0.6;
+}
+
 .btn-primary-outline {
   background: white;
   border-color: #CB0000;
@@ -3020,4 +3024,74 @@ footer .line {
 }
 .auth .auksion__edit .form .btn {
   margin-top: 40px;
+}
+.auth .tarif {
+  display: flex;
+  justify-content: space-between;
+}
+.auth .tarif__each {
+  flex: 0 0 50%;
+}
+.auth .tarif__block {
+  max-width: 455px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+}
+.auth .tarif__block:hover {
+  box-shadow: 0 0 15px rgba(192, 192, 192, 0.3490196078);
+  cursor: pointer;
+}
+.auth .tarif__block .month__choose {
+  display: flex;
+  align-items: center;
+  padding: 0 20px 20px 20px;
+}
+.auth .tarif__block .month__choose .select {
+  flex: 1;
+  padding-left: 15px;
+  text-align: center;
+}
+.auth .tarif__block .title {
+  height: 60px;
+  background-color: rgba(103, 103, 103, 0.2392156863);
+  font-size: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.auth .tarif__block .title.second {
+  background-color: #CB0000;
+  color: white;
+}
+.auth .tarif__block .body {
+  padding: 30px 20px;
+  min-height: 515px;
+}
+.auth .tarif__block .body .items {
+  padding-bottom: 30px;
+  display: inline-flex;
+  align-items: flex-start;
+}
+.auth .tarif__block .body .items img {
+  margin-right: 20px;
+  margin-top: 5px;
+  display: block;
+}
+.auth .tarif__block .body .items span {
+  display: block;
+  font-weight: 500;
+  font-size: 17px;
+}
+.auth .tarif__block .price {
+  text-align: center;
+  font-weight: 700;
+  font-size: 24px;
+  padding: 20px 0;
+}
+.auth .tarif__block .button {
+  padding: 0 20px 20px 20px;
 }/*# sourceMappingURL=main.css.map */

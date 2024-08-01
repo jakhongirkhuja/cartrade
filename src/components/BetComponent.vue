@@ -1,9 +1,14 @@
 <template>
    <div class="btn btn-primary-outline timer"><span :class="mustSmall? 'small' : ''">{{ displayTime }}</span></div>
-    <input v-if="!auksionOver && auth" type="text"  placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
+   <p v-if="!auksionOver" class="maxPrice">последняя сумма ставки: <span>{{ maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум </span></p> 
+   <input v-if="!auksionOver && auth" type="text"  v-model="bid_price" placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
     <div v-if="!auksionOver && auth" class="btn btn-primary w-100 bet" @click="betAuksion()">Сделать ставку</div>
     <p v-if="!auth" style="font-size: 14px; padding-bottom: 20px;">Чтобы сделать ставку нужно пройти регистрацию как дилер</p>
-    <div v-if="!auksionOver"  class="btn btn-primary w-100 buy" @click="buyAuksion()">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
+    <template v-if="!auksionOver">
+            
+            <div v-if="maxPrice<price"  class="btn btn-primary w-100 buy" @click="buyAuksion()">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
+       
+    </template>
     
     <div class="form__block">
         
@@ -34,11 +39,14 @@ export default {
     },
     data() {
         return {
+            url: import.meta.env.VITE_APP_REST_ENDPOINT,
             price : 0,
             displayTime: 'Загрузка...',
             intervalId: null,
             mustSmall:false,
             auksionOver : false,
+            bid_price:null,
+            maxPrice: 0,
         }
     },
     mounted() {
@@ -96,11 +104,88 @@ export default {
         },
         async betAuksion(){
             let id =this.$route.params.id;
+            if(this.bid_price==0 || this.bid_price==null || this.bid_price<=this.maxPrice) return;
+            try {
+                let token = localStorage.getItem('token');
+                    const finalResult = {
+                        "auksion_id": id,
+                        "bid_price": this.bid_price,
+                        
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+                const response = await fetch(this.url+'api/cabinet/auksion/bet', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    alert('сумма ставки '+json.bid_price);
+                    this.maxPrice = json.bid_price;
+                }else if(response.status==403){
+                    alert(json.message.ru);
+                }
+                console.log(json);
+            }catch (error) {
+                console.log(error);
+            }
+        },
+        async getMaxPriceAuksion(){
+            let id =this.$route.params.id;
+            try {
+                let token = localStorage.getItem('token');
+                 
+                const response = await fetch(this.url+'api/cabinet/auksion/lastPrice/'+id, {
+                    method: 'GET',
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    this.maxPrice = json.bid_price;
+                   
+                }else{
+                    alert(json.message);
+                }
+                console.log(json);
+            }catch (error) {
+                console.log(error);
+            }
         }
 
     },
     created() {
         this.price = this.buy_price;
+        this.getMaxPriceAuksion();
     },
 }
 </script>
+<style scoped>
+.maxPrice{
+    font-size: 15px;
+    text-align: left;
+    padding-bottom: 15px;
+}
+.maxPrice span{
+    display: block;
+    color: red;
+    font-size: 18px;
+    font-weight: 600;
+}
+</style>

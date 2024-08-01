@@ -55,7 +55,8 @@
                         <template v-else-if="user && user.role=='dealer'">
                             <router-link :to="{ name: 'cabinet.main.dealer'}" class="dropdown__items">Мои данные</router-link>
                             <router-link :to="{ name: 'cabinet.edit.user.dealer'}" class="dropdown__items">Настройки</router-link>
-                            <div class="dropdown__items">Мои ставки</div>
+                            <router-link :to="{ name: 'cabinet.tarif.dealerer' }" class="dropdown__items">Тарифы</router-link>
+
                             <div class="dropdown__items" @click="logout">Выход</div>
                         </template>
                         
@@ -144,6 +145,7 @@ export default {
     },
     created() {
         this.checkUser();
+        // console.log(this.$router.getRoutes());
     },
 }
 </script>

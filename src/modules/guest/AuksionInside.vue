@@ -108,7 +108,7 @@
                     <div class="car__block--actions"  v-else>
                         <div class="owning" v-if="owner">
                             <div class="btn btn-primary w-100" @click="removeCar">Удалить объявление</div>
-                            <div class="btn btn-primary-outline w-100">Редактировать объявление</div>
+                            <router-link :to="{ name: 'cabinet.edit.auksion', params: { id: car.id } }" class="btn btn-primary-outline w-100">Редактировать объявление</router-link>
                         </div>
                         
                         <div v-else>

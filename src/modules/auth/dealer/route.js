@@ -9,7 +9,7 @@ const routes =  [
             {
                 path: '',
                 name: 'cabinet.main.dealer',
-                component:  ()=>import ('@/modules/auth/MainCabinet.vue'),
+                component:  ()=>import ('@/modules/auth/dealer/MainCabinet.vue'),
             },
             {
                 path: 'user-edit',
@@ -17,14 +17,14 @@ const routes =  [
                 component:  ()=>import ('@/modules/auth/MainCabinetUserEdit.vue'),
             },
             {
-                path: 'auksion-edit/:id',
-                name: 'cabinet.edit.auksion.dealer',
-                component:  ()=>import ('@/modules/auth/crud/AuksionEdit.vue'),
+                path: 'tarif-choose',
+                name: 'cabinet.tarif.dealerer',
+                component:  ()=>import ('@/modules/auth/dealer/Tarif.vue'),
             },
             {
-                path: 'auksion-add',
-                name: 'cabinet.add.auksion.dealer',
-                component:  ()=>import ('@/modules/auth/crud/AuksionAdd.vue'),
+                path: 'transactions',
+                name: 'cabinet.transactions.dealer',
+                component:  ()=>import ('@/modules/auth/dealer/Transactions.vue'),
             },
         ],
         
