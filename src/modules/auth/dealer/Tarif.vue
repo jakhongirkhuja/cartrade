@@ -102,7 +102,49 @@ export default {
                 
             });
             let value = this.selectedItem[index];
-            alert(value*tarif_price);
+            
+            try {
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                        "value": value,
+                        "tarif_id": tarif_id,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/cabinet/user/user-tarif-choose', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    this.$router.push({ name: 'cabinet.main.dealer'})
+                }
+                // console.log(json);
+               
+                
+                    
+                
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+            // if(this.user.balance<value*tarif_price){
+            //     alert('У Вас недостаточно средств, пополните баланс')
+            // }
 
         },
         async gettarifs(){

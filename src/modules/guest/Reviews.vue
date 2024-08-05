@@ -49,6 +49,7 @@
 </template>
 <script>
 import BreadVue from "@/components/Bread.vue";
+import { useToast } from "vue-toastification";
 export default {
     components: {
         BreadVue,
@@ -119,10 +120,17 @@ export default {
                     });
                     const json = await response.json();
                     if(json.errors){
-                        alert(json.message);
+                        useToast().error(json.message, {
+                            timeout: 5000
+                        });
+                        
                     }
                     if(response.status == 201){
-                        alert("Отзыв был отправлен")
+                        
+                        useToast().success("Отзыв был отправлен", {
+                            timeout: 5000
+                        });
+                       
                     }
                     console.log(json);
                 
@@ -131,7 +139,10 @@ export default {
                 
                 
             } catch (error) {
-                console.error('Ошибка:', error);
+               
+                useToast().warning(error, {
+                            timeout: 5000
+                        });
             }
         },
     },

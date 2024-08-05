@@ -1,17 +1,16 @@
 <template>
    <div class="btn btn-primary-outline timer"><span :class="mustSmall? 'small' : ''">{{ displayTime }}</span></div>
-   <p v-if="!auksionOver" class="maxPrice">последняя сумма ставки: <span>{{ maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум </span></p> 
-   <input v-if="!auksionOver && auth" type="text"  v-model="bid_price" placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
-    <div v-if="!auksionOver && auth" class="btn btn-primary w-100 bet" @click="betAuksion()">Сделать ставку</div>
+   <p v-if="!auksionOver && maxPrice" class="maxPrice">последняя сумма ставки: <span>{{ maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум </span></p> 
+   <input v-if="!auksionOver && auth && !auksionNotStarted" type="text"  v-model="bid_price" placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
+    <div v-if="!auksionOver && auth && !auksionNotStarted" class="btn btn-primary w-100 bet" @click="betAuksion()">Сделать ставку</div>
     <p v-if="!auth" style="font-size: 14px; padding-bottom: 20px;">Чтобы сделать ставку нужно пройти регистрацию как дилер</p>
     <template v-if="!auksionOver">
-            
+         
             <div v-if="maxPrice<price"  class="btn btn-primary w-100 buy" @click="buyAuksion()">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
        
     </template>
     
     <div class="form__block">
-        
         <FormVue title="Оставьте заявку и мы свяжемся с вами в ближайшее время"></FormVue>
     </div>
 </template>
@@ -45,6 +44,7 @@ export default {
             intervalId: null,
             mustSmall:false,
             auksionOver : false,
+            auksionNotStarted: false,
             bid_price:null,
             maxPrice: 0,
         }
@@ -87,6 +87,7 @@ export default {
             if (now < timeStart) {
                 this.displayTime = `Время старта: ${this.formatTime(new Date(timeStart))}`;
                 this.mustSmall = true;
+                this.auksionNotStarted = true;
             } else {
                 this.intervalId = setInterval(() => {
                     const { days, hours, minutes, seconds, distance } = this.calculateCountdown(timeEnd);
@@ -142,6 +143,46 @@ export default {
                 console.log(error);
             }
         },
+        async buyAuksion(){
+            let id =this.$route.params.id;
+            
+            try {
+                let token = localStorage.getItem('token');
+                    const finalResult = {
+                        "auksion_id": id,
+                       
+                        
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+             
+                const response = await fetch(this.url+'api/cabinet/auksion/buy', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(response.status==200){
+                     this.$router.push({name: 'cabinet.main.dealer' });
+                }else if(response.status==403){
+                    alert(json.message.ru);
+                }
+                console.log(json);
+            }catch (error) {
+                console.log(error);
+            }
+        },
         async getMaxPriceAuksion(){
             let id =this.$route.params.id;
             try {
@@ -159,9 +200,8 @@ export default {
                 const json = await response.json();
                 if(response.status==200){
                     this.maxPrice = json.bid_price;
-                   
                 }else{
-                    alert(json.message);
+                    // alert(json.message);
                 }
                 console.log(json);
             }catch (error) {

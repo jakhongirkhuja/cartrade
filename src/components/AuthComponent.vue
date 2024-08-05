@@ -92,6 +92,7 @@
 </template>
 <script>
 import {mask} from 'vue-the-mask'
+import { useToast, POSITION } from "vue-toastification";
 import { useAuthStore } from '../stores/auth';
 import { watch, ref } from 'vue';
 export default {
@@ -237,9 +238,15 @@ export default {
                 });
                 const json = await response.json();
                 if(json.error){
-                    alert(json.message.ru);
+                   
+                    useToast().error(json.message.ru, {
+                            timeout: 5000,
+                            position: POSITION.TOP_LEFT,
+                        });
                 }else{
-                    alert(json.message.response.ru);
+                    useToast().success(json.message.response.ru, {
+                            timeout: 5000
+                        });
                    
                     localStorage.setItem('token',json.message.token );
                     // this.$router.push({name: 'cabinet.main', refresh: true });
@@ -261,7 +268,10 @@ export default {
             
             
           } catch (error) {
-            console.error('Ошибка:', error);
+            useToast().error(error, {
+                            timeout: 5000
+                        });
+           
           }
         },
         async registerForm(){
@@ -429,8 +439,8 @@ export default {
         }
     },
     created() {
-        const authStore = useAuthStore();
-        console.log(authStore.isActive);
+       
+        
        
     },
     watch: {

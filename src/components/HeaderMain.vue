@@ -59,7 +59,10 @@
 
                             <div class="dropdown__items" @click="logout">Выход</div>
                         </template>
-                        
+                        <template v-else-if="user && user.role=='admin'">
+                            <router-link :to="{ name: 'cabinet.main.admin'}" class="dropdown__items">Мои данные</router-link>
+                            <div class="dropdown__items" @click="logout">Выход</div>
+                        </template>
                         
                     </div>
                 </div>
@@ -83,6 +86,7 @@
 </template>
 <script >
 import { useAuthStore } from '../stores/auth';
+import { usePopUpStore } from '../stores/popup';
 
 export default {
     
@@ -139,8 +143,10 @@ export default {
         },
         addClass(type) {
             const authStore = useAuthStore();
-            console.log('ere');
+           
             authStore.setActive(true, type);
+            const anotherpop = usePopUpStore();
+            anotherpop.toggleActive(true);
         },
     },
     created() {

@@ -42,6 +42,7 @@
   <script>
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import { Pagination } from 'swiper/modules';
+  
   import 'swiper/css';
   import 'swiper/swiper-bundle.css';
   import 'swiper/css/pagination';
@@ -59,36 +60,7 @@
     data() {
       return {
         url: import.meta.env.VITE_APP_REST_ENDPOINT, 
-        slides: [{
-                name: 'Brooklyn Simmons',
-                role:'google отзывы',
-                avatar:'https://s3-alpha-sig.figma.com/img/ae2d/b47f/f72ccee032491ca04c9107acf05265b4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=DqCQMQXLEFQJq7DRVzAsy1clXJQX0RIL6wehkmhsdl-~C~an8wN4lGBKKGTn90CjIbDfA7bP4S336D-JI5nvXPtOnvrj~wllPefXMkhRCYqaXOMaDHXON7ViNbCKWWgZ8XmWJavAwt1M8Eil51DmNyTiXZVJlF9UeMI5oC6Ng3~LOaNbys4pXYYEzvWDoxnX4cFhtdticRbxJl~DgZfhAWaWtngOVrX0dFUteyeLOApBz5g4ltUY0O71rJGyA56FoNdSMsK66lJlDJr761QneLZz6dqg6TCjOmRwzjGdkBkdKlaULs5tPt6fNm~MIte16G3rJbiuRc7iXHd5PVWTVA__',
-                body:"Aliquam lorem ante, dapibus in, viverra nisi quis, feugiat a, tellus. Phasellus viverra deo nulla ut metus varius qui laoreet. Quisque sum rutrum. Aenean imperdiet. Etiam ultricies cum sociis.",
-            },
-            {
-                name: 'Brooklyn Simmons',
-                role:'google отзывы',
-                avatar:'https://s3-alpha-sig.figma.com/img/ae2d/b47f/f72ccee032491ca04c9107acf05265b4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=DqCQMQXLEFQJq7DRVzAsy1clXJQX0RIL6wehkmhsdl-~C~an8wN4lGBKKGTn90CjIbDfA7bP4S336D-JI5nvXPtOnvrj~wllPefXMkhRCYqaXOMaDHXON7ViNbCKWWgZ8XmWJavAwt1M8Eil51DmNyTiXZVJlF9UeMI5oC6Ng3~LOaNbys4pXYYEzvWDoxnX4cFhtdticRbxJl~DgZfhAWaWtngOVrX0dFUteyeLOApBz5g4ltUY0O71rJGyA56FoNdSMsK66lJlDJr761QneLZz6dqg6TCjOmRwzjGdkBkdKlaULs5tPt6fNm~MIte16G3rJbiuRc7iXHd5PVWTVA__',
-                body:"Aliquam lorem ante, dapibus in, viverra nisi quis, feugiat a, tellus. Phasellus viverra deo nulla ut metus varius qui laoreet. Quisque sum rutrum. Aenean imperdiet. Etiam ultricies cum sociis.",
-            },
-            {
-                name: 'Brooklyn Simmons',
-                role:'google отзывы',
-                avatar:'https://s3-alpha-sig.figma.com/img/ae2d/b47f/f72ccee032491ca04c9107acf05265b4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=DqCQMQXLEFQJq7DRVzAsy1clXJQX0RIL6wehkmhsdl-~C~an8wN4lGBKKGTn90CjIbDfA7bP4S336D-JI5nvXPtOnvrj~wllPefXMkhRCYqaXOMaDHXON7ViNbCKWWgZ8XmWJavAwt1M8Eil51DmNyTiXZVJlF9UeMI5oC6Ng3~LOaNbys4pXYYEzvWDoxnX4cFhtdticRbxJl~DgZfhAWaWtngOVrX0dFUteyeLOApBz5g4ltUY0O71rJGyA56FoNdSMsK66lJlDJr761QneLZz6dqg6TCjOmRwzjGdkBkdKlaULs5tPt6fNm~MIte16G3rJbiuRc7iXHd5PVWTVA__',
-                body:"Aliquam lorem ante, dapibus in, viverra nisi quis, feugiat a, tellus. Phasellus viverra deo nulla ut metus varius qui laoreet. Quisque sum rutrum. Aenean imperdiet. Etiam ultricies cum sociis.",
-            },
-            {
-                name: 'Brooklyn Simmons',
-                role:'google отзывы',
-                avatar:'https://s3-alpha-sig.figma.com/img/ae2d/b47f/f72ccee032491ca04c9107acf05265b4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=DqCQMQXLEFQJq7DRVzAsy1clXJQX0RIL6wehkmhsdl-~C~an8wN4lGBKKGTn90CjIbDfA7bP4S336D-JI5nvXPtOnvrj~wllPefXMkhRCYqaXOMaDHXON7ViNbCKWWgZ8XmWJavAwt1M8Eil51DmNyTiXZVJlF9UeMI5oC6Ng3~LOaNbys4pXYYEzvWDoxnX4cFhtdticRbxJl~DgZfhAWaWtngOVrX0dFUteyeLOApBz5g4ltUY0O71rJGyA56FoNdSMsK66lJlDJr761QneLZz6dqg6TCjOmRwzjGdkBkdKlaULs5tPt6fNm~MIte16G3rJbiuRc7iXHd5PVWTVA__',
-                body:"Aliquam lorem ante, dapibus in, viverra nisi quis, feugiat a, tellus. Phasellus viverra deo nulla ut metus varius qui laoreet. Quisque sum rutrum. Aenean imperdiet. Etiam ultricies cum sociis.",
-            },
-            {
-                name: 'Brooklyn Simmons',
-                role:'google отзывы',
-                avatar:'https://s3-alpha-sig.figma.com/img/ae2d/b47f/f72ccee032491ca04c9107acf05265b4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=DqCQMQXLEFQJq7DRVzAsy1clXJQX0RIL6wehkmhsdl-~C~an8wN4lGBKKGTn90CjIbDfA7bP4S336D-JI5nvXPtOnvrj~wllPefXMkhRCYqaXOMaDHXON7ViNbCKWWgZ8XmWJavAwt1M8Eil51DmNyTiXZVJlF9UeMI5oC6Ng3~LOaNbys4pXYYEzvWDoxnX4cFhtdticRbxJl~DgZfhAWaWtngOVrX0dFUteyeLOApBz5g4ltUY0O71rJGyA56FoNdSMsK66lJlDJr761QneLZz6dqg6TCjOmRwzjGdkBkdKlaULs5tPt6fNm~MIte16G3rJbiuRc7iXHd5PVWTVA__',
-                body:"Aliquam lorem ante, dapibus in, viverra nisi quis, feugiat a, tellus. Phasellus viverra deo nulla ut metus varius qui laoreet. Quisque sum rutrum. Aenean imperdiet. Etiam ultricies cum sociis.",
-            },],
+        slides: [],
         slidesPerView: 2,
       };
     },

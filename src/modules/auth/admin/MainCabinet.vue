@@ -157,7 +157,7 @@ export default {
            
            try {
                let token = localStorage.getItem('token');
-               const response = await fetch(this.url+'api/reviews/', {
+               const response = await fetch(this.url+'api/cabinet/reviews/list/', {
                method: 'GET',
                headers: {
                    "Content-Type" : "application/json",

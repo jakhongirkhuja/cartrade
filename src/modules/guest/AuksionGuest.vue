@@ -90,14 +90,14 @@
                         <div class="mobile__view">
                             <div class="charakter fx">
                                 <div class="items fx">
-                                    <img src="/icons/trail.svg" alt="">
-                                    <p>{{car.car.mileage}}</p>
+                                    <img src="/icons/trail.svg" alt="" width="32" height="32">
+                                    <p>{{car.car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}}</p>
                                 </div>
                                 <div class="items fx">
                                     <img src="/icons/fuil.svg" alt="">
                                     <p>{{ JSON.parse(car.car.car_fuil_type.name)[0] }}</p>
                                 </div>
-                                <div class="items fx">
+                                <div class="items fx" style="display: none;">
                                     <img src="/icons/avtomat.svg" alt="">
                                     <p>{{ JSON.parse(car.car.transmission.name)[0] }}</p>
                                 </div>
@@ -108,7 +108,7 @@
 
                 </template>
             </template>
-            <div class="auksion__block--pagination">
+            <div class="auksion__block--pagination" style="display: none;">
                 <ul class="pagination">
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>

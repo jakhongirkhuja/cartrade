@@ -3,8 +3,15 @@
 <template>
     <div class="auth">
         <div class="auth__userInfo container p-80">
-            <div class="user row">
-                <h3>transactions</h3>
+            <div class="user">
+                <h3>Транзакции</h3>
+                <div class="transactions">
+                    <ul>
+                        <li><span>Сервис</span><span>Сумма</span></li>
+                        <li v-for="transaction in transactions"> <span> {{ transaction.service }}</span> <span :class="!transaction.sign? 'negative' : ''"> {{ transaction.sign? '+' : '-' }}{{ transaction.amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум </span></li>
+                       
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -27,6 +34,7 @@ export default {
             user_id: null,
             phoneNumber:null,
             tarif: null,
+            transactions: [],
         }
     },
     methods: {
@@ -50,7 +58,28 @@ export default {
                     this.email = json.email;
                     this.phoneNumber = json.phoneNumber;
                     this.user_id = json.id;
-                    this.getTarif(json.tarif_id); 
+                   
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async userTransactions(){
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/cabinet/user/user-transactions/', {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+                if(response.status==200 && json.length>0){
+                    this.transactions =json;
+                   
+                   
                 }
             } catch (error) {
                 console.log(error);
@@ -60,7 +89,7 @@ export default {
     },
     created() {
         this.userInfo();
-       
+        this.userTransactions();
     },
 }
 </script>

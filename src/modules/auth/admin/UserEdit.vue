@@ -156,9 +156,37 @@ export default {
             console.error('Ошибка:', error);
           }
         },
+        async getUser(user_id){
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url+'api/cabinet/user/user-list?user_id='+user_id, {
+                method: 'GET',
+                headers: {
+                    "Content-Type" : "application/json",
+                    "accept" : "application/json",
+                    'Authorization': 'Bearer '+token, 
+                }
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    this.user = json;
+                    this.name = json.name;
+                    this.familyName = json.familyName;
+                    this.email = json.email;
+                    this.balance = json.balance;
+                    this.phoneNumber = json.phoneNumber;
+                    this.role = json.role;
+                    this.status = json.status;
+                }
+            } catch (error) {
+               
+                console.log(error);
+            }
+        },
     },
     created() {
-        this.checkUser();
+        // this.checkUser();
+        this.getUser(this.$route.params.id);
     },
 }
 </script>

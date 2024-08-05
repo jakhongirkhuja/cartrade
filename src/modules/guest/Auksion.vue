@@ -112,7 +112,7 @@
                     <div class="info__features row">
                         <div class="items" >{{ JSON.parse(car.car.car_fuil_type.name)[0] }}</div>
                         <div class="items" >{{ JSON.parse(car.car.transmission.name)[0] }}</div>
-                        <div class="items" >{{ car.car.mileage}}</div>
+                        <div class="items" >{{ car.car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}}</div>
                         <div class="items" >{{ JSON.parse(car.car.condation.name)[0] }}</div>
                         <div class="items" >{{ JSON.parse(car.car.car_body_type.name)[0] }}</div>
                         <div class="items" >{{ JSON.parse(car.car.color.name)[0] }}</div>
@@ -136,7 +136,7 @@
                     <div class="charakter fx">
                         <div class="items fx">
                             <img src="/icons/trail.svg" alt="">
-                            <p>{{car.car.mileage}}</p>
+                            <p>{{car.car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}}</p>
                         </div>
                         <div class="items fx">
                             <img src="/icons/fuil.svg" alt="">
@@ -149,7 +149,7 @@
                 </template>
             </template>
            
-            <div class="auksion__block--pagination">
+            <div class="auksion__block--pagination" style="display: none;">
                 <ul class="pagination">
                     <li class="page-item active"><a class="page-link" href="#">1</a></li>
                     <li class="page-item"><a class="page-link" href="#">2</a></li>

@@ -11,15 +11,21 @@
                 </div>
                 <div class="info fx-1">
                     
-                    <div class="name"><span>{{familyName}} {{ name }}</span> <span>Ваш тариф: <i v-if="tarif">{{ tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }" >Выбрать тариф</router-link> </span> </div>
+                    <div class="name"><span>{{familyName}} {{ name }}</span> <span>Ваш тариф: <i v-if="tarif">{{ tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }" >Выбрать тариф</router-link> </span>  <span  v-if="tarif && tarif_till"> Действует до: {{ this.tarif_till }}</span> </div>
                     <div class="body ">
                         <div class="phoneNumber form-control">+{{phoneNumber? phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : ''}}</div>
                         <div class="email form-control">{{email}}</div>
                     </div>
                     <div class="others">
-                        <div class="balance">Ваш баланс: {{ balance }} сум
+                        <div class="balance">Ваш баланс: {{ balance.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум
                             <br><div class="transactions" style="padding-top: 5px;"><router-link :to="{ name: 'cabinet.transactions.dealer' }" >Ваше транзакции</router-link></div>
                         </div>
+                        
+                    </div>
+                    <div class="fill_balance">
+                        <div class="text" @click="payStart">Пополнить баланс (сум)</div>
+                        <div class="inputs" v-if="checkPayStart"><input v-model="newBalance" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, ''); this.value = this.value.replace(/(\..*)\./g, '$1');" ></div>
+                        <div class="action btn btn-primary" v-if="checkPayStart" @click="togglePayment">Оплатить</div>
                     </div>
                     
                 </div>
@@ -124,9 +130,56 @@ export default {
             user_id: null,
             phoneNumber:null,
             tarif: null,
+            tarif_till:null,
+            newBalance:1500000,
+            checkPayStart: false,
         }
     },
     methods: {
+        payStart(){
+            this.checkPayStart = true;  
+        },
+        async togglePayment(){
+            try {
+                    let token = localStorage.getItem('token');
+                    const finalResult = {
+                        "amount": this.newBalance,
+                }
+                
+
+                var data = new FormData()
+                
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+
+
+                const response = await fetch(this.url+'api/cabinet/user/user-fill-balance', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+                if(response.status==200){
+                    this.checkPayStart = false;
+                    this.userInfo();
+                }
+                // console.log(json);
+               
+                
+                    
+                
+                
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
         async userInfo(){
             try {
                 let token = localStorage.getItem('token');
@@ -148,6 +201,14 @@ export default {
                     this.phoneNumber = json.phoneNumber;
                     this.user_id = json.id;
                     this.balance = json.balance;
+                    if(json.tarif_payed_till!=null){
+                        const date = new Date(json.tarif_payed_till);
+                        const day = String(date.getUTCDate()).padStart(2, '0');
+                        const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                        const year = date.getUTCFullYear();
+                        const formattedDate = `${day}.${month}.${year}`;
+                        this.tarif_till =  formattedDate ;
+                    }
                     this.getTarif(json.tarif_id); 
                 }
             } catch (error) {
@@ -240,8 +301,20 @@ export default {
         display: flex;
         justify-content: space-between;
     }
+    .info .name span:first-child{
+        flex:1;
+    }
     .info .name span:last-child{
         font-size: 14px;
+        margin-left: 10px;
+        color: grey;
+    }
+    .info .name span:nth-child(2){
+        font-size: 14px;
+    }
+    .info .name span:nth-child(2) a{
+        color: #CB0000;
+        text-decoration: underline;
     }
     .info .name span:last-child a{
         color: #CB0000;
