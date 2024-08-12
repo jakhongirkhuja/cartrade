@@ -41,7 +41,7 @@
                         <input type="text" class="form-control"  v-model="email" placeholder="E-mail" name="" id="">
                     </div>
                     <textarea name="" v-model="body" class="form-control"  rows="5" placeholder="Напишите отзыв" id=""></textarea>
-                    <div class="btn btn-primary" @click="submitForm">Отправить</div>
+                    <button type='button' class="btn btn-primary" :disabled="deactive" @click="submitForm">Отправить</button>
                 </form>
             </div>
         </div>
@@ -60,6 +60,7 @@ export default {
             email: null,
             fullname: null,
             body: null,
+            deactive: false,
             slides:[],
             image: 'https://s3-alpha-sig.figma.com/img/0eed/9d19/a089a4a10e8470b4e1d19282083fca1c?Expires=1722211200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=c43kVgcexb869qg2vgeLXbv0Wt9JVi~08nokel-WjARaBmb26OjQQaD8dbKKkPcu~5wQ7DWymulRZtSUN1xgeEhPUX5b5NlXWTw8S2ifOqaTb0y39fbxcABFI~~bj~vTmR-iOvgJjMuAiObVg9jkQCOzGa-4On7VNepLXDTVPkqQuMBIwPhVkCelC5iHKBgztKmnvnF1dQmnrd7nQCKXm1Jqy2xli4ap-5KaBt8jPY0pjhH8sn8fACDan4l5GNrnXVm3ITS29locHm93ig8YNKr5o6HHSLdaZP7OgliQxbwhyPjd-86kzgUxBhCYZzvgh30t6zqfEAOAV9jN56u0MQ__',
         }
@@ -89,7 +90,17 @@ export default {
            }
        },
         async submitForm(){
-            if(this.fullname.length==0 || this.body.length==0) return;
+            if(this.deactive) {
+                return;
+            }
+            if(this.fullname==null || this.body==null || this.fullname.length==0 || this.body.length==0){
+                useToast().error("Пожалуйста, заполните все поля", {
+                            timeout: 5000
+                        });
+                return;
+            }
+            
+            this.deactive = true;
                     try {
                         // eslint-disable-next-line no-unused-vars
                         let token = localStorage.getItem('token');

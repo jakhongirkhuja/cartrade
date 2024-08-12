@@ -1,5 +1,5 @@
 <template>
-  <div class="reviews p-80">
+  <div class="reviews p-80" v-if="slides.length>0">
   <h2 class="heading text-center">Отзывы от наших клиентов</h2>
   
   <div class="">
