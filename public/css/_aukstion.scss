@@ -136,7 +136,8 @@
         &.forguest{
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: flex-start;
+            gap: 15px;
             .aukstion__block--items{
                 flex: 0 0 24%;
                 flex-direction: column;

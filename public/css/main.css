@@ -155,7 +155,6 @@ a:link, a:visited {
 .btn-xs {
   padding: 4px 11px 4px;
   font-size: 10px;
-  min-width: -moz-fit-content;
   min-width: fit-content;
 }
 
@@ -192,6 +191,7 @@ a:link, a:visited {
 }
 
 .col-9 {
+  -ms-flex: 0 0 75%;
   flex: 0 0 75%;
   max-width: 75%;
 }
@@ -242,9 +242,6 @@ input, textarea {
   border-radius: 8px;
   outline: none;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-.form-control::-moz-placeholder {
-  color: #949494;
 }
 .form-control::placeholder {
   color: #949494;
@@ -808,6 +805,20 @@ h2.heading {
     display: none;
   }
 }
+.headerMenu.active {
+  display: block;
+  position: absolute;
+  z-index: 2;
+  top: 90px;
+  background: white;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-left: 30px;
+}
+.headerMenu.active ul {
+  display: block;
+}
 
 .burger {
   display: none;
@@ -1155,7 +1166,6 @@ h2.heading {
 }
 .mainPage .buyearly .btn {
   display: flex;
-  width: -moz-fit-content;
   width: fit-content;
   margin: 30px auto 0 auto;
 }
@@ -1587,7 +1597,8 @@ h2.heading {
 .aukstion__block.forguest {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 15px;
 }
 .aukstion__block.forguest .aukstion__block--items {
   flex: 0 0 24%;
@@ -2642,6 +2653,7 @@ footer .line {
   font-weight: 500;
   -webkit-user-select: none;
   -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 @media screen and (max-width: 700px) {
@@ -2694,6 +2706,8 @@ footer .line {
   height: 10px;
   border: solid white;
   border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
   transform: rotate(45deg);
 }
 @media screen and (max-width: 700px) {

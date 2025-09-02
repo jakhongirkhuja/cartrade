@@ -1,5 +1,5 @@
 <template>
-   <div class="btn btn-primary-outline timer"><span :class="mustSmall? 'small' : ''">{{ displayTime }}</span></div>
+    <!-- <div class="btn btn-primary-outline timer"><span :class="mustSmall? 'small' : ''">{{ displayTime }}</span></div>
    <p v-if="!auksionOver && maxPrice" class="maxPrice">последняя сумма ставки: <span>{{ maxPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }} сум </span></p> 
    <input v-if="!auksionOver && auth && !auksionNotStarted" type="text"  v-model="bid_price" placeholder="Введите сумму" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');"  class="form-control price">
     <div v-if="!auksionOver && auth && !auksionNotStarted" class="btn btn-primary w-100 bet" @click="betAuksion()">Сделать ставку</div>
@@ -8,8 +8,8 @@
          
             <div v-if="maxPrice<price"  class="btn btn-primary w-100 buy" @click="buyAuksion()">Купить по {{price? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') : 0}} сум</div>
        
-    </template>
-    
+    </template> -->
+
     <div class="form__block">
         <FormVue title="Оставьте заявку и мы свяжемся с вами в ближайшее время"></FormVue>
     </div>
@@ -18,7 +18,7 @@
 import FormVue from '@/components/Form.vue';
 export default {
     props: {
-        buy_price:{
+        buy_price: {
             type: String,
         },
         timeStart: {
@@ -39,13 +39,13 @@ export default {
     data() {
         return {
             url: import.meta.env.VITE_APP_REST_ENDPOINT,
-            price : 0,
+            price: 0,
             displayTime: 'Загрузка...',
             intervalId: null,
-            mustSmall:false,
-            auksionOver : false,
+            mustSmall: false,
+            auksionOver: false,
             auksionNotStarted: false,
-            bid_price:null,
+            bid_price: null,
             maxPrice: 0,
         }
     },
@@ -54,7 +54,7 @@ export default {
     },
     beforeUnmount() {
         if (this.intervalId) {
-        clearInterval(this.intervalId);
+            clearInterval(this.intervalId);
         }
     },
     methods: {
@@ -103,25 +103,25 @@ export default {
                 }, 1000);
             }
         },
-        async betAuksion(){
-            let id =this.$route.params.id;
-            if(this.bid_price==0 || this.bid_price==null || this.bid_price<=this.maxPrice) return;
+        async betAuksion() {
+            let id = this.$route.params.id;
+            if (this.bid_price == 0 || this.bid_price == null || this.bid_price <= this.maxPrice) return;
             try {
                 let token = localStorage.getItem('token');
-                    const finalResult = {
-                        "auksion_id": id,
-                        "bid_price": this.bid_price,
-                        
+                const finalResult = {
+                    "auksion_id": id,
+                    "bid_price": this.bid_price,
+
                 }
-                
+
 
                 var data = new FormData()
-                
+
                 for (const key in finalResult) {
                     data.append(key, finalResult[key]);
 
                 }
-                const response = await fetch(this.url+'api/cabinet/auksion/bet', {
+                const response = await fetch(this.url + 'api/cabinet/auksion/bet', {
                     method: 'POST',
                     body: data,
                     headers: {
@@ -132,37 +132,37 @@ export default {
 
                 });
                 const json = await response.json();
-                if(response.status==200){
-                    alert('сумма ставки '+json.bid_price);
+                if (response.status == 200) {
+                    alert('сумма ставки ' + json.bid_price);
                     this.maxPrice = json.bid_price;
-                }else if(response.status==403){
+                } else if (response.status == 403) {
                     alert(json.message.ru);
                 }
                 console.log(json);
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
-        async buyAuksion(){
-            let id =this.$route.params.id;
-            
+        async buyAuksion() {
+            let id = this.$route.params.id;
+
             try {
                 let token = localStorage.getItem('token');
-                    const finalResult = {
-                        "auksion_id": id,
-                       
-                        
+                const finalResult = {
+                    "auksion_id": id,
+
+
                 }
-                
+
 
                 var data = new FormData()
-                
+
                 for (const key in finalResult) {
                     data.append(key, finalResult[key]);
 
                 }
-             
-                const response = await fetch(this.url+'api/cabinet/auksion/buy', {
+
+                const response = await fetch(this.url + 'api/cabinet/auksion/buy', {
                     method: 'POST',
                     body: data,
                     headers: {
@@ -173,22 +173,22 @@ export default {
 
                 });
                 const json = await response.json();
-                if(response.status==200){
-                     this.$router.push({name: 'cabinet.main.dealer' });
-                }else if(response.status==403){
+                if (response.status == 200) {
+                    this.$router.push({ name: 'cabinet.main.dealer' });
+                } else if (response.status == 403) {
                     alert(json.message.ru);
                 }
                 console.log(json);
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         },
-        async getMaxPriceAuksion(){
-            let id =this.$route.params.id;
+        async getMaxPriceAuksion() {
+            let id = this.$route.params.id;
             try {
                 let token = localStorage.getItem('token');
-                 
-                const response = await fetch(this.url+'api/cabinet/auksion/lastPrice/'+id, {
+
+                const response = await fetch(this.url + 'api/cabinet/auksion/lastPrice/' + id, {
                     method: 'GET',
                     headers: {
                         'Accept-Language': 'en-US,en;q=0.8',
@@ -198,13 +198,13 @@ export default {
 
                 });
                 const json = await response.json();
-                if(response.status==200){
+                if (response.status == 200) {
                     this.maxPrice = json.bid_price;
-                }else{
+                } else {
                     // alert(json.message);
                 }
                 console.log(json);
-            }catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         }
@@ -217,12 +217,13 @@ export default {
 }
 </script>
 <style scoped>
-.maxPrice{
+.maxPrice {
     font-size: 15px;
     text-align: left;
     padding-bottom: 15px;
 }
-.maxPrice span{
+
+.maxPrice span {
     display: block;
     color: red;
     font-size: 18px;

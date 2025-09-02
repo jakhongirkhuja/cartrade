@@ -159,6 +159,20 @@
     @include respond-tab{
         display: none;
     }
+    &.active{
+        display: block;
+        position: absolute;
+        z-index: 2;
+        top: 90px;
+        background: white;
+        left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding-left: 30px;
+        ul{
+            display: block;
+        }
+    }
 }
 .burger{
     display: none;
