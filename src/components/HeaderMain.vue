@@ -44,7 +44,7 @@
                     </svg>
                 </router-link>
             </div>
-            <div class="header__location fx ">
+            <!-- <div class="header__location fx ">
                 <svg>
                     <path
                         d="M11 12.375C10.3201 12.375 9.65552 12.1734 9.09023 11.7957C8.52494 11.418 8.08434 10.8811 7.82417 10.253C7.56399 9.62486 7.49592 8.93369 7.62855 8.26688C7.76119 7.60007 8.08858 6.98757 8.56932 6.50682C9.05007 6.02608 9.66257 5.69869 10.3294 5.56605C10.9962 5.43342 11.6874 5.50149 12.3155 5.76167C12.9436 6.02184 13.4805 6.46244 13.8582 7.02773C14.2359 7.59302 14.4375 8.25763 14.4375 8.9375C14.4364 9.84885 14.0739 10.7226 13.4295 11.367C12.7851 12.0114 11.9113 12.3739 11 12.375ZM11 6.875C10.5921 6.875 10.1933 6.99597 9.85414 7.2226C9.51496 7.44923 9.25061 7.77134 9.0945 8.14822C8.93839 8.52509 8.89755 8.93979 8.97713 9.33988C9.05671 9.73996 9.25315 10.1075 9.54159 10.3959C9.83004 10.6844 10.1975 10.8808 10.5976 10.9604C10.9977 11.04 11.4124 10.9991 11.7893 10.843C12.1662 10.6869 12.4883 10.4225 12.7149 10.0834C12.9415 9.74419 13.0625 9.34543 13.0625 8.9375C13.062 8.39066 12.8445 7.86637 12.4578 7.4797C12.0711 7.09302 11.5468 6.87555 11 6.875Z"
@@ -54,11 +54,11 @@
                         fill="#CB0000" />
                 </svg>
                 <p class="no-wrap">Uzbekistan, Tashkent</p>
-            </div>
-            <div class="header__phone">
+            </div> -->
+            <div class="header__phone ml-1">
                 <a class="no-wrap" href="tel:+998880093377">+998 88 009 33 77</a>
             </div>
-            <div class="header__auth account fx vertical_center fx-1" v-if="user">
+            <div class="header__auth account fx vertical_center fx-1" :class="{ active: menuopen }" v-if="user">
                 <div class="userInfo">
                     <div v-if="user.avatar" class="avatar"
                         v-bind:style="{ 'background-image': 'url(' + url + '/files/user/' + user.avatar + ')' }">
@@ -101,16 +101,28 @@
 
 
             </div>
-            <div class="header__auth guest fx vertical_center fx-1" v-else>
+            <div class="header__auth guest fx vertical_center fx-1" :class="{ active: menuopen }" v-else>
                 <div class="btn btn-primary" @click="addClass(0)">Войти</div>
                 <div class="btn btn-primary-outline" @click="addClass(1)">Регистрация</div>
             </div>
             <div class="burger" @click="openMenu()">
-                <svg width="44" height="24" viewBox="0 0 44 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg v-if="!menuopen" width="44" height="24" viewBox="0 0 44 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <path d="M2 2L42 2" stroke="#D50000" stroke-width="3" stroke-linecap="round" />
                     <path d="M2 12L42 12" stroke="#D50000" stroke-width="3" stroke-linecap="round" />
                     <path d="M2 22L42 22" stroke="#D50000" stroke-width="3" stroke-linecap="round" />
                 </svg>
+                <svg v-else fill="#D50000" height="40px" width="40px" version="1.1" id="Capa_1"
+                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                    viewBox="0 0 460.775 460.775" xml:space="preserve">
+                    <path d="M285.08,230.397L456.218,59.27c6.076-6.077,6.076-15.911,0-21.986L423.511,4.565c-2.913-2.911-6.866-4.55-10.992-4.55
+	c-4.127,0-8.08,1.639-10.993,4.55l-171.138,171.14L59.25,4.565c-2.913-2.911-6.866-4.55-10.993-4.55
+	c-4.126,0-8.08,1.639-10.992,4.55L4.558,37.284c-6.077,6.075-6.077,15.909,0,21.986l171.138,171.128L4.575,401.505
+	c-6.074,6.077-6.074,15.911,0,21.986l32.709,32.719c2.911,2.911,6.865,4.55,10.992,4.55c4.127,0,8.08-1.639,10.994-4.55
+	l171.117-171.12l171.118,171.12c2.913,2.911,6.866,4.55,10.993,4.55c4.128,0,8.081-1.639,10.992-4.55l32.709-32.719
+	c6.074-6.075,6.074-15.909,0-21.986L285.08,230.397z" />
+                </svg>
+
             </div>
         </div>
 
@@ -128,6 +140,7 @@ export default {
             banner_ru: [],
             token: null,
             user: null,
+            menuopen: false,
         }
     },
     methods: {
@@ -181,7 +194,8 @@ export default {
             anotherpop.toggleActive(true);
         },
         openMenu() {
-
+            this.menuopen = !this.menuopen;
+            // document.querySelector('.header__auth').classList.add('active');
         }
     },
     created() {

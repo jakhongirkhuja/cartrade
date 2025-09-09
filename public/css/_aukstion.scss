@@ -75,7 +75,7 @@
                         margin-bottom: 20px;
                     }
                     .list{
-                        display: none;
+                       
                         position: absolute;
                         background-color: white;
                         width: 101%;
@@ -88,8 +88,10 @@
                             height: 36px;
                             padding: 0 20px;
                             color: black;
+                            display: flex;
+                            align-items: center;
                             &:first-child{
-                                height: 10px;
+                                height: 27px;
                             }
                             &:hover{
                                 color: $red;
@@ -356,7 +358,7 @@
                             font-weight: 600;
                             color: black;
                             padding-left: 27px;
-                            width: 180px;
+                            
                             text-align: left;
                             @include respond-1200{
                                 font-size: 18px;

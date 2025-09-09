@@ -32,7 +32,7 @@
                                 <div class="info">
                                     <h2 class="info__title"><router-link
                                             :to="{ name: 'cabinet.edit.auksion', params: { id: car.id } }">{{
-                                            car.car_mark.name }} {{ car.car_model.name }}
+                                                car.car_mark.name }} {{ car.car_model.name }}
                                             -
                                             {{ car.year }}</router-link></h2>
 
@@ -49,8 +49,9 @@
                                 </div>
                                 <div class="actions">
                                     <div class="actions__price--origin fx">
-                                        <div class="info">Начальная ставка:</div>
-                                        <div class="price">{{ car.start_price }} сум</div>
+                                        <!-- <div class="info">Начальная ставка:</div> -->
+                                        <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
+
                                     </div>
 
                                     <div class="action__price--bet">
@@ -107,6 +108,9 @@ export default {
         }
     },
     methods: {
+        formatPrice(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;');
+        },
         async userInfo() {
             try {
                 let token = localStorage.getItem('token');

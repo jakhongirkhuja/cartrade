@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="actions">
                                     <div class="actions__price--origin fx">
-                                        <div class="info">Начальная ставка:</div>
+                                        <!-- <div class="info">Начальная ставка:</div> -->
                                         <div class="price">{{ car.start_price }} сум</div>
                                     </div>
 

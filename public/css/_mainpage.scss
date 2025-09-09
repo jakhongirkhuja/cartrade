@@ -11,22 +11,70 @@
                 justify-content: center;
             }
             .content{
-                @include respond-1000{
-                    display: none;
+                width: 100%;
+                small{
+                    display: block;
+                    margin-top: 2rem;
+                    color: white;
+                    font-weight: 500;
+                    font-size: 15px;
+                }
+                &__action{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    @include respond-tab{
+                        display: block;
+                        img{
+                            width: 100%;
+                        }
+                    }
+                    &-btns{
+                        display: flex;
+                        align-items: center;
+                        gap: 20px;
+                        @include respond-tab{
+                            display: block;
+                        }
+                        .btn{
+                            background-color: white;
+                            color: $red;
+                            cursor: pointer;
+                            @include respond-tab{
+                                display: block;
+                                margin-top: 1rem;
+                            }
+                            &:hover{
+                                background-color: $red;
+                                color: white;
+                                border-color: white;
+                            }
+                        }
+                    }
                 }
             }
             h1{
                 color: white;
-                font-weight: 700;
-                font-size: 60px;
+                font-weight: 500;
+                font-size: 50px;
                 line-height: 70px;
+                max-width: 900px;
                 margin-bottom: 50px;
                 @include respond-1200{
-                    font-size: 50px;
+                    font-size: 30px;
                     line-height: 50px;
                 }
             }
-            
+            h2{
+                color: white;
+                font-weight: 400;
+                font-size: 20px;
+                max-width: 900px;
+                margin-bottom: 30px;
+                &.text-black{
+                    color: black;
+                }
+            }
             
         }
     }
@@ -216,6 +264,16 @@
             }
         }
     }
+    &.dealerhero {
+        .hero__content{
+            @include respond-tab{
+                display: block;
+                .content img{
+                    width: 100%;
+                }
+            }
+        }
+    }
     .dealer{
         .line{
             position: absolute;
@@ -228,6 +286,10 @@
         }
         &__container{
             margin-top: 30px;
+            @include respond-phone{
+                    flex-direction: column;
+                    gap: 24px;
+            }
         }
         &__container--items{
             position: relative;
@@ -264,6 +326,11 @@
                 font-size: 24px;
                 max-width: 70%;
                 margin:30px  auto 0 ;
+                 @include respond-phone{
+                    font-size: 22px;
+                    max-width: 100%;
+                    margin: 10px auto 0;
+                 }
             }
         }
         

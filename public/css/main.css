@@ -67,6 +67,43 @@ h4, .h4 {
   color: #130e0e;
 }
 
+.vibrate-once {
+  display: inline-block;
+  animation: vibrateLoop 2s infinite;
+}
+
+.mb-03 {
+  margin-bottom: 0.3rem;
+}
+
+.ml-1 {
+  margin-left: 1rem;
+}
+
+.text-black {
+  color: black;
+}
+
+@keyframes vibrateLoop {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
 .btn {
   position: relative;
   color: white;
@@ -78,7 +115,6 @@ h4, .h4 {
   text-align: center;
   border: 1.5px solid;
   display: inline-block;
-  transition: all 0.4s ease;
   text-decoration: none;
   text-align: center;
   cursor: pointer;
@@ -705,6 +741,18 @@ h2.heading {
     display: none;
   }
 }
+@media screen and (max-width: 900px) {
+  .header__auth.active {
+    display: block;
+    position: absolute;
+    background: white;
+  }
+  .header__auth.active .btn {
+    padding: 16px 26px;
+    min-width: fit-content;
+    font-size: 15px;
+  }
+}
 .header__auth .userInfo {
   display: flex;
   align-items: center;
@@ -794,6 +842,11 @@ h2.heading {
   margin-right: 35px;
   padding: 23px 0;
 }
+@media screen and (max-width: 900px) {
+  .headerMenu ul li a {
+    text-wrap: nowrap;
+  }
+}
 .headerMenu ul li a:hover, .headerMenu ul li a.router-link-active {
   color: #CB0000;
 }
@@ -802,7 +855,7 @@ h2.heading {
 }
 @media screen and (max-width: 900px) {
   .headerMenu {
-    display: none;
+    overflow-x: scroll;
   }
 }
 .headerMenu.active {
@@ -841,23 +894,78 @@ h2.heading {
     justify-content: center;
   }
 }
-@media screen and (max-width: 1000px) {
-  .mainPage .hero__content .content {
-    display: none;
+.mainPage .hero__content .content {
+  width: 100%;
+}
+.mainPage .hero__content .content small {
+  display: block;
+  margin-top: 2rem;
+  color: white;
+  font-weight: 500;
+  font-size: 15px;
+}
+.mainPage .hero__content .content__action {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+@media screen and (max-width: 900px) {
+  .mainPage .hero__content .content__action {
+    display: block;
   }
+  .mainPage .hero__content .content__action img {
+    width: 100%;
+  }
+}
+.mainPage .hero__content .content__action-btns {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+@media screen and (max-width: 900px) {
+  .mainPage .hero__content .content__action-btns {
+    display: block;
+  }
+}
+.mainPage .hero__content .content__action-btns .btn {
+  background-color: white;
+  color: #CB0000;
+  cursor: pointer;
+}
+@media screen and (max-width: 900px) {
+  .mainPage .hero__content .content__action-btns .btn {
+    display: block;
+    margin-top: 1rem;
+  }
+}
+.mainPage .hero__content .content__action-btns .btn:hover {
+  background-color: #CB0000;
+  color: white;
+  border-color: white;
 }
 .mainPage .hero__content h1 {
   color: white;
-  font-weight: 700;
-  font-size: 60px;
+  font-weight: 500;
+  font-size: 50px;
   line-height: 70px;
+  max-width: 900px;
   margin-bottom: 50px;
 }
 @media screen and (max-width: 1200px) {
   .mainPage .hero__content h1 {
-    font-size: 50px;
+    font-size: 30px;
     line-height: 50px;
   }
+}
+.mainPage .hero__content h2 {
+  color: white;
+  font-weight: 400;
+  font-size: 20px;
+  max-width: 900px;
+  margin-bottom: 30px;
+}
+.mainPage .hero__content h2.text-black {
+  color: black;
 }
 .mainPage .services .forguest h2 {
   font-weight: 400;
@@ -1062,6 +1170,14 @@ h2.heading {
   font-size: 17px;
   line-height: 20.72px;
 }
+@media screen and (max-width: 900px) {
+  .mainPage.dealerhero .hero__content {
+    display: block;
+  }
+  .mainPage.dealerhero .hero__content .content img {
+    width: 100%;
+  }
+}
 .mainPage .dealer .line {
   position: absolute;
   height: 1px;
@@ -1073,6 +1189,12 @@ h2.heading {
 }
 .mainPage .dealer__container {
   margin-top: 30px;
+}
+@media screen and (max-width: 700px) {
+  .mainPage .dealer__container {
+    flex-direction: column;
+    gap: 24px;
+  }
 }
 .mainPage .dealer__container--items {
   position: relative;
@@ -1108,6 +1230,13 @@ h2.heading {
   font-size: 24px;
   max-width: 70%;
   margin: 30px auto 0;
+}
+@media screen and (max-width: 700px) {
+  .mainPage .dealer__container--items p {
+    font-size: 22px;
+    max-width: 100%;
+    margin: 10px auto 0;
+  }
 }
 .mainPage .reviews {
   background-color: #F9F9F9;
@@ -1543,7 +1672,6 @@ h2.heading {
   }
 }
 .aukstion .filter .auksion__select--block .each .list {
-  display: none;
   position: absolute;
   background-color: white;
   width: 101%;
@@ -1557,9 +1685,11 @@ h2.heading {
   height: 36px;
   padding: 0 20px;
   color: black;
+  display: flex;
+  align-items: center;
 }
 .aukstion .filter .auksion__select--block .each .list__items:first-child {
-  height: 10px;
+  height: 27px;
 }
 .aukstion .filter .auksion__select--block .each .list__items:hover {
   color: #CB0000;
@@ -1846,7 +1976,6 @@ h2.heading {
   font-weight: 600;
   color: black;
   padding-left: 27px;
-  width: 180px;
   text-align: left;
 }
 @media screen and (max-width: 1200px) {
@@ -2353,10 +2482,10 @@ h2.heading {
   flex-wrap: wrap;
 }
 .brands__block--each {
-  flex: 0 0 33.3%;
-  display: flex;
-  align-items: center;
+  display: block;
   margin-bottom: 30px;
+  margin-right: 15px;
+  text-align: center;
 }
 @media screen and (max-width: 1000px) {
   .brands__block--each {
@@ -2371,7 +2500,6 @@ h2.heading {
 .brands__block--each img {
   width: 100px;
   height: auto;
-  margin-right: 15px;
 }
 .brands__block--each p {
   font-weight: 500;
@@ -2446,6 +2574,12 @@ footer .line {
   text-transform: uppercase;
   padding-bottom: 15px;
 }
+@media screen and (max-width: 700px) {
+  .footer__info--items h2 {
+    padding-bottom: 0;
+    margin: 1rem 0 7px;
+  }
+}
 .footer__info--items.office a {
   padding-top: 15px;
 }
@@ -2453,6 +2587,11 @@ footer .line {
   .footer__info--items.office a {
     padding-bottom: 15px;
     padding-right: 10px;
+  }
+}
+@media screen and (max-width: 700px) {
+  .footer__info--items.office a {
+    padding-top: 0px;
   }
 }
 .footer__info--items.contactNumber a {

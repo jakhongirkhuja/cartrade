@@ -56,6 +56,10 @@ footer{
                 font-size: 17px;
                 text-transform: uppercase;
                 padding-bottom: 15px;
+                @include respond-phone{
+                        padding-bottom: 0;
+                        margin: 1rem 0 7px;
+                }
 
             }
             &.office a{
@@ -64,6 +68,9 @@ footer{
                 @include respond-tab{
                     padding-bottom: 15px;
                     padding-right: 10px;
+                }
+                @include respond-phone{
+                    padding-top: 0px;
                 }
             }
             &.contactNumber{

@@ -56,6 +56,19 @@
         @include respond-tab{
             display: none;
         }
+        &.active{
+            @include respond-tab{
+                display: block;
+                position: absolute;
+                background: white;
+                .btn{
+                    padding: 16px 26px;
+                    min-width: fit-content;
+                    font-size: 15px;
+                }
+            }
+
+        }
         .userInfo{
             display: flex;
             align-items: center;
@@ -147,7 +160,9 @@
             display: block;
             margin-right: 35px;
             padding: 23px 0;
-            
+            @include respond-tab{
+                text-wrap: nowrap;
+            }
             &:hover, &.router-link-active{
                 color: $red;
                 svg path{
@@ -157,7 +172,7 @@
         }
     }
     @include respond-tab{
-        display: none;
+        overflow-x: scroll;
     }
     &.active{
         display: block;

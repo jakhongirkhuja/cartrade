@@ -9,14 +9,11 @@
                 <div class="rectangle rectangle_left"></div>
 
                 <div class="filter">
-                    <div class="auksion__type" v-if="authUserPrivilege">
-                        <div class="auksion__type--each">Экспресс аукцион</div>
-                        <div class="auksion__type--each">Долгосрочный аукцион</div>
-                        <div class="auksion__type--each">Все аукционы</div>
-                    </div>
                     <div class="auksion__select">
                         <div class="auksion__select--block">
-                            <div class="each" @click="toogleElement">
+
+                            <!-- Марка -->
+                            <div class="each" @click="toggleElement('mark')">
                                 <span>{{ selectedMark ?? 'Марка' }}</span>
                                 <svg width="16" height="9" viewBox="0 0 16 9" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -24,13 +21,17 @@
                                         d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z"
                                         fill="#676767" />
                                 </svg>
-                                <div class="list">
-                                    <div class="list__items"></div>
+                                <div class="list" v-show="activeDropdown === 'mark'">
                                     <div class="list__items" v-for="mark in marks" :key="mark.id"
-                                        @click="selectMarkDrop(mark)">{{ mark.name }}</div>
+                                        @click.stop="selectMarkDrop(mark)">
+                                        {{ mark.name }}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="each" :class="models.length == 0 ? 'disabled' : ''" @click="toogleElement">
+
+                            <!-- Модель -->
+                            <div class="each" :class="models.length == 0 ? 'disabled' : ''"
+                                @click="toggleElement('model')">
                                 <span>{{ selectedModel ?? 'Модель' }}</span>
                                 <svg width="16" height="9" viewBox="0 0 16 9" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -38,15 +39,19 @@
                                         d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z"
                                         fill="#676767" />
                                 </svg>
-                                <div class="list">
-                                    <div class="list__items"></div>
+                                <div class="list" v-show="activeDropdown === 'model'">
                                     <div class="list__items" v-for="model in models" :key="model.id"
-                                        @click="selectModelDrop(model)">{{ model.name }}</div>
-
+                                        @click.stop="selectModelDrop(model)">
+                                        {{ model.name }}
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- Год -->
                             <input type="text" class="each" placeholder="Год">
-                            <div class="each" @click="toogleElement">
+
+                            <!-- Тип -->
+                            <div class="each" @click="toggleElement('type')">
                                 <span>{{ selectedType ?? 'Тип' }}</span>
                                 <svg width="16" height="9" viewBox="0 0 16 9" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -54,14 +59,16 @@
                                         d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z"
                                         fill="#676767" />
                                 </svg>
-                                <div class="list">
-                                    <div class="list__items"></div>
+                                <div class="list" v-show="activeDropdown === 'type'">
                                     <div class="list__items" v-for="type in types" :key="type.id"
-                                        @click="selectTypeDrop(JSON.parse(type.name), JSON.parse(type.id))">
-                                        {{ JSON.parse(type.name)[0] }}</div>
+                                        @click.stop="selectTypeDrop(JSON.parse(type.name), JSON.parse(type.id))">
+                                        {{ JSON.parse(type.name)[0] }}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="each" @click="toogleElement">
+
+                            <!-- Состояние -->
+                            <div class="each" @click="toggleElement('condition')">
                                 <span>{{ selectedCondition ?? 'Состояние' }} </span>
                                 <svg width="16" height="9" viewBox="0 0 16 9" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -69,22 +76,25 @@
                                         d="M7.29289 8.47273C7.68342 8.86326 8.31658 8.86326 8.70711 8.47273L15.0711 2.10877C15.4616 1.71825 15.4616 1.08508 15.0711 0.694557C14.6805 0.304033 14.0474 0.304033 13.6569 0.694557L8 6.35141L2.34315 0.694557C1.95262 0.304033 1.31946 0.304033 0.928932 0.694557C0.538408 1.08508 0.538408 1.71825 0.928932 2.10877L7.29289 8.47273ZM7 6.76562L7 7.76562L9 7.76563L9 6.76563L7 6.76562Z"
                                         fill="#676767" />
                                 </svg>
-                                <div class="list">
-                                    <div class="list__items"></div>
+                                <div class="list" v-show="activeDropdown === 'condition'">
                                     <div class="list__items" v-for="condition in conditions" :key="condition.id"
-                                        @click="selectConditionDrop(JSON.parse(condition.name), JSON.parse(condition.id))">
-                                        {{ JSON.parse(condition.name)[0] }}</div>
-
+                                        @click.stop="selectConditionDrop(JSON.parse(condition.name), JSON.parse(condition.id))">
+                                        {{ JSON.parse(condition.name)[0] }}
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- Пробег -->
                             <input type="text" class="each" placeholder="Пробег км">
+
+                            <!-- Кнопка -->
                             <div class="last">
-                                <div class="auksion__type--each">Найти по запросу</div>
+                                <div class="auksion__type--each">Поиск</div>
                             </div>
+
                         </div>
                     </div>
                 </div>
-
                 <div class="rectangle rectangle_right one"></div>
                 <div class="rectangle rectangle_right"></div>
             </div>
@@ -144,7 +154,7 @@
                                 <div class="items">{{ JSON.parse(car.car_fuil_type.name)[0] }}</div>
                                 <div class="items">{{ JSON.parse(car.transmission.name)[0] }}</div>
                                 <div class="items">{{ car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-                                }} km
+                                    }} km
                                 </div>
                                 <div class="items">{{ JSON.parse(car.condation.name)[0] }}</div>
                                 <div class="items">{{ JSON.parse(car.car_body_type.name)[0] }}</div>
@@ -153,8 +163,8 @@
                             </div>
                         </div>
                         <div class="actions">
-                            <div class="actions__price--origin fx">
-                                <div class="info">Начальная ставка:</div>
+                            <div class="actions__price--origin">
+                                <!-- <div class="info">Начальная ставка:</div> -->
                                 <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
                             </div>
 
@@ -211,63 +221,50 @@ export default {
             selectedModel_id: 0,
             selectedType_id: 0,
             selectedCondition_id: 0,
-            inside: false,
+
             models: [],
             auksions: [],
             authUserPrivilege: false,
             cars: [],
+            activeDropdown: null,
         }
     },
     methods: {
         formatPrice(value) {
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;');
         },
-        toogleElement(event) {
-            this.removeClassActive();
-            if (!event.currentTarget.classList.contains('disabled')) {
-                if (!this.inside) {
-                    event.currentTarget.classList.add('active');
-                    this.inside = true;
-                }
-
+        toggleElement(name) {
+            if (this.activeDropdown === name) {
+                this.activeDropdown = null;
+            } else {
+                this.activeDropdown = name;
             }
-
-        },
-        removeClassActive() {
-            document.querySelectorAll('.auksion__select--block .each.active').forEach(element => {
-                element.classList.remove('active');
-            });
-        },
-        setNewTimeOut() {
-            setTimeout(() => {
-                this.inside = false;
-            }, 1000);
         },
         selectMarkDrop(mark) {
-            this.removeClassActive();
             this.selectedMark = mark.name;
             this.selectedMark_id = mark.id;
             this.callModel(mark.id);
-            this.setNewTimeOut();
-
+            this.activeDropdown = null;
         },
         selectModelDrop(model) {
-            this.removeClassActive();
             this.selectedModel = model.name;
             this.selectedModel_id = model.id;
-            this.setNewTimeOut();
+            this.activeDropdown = null;
         },
         selectTypeDrop(type, id) {
-            this.removeClassActive();
             this.selectedType = type[0];
             this.selectedType_id = id;
-            this.setNewTimeOut();
+            this.activeDropdown = null;
         },
         selectConditionDrop(condition, id) {
-            this.removeClassActive();
             this.selectedCondition = condition[0];
             this.selectedCondition_id = id;
-            this.setNewTimeOut();
+            this.activeDropdown = null;
+        },
+        closeOnOutside(e) {
+            if (!e.target.closest('.auksion__select--block')) {
+                this.activeDropdown = null;
+            }
         },
         async loadMarks() {
             try {
@@ -334,11 +331,19 @@ export default {
             let token = localStorage.getItem('token');
         }
     },
-    created() {
 
+    mounted() {
+        this._outsideHandler = (e) => {
+            if (!e.target.closest('.auksion__select--block')) {
+                this.activeDropdown = null
+            }
+        }
+        document.addEventListener('click', this._outsideHandler)
         this.loadMarks();
         this.loadAuksion();
-        this.userCheck();
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this._outsideHandler)
     },
 }
 </script>

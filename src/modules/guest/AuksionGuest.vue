@@ -85,8 +85,10 @@
                 <div class="rectangle rectangle_right"></div>
             </div>
         </div>
+
         <p class="aukstion__result container">Мы нашли <span>{{ resultCount }}</span> по вашему запросу</p>
         <div class="aukstion__block container forguest">
+            sss
             <template v-if="cars.length > 0">
                 <template v-for="car in cars">
                     <div class="aukstion__block--items" v-if="car">
@@ -100,7 +102,7 @@
                         </div>
                         <div class="actions">
                             <div class="actions__price--origin fx">
-                                <div class="info">Начальная ставка:</div>
+                                <!-- <div class="info">Начальная ставка:</div> -->
                                 <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
                             </div>
 

@@ -13,12 +13,12 @@
                 <div class="info fx-1">
 
                     <div class="name"><span>{{ familyName }} {{ name }}</span> <span>Ваш тариф: <i v-if="tarif">{{
-                                tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }">Выбрать
+                        tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }">Выбрать
                                 тариф</router-link> </span> <span v-if="tarif && tarif_till"> Действует до: {{
-                            this.tarif_till }}</span> </div>
+                                    this.tarif_till }}</span> </div>
                     <div class="body ">
                         <div class="phoneNumber form-control">+{{ phoneNumber ?
-                            phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : ''}}</div>
+                            phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '' }}</div>
                         <div class="email form-control">{{ email }}</div>
                     </div>
                     <div class="others">
@@ -72,9 +72,10 @@
                                     </div>
                                     <div class="actions">
                                         <div class="actions__price--origin fx">
-                                            <div class="info">Начальная ставка:</div>
+                                            <!-- <div class="info">Начальная ставка:</div> -->
                                             <div class="price">
-                                                {{ car.car.start_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') }}
+                                                {{ car.car.start_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+                                                }}
                                                 сум</div>
                                         </div>
 
@@ -84,7 +85,8 @@
                                             </div>
                                             <span class="notbutton"
                                                 v-else-if="car.sold_user_id == user_id">Успешно!</span>
-                                            <span class="notbutton" v-else-if="car.sold_user_id != user_id">Отменён</span>
+                                            <span class="notbutton"
+                                                v-else-if="car.sold_user_id != user_id">Отменён</span>
                                         </div>
                                     </div>
                                     <div class="mobile__view">
