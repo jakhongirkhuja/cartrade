@@ -56,7 +56,7 @@
                 <p class="no-wrap">Uzbekistan, Tashkent</p>
             </div> -->
             <div class="header__phone ml-1">
-                <a class="no-wrap" href="tel:+998880093377">+998 88 009 33 77</a>
+                <a class="no-wrap" href="tel:+998907053399">+998 90 705 33 99</a>
             </div>
             <div class="header__auth account fx vertical_center fx-1" :class="{ active: menuopen }" v-if="user">
                 <div class="userInfo">

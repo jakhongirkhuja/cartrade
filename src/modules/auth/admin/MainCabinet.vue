@@ -45,21 +45,21 @@
                                         <div class="items">{{ car.year }} г</div>
                                         <!-- <div class="items" v-for="feature in features" :key="feature">{{ feature }}</div> -->
                                     </div>
-                                    <div class="status" v-if="car.auksion">
-                                        <label :class="{ 'checked': car.auksion.status }">
+                                    <div class="status" v-if="car.status">
+                                        <label :class="{ 'checked': car.status }">
                                             Статус:
-                                            <input type="checkbox" v-model="car.auksion.status"
-                                                @change="handleCheck(car.auksion)" />
+                                            <input type="checkbox" v-model="car.status" @change="handleCheck(car)" />
                                             <span class="custom-checkbox"></span>
-                                            {{ car.auksion.status ? 'Активний' : 'Отключен' }}
+                                            {{ car.status ? 'Активний' : 'Отключен' }}
                                         </label>
                                     </div>
                                 </div>
                                 <div class="actions">
                                     <div class="actions__price--origin fx">
                                         <!-- <div class="info">Начальная ставка:</div> -->
-                                        <div class="price">{{ car.start_price }} сум</div>
+                                        <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
                                     </div>
+
 
                                     <div class="action__price--bet">
                                         <router-link :to="{ name: 'cabinet.edit.auksion', params: { id: car.id } }"
@@ -165,6 +165,9 @@ export default {
         }
     },
     methods: {
+        formatPrice(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;');
+        },
         async loadReviews() {
 
             try {
@@ -299,13 +302,13 @@ export default {
                 console.log(error);
             }
         },
-        async handleCheck(auksion) {
+        async handleCheck(car) {
 
             try {
                 // eslint-disable-next-line no-unused-vars
                 let token = localStorage.getItem('token');
                 const finalResult = {
-                    "auksion_id": auksion.id,
+                    "car_id": car.id,
 
                 }
 
@@ -317,7 +320,7 @@ export default {
                 }
 
 
-                const response = await fetch(this.url + 'api/cabinet/auksion/change-status', {
+                const response = await fetch(this.url + 'api/cabinet/car/change-status', {
                     method: 'POST',
                     body: data,
                     headers: {
