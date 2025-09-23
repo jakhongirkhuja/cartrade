@@ -7,17 +7,14 @@
                 <div class="rectangle rectangle_left"></div>
                 <div class="rectangle rectangle_left"></div>
                 <div class="content">
-                    <h1>Продай авто быстро — заработай больше</h1>
-                    <h2>Мы соединяем владельцев автомобилей, которые хотят выгодно продать машину, и инвесторов, которые
-                        готовы вложиться в автомобили и зарабатывать на перепродаже. Всё прозрачно и безопасно — вы
-                        выбираете роль и начинаете зарабатывать уже сегодня.</h2>
+                    <h1>КУПИМ СРАЗУ ИЛИ ПОМОЖЕМ ПРОДАТЬ ВАМ АВТО!</h1>
+                    <h2>Мы выкупаем ваше авто сразу или поможем продать через нашу
+                        площадку. Все будет комфортно для вас, прозрачно и безопасно.</h2>
                     <div class="content__action">
                         <img src="/img/car.png" alt="">
                         <div class="content__action-btns">
                             <div class="btn btn-primary vibrate-once" @click="addClass(0)">Продать авто</div>
-                            <router-link :to="{ name: 'main.index.dealer' }" class="btn btn-primary">
-                                Стать инвестором
-                            </router-link>
+
                         </div>
                     </div>
                     <small>100% прозрачные сделки • Безопасные расчёты • Гарантия выгоды</small>
@@ -152,23 +149,27 @@
             </div>
         </div>
         <div class="documents container">
-            <h2 class="heading">Необходимые документы</h2>
+            <h2 class="heading">Необходимые документы при продаже авто</h2>
             <div class="documents__files container row space_between text-center p-80">
                 <div class="documents__files--itmes fx-1">
                     <img src="/icons/passportA.svg" alt="">
-                    <p>Паспорт гражданина Узбекситана</p>
+                    <p>Паспорт хозяина авто</p>
                 </div>
 
                 <div class="documents__files--itmes fx-1">
                     <img src="/icons/noA.svg" alt="">
-                    <p>Техпаспорт</p>
+                    <p>Техпаспорт автомобиля</p>
+                </div>
+                <div class="documents__files--itmes fx-1">
+                    <img src="/icons/propiskaA.svg" alt="">
+                    <p>Если женаты: паспорт и свидетельство о браке супруги или супруга</p>
                 </div>
             </div>
         </div>
         <ReviewSlider />
         <!-- <BuyEarly /> -->
         <div class="brands container">
-            <h2 class="heading">Выкуп автомобилей любых марок</h2>
+            <h2 class="heading">Выкуп и продажа автомобилей любых марок</h2>
             <div class="brands-slider">
                 <Swiper :slides-per-view="6" :space-between="20" :loop="true"
                     :autoplay="{ delay: 2000, disableOnInteraction: true }" :navigation="false"
@@ -189,6 +190,49 @@
                 </Swiper>
             </div>
         </div>
+        <div class="faqs container">
+            <h2 class="heading">FAQs</h2>
+            <div class="faq-container fx">
+                <div class="faq__block">
+                    <h3>Продавцам</h3>
+                    <div v-for="(faq, index) in faqsSeller" :key="index" class="faq-item">
+                        <button class="faq-question" @click="toggleSeller(index)">
+                            <span>{{ faq.question }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="icon" :class="{ open: openIndex === index }">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <transition name="fade">
+                            <div v-if="openIndexSeller === index" class="faq-answer">
+                                {{ faq.answer }}
+                            </div>
+                        </transition>
+                    </div>
+
+                </div>
+                <div class="faq__block">
+                    <h3>Покупателям</h3>
+                    <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
+                        <button class="faq-question" @click="toggle(index)">
+                            <span>{{ faq.question }}</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                stroke="currentColor" class="icon" :class="{ open: openIndex === index }">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+
+                        <transition name="fade">
+                            <div v-if="openIndex === index" class="faq-answer">
+                                {{ faq.answer }}
+                            </div>
+                        </transition>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -201,6 +245,7 @@ import ServiceSold from '@/components/ServiceSold.vue';
 import { useAuthStore } from '../../stores/auth';
 import { usePopUpStore } from '../../stores/popup';
 import { Swiper, SwiperSlide } from "swiper/vue";
+
 import "swiper/css";
 import "swiper/css/navigation";
 export default {
@@ -219,6 +264,88 @@ export default {
         return {
             url: import.meta.env.VITE_APP_REST_ENDPOINT,
             marks: [],
+            openIndex: null,
+            openIndexSeller: null,
+            faqsSeller: [
+                {
+                    question: "Как подать заявку на диагностику и затем на продажу автомобиля?",
+                    answer:
+                        "Заявку можно оставить онлайн: указать марку, модель, год, VIN, пробег, добавить фото и номер телефона. После этого мы свяжемся с вами и обсудим дальнейшие планы. Возможно, сначала выедем на диагностику вашего авто на месте.",
+                },
+                {
+                    question: "Нужно ли платить за диагностику и проверку?",
+                    answer:
+                        "Нет. Первичная диагностика (150+ точек) и юридическая проверка предоставляются бесплатно.",
+                },
+                {
+                    question: "Какие варианты выкупа нами доступны?",
+                    answer:
+                        "• Срочный выкуп — до 70% рыночной цены, сделка за 2 часа. • Стандартный выкуп — около 75 - 80% рыночной цены, в течение 5 – 7 дней. • Или просто выставим на нашей площадке и будем ждать продажи.",
+                },
+                {
+                    question: "Чем вы отличаетесь от обычных автосалонов?",
+                    answer:
+                        "Мы выкупаем авто быстрее, предлагаем 2–3 варианта цены, также помогаем продавать быстро через нашу площадку. Это делает процесс более гибким и выгодным.",
+                },
+                {
+                    question: "Как быстро мне ответят после заявки?",
+                    answer:
+                        "В течение 1 часа менеджер свяжется с вами для уточнения деталей.",
+                },
+                {
+                    question: "Какие марки машин вы выкупаете или можете продать через площадку?",
+                    answer:
+                        "Любые марки легковых автомобилей (электрокары, с ДВС, и гибридные).",
+                },
+                {
+                    question: "Автомобили в каком состоянии вы принимаете?",
+                    answer:
+                        "Мы работаем с автомобилями – пока только с теми, которые на ходу, с проблемными и битыми не работаем.",
+                },
+                {
+                    question: "Мне нужно срочно продать авто. За какое время проходит сделка?",
+                    answer:
+                        "Если мы сами выкупаем, то минимально возможное время сделки – 3 - 4 часа. В зависимости от условий время меняется, но обычно мы полностью оформляем сделку в день обращения.",
+                },
+                {
+                    question: "Возможно ли обсудить цену по телефону?",
+                    answer:
+                        "Мы можем вас примерно сориентировать по цене по телефону, но окончательное предложение возможно только после оценки автомобиля.",
+                },
+                {
+                    question: "Какие нужны документы для диагностики, оценки и продажи автомобиля?",
+                    answer:
+                        "Понадобятся следующие документы: • Тех.паспорт автомобиля • Паспорт хозяина авто • Если женаты: паспорт и свидетельство о браке супруги или супруга.",
+                },
+                {
+                    question: "Как быстро я смогу получить деньги за автомобиль?",
+                    answer:
+                        "Мы передаем оплату после нотариуса, то есть, как правило в день оформления.",
+                },
+
+            ],
+            faqs: [
+                {
+                    question: "Какие варианты оплаты за выкуп автомобиля?",
+                    answer:
+                        "Мы выкупаем автомобиль как за наличные, так и можем перевести на карту.",
+                },
+                {
+                    question: "Могу ли я отказаться от авто после завершения сделки?",
+                    answer:
+                        "Да, у вас есть до 3 рабочих дней, чтобы передумать после подписания договора. И сделать возврат авто.",
+                },
+                {
+                    question: "Где я могу посмотреть отзывы?",
+                    answer:
+                        "На сайте в разделе «Отзывы», а также в наших социальных сетях.",
+                },
+                {
+                    question: "В каких городах вы работаете?",
+                    answer:
+                        "Работаем пока по г. Ташкенту.",
+                },
+            ],
             brands: [
                 { name: "Kia", logo: "/logo/kia.png" },
                 { name: "Chevrolet", logo: "/logo/chevrolet.png" },
@@ -257,6 +384,12 @@ export default {
         }
     },
     methods: {
+        toggleSeller(index) {
+            this.openIndexSeller = this.openIndexSeller === index ? null : index;
+        },
+        toggle(index) {
+            this.openIndex = this.openIndex === index ? null : index;
+        },
         addClass(type) {
             const authStore = useAuthStore();
 
@@ -341,5 +474,80 @@ export default {
 
 .brands__block--each p {
     font-size: 14px;
+}
+
+.faqs {
+    padding-bottom: 50px;
+}
+
+.faq-container {
+    gap: 40px;
+
+    font-family: system-ui, sans-serif;
+}
+
+.faq__block {
+    flex: 0 0 50%;
+}
+
+.faq__block h3 {
+    margin: 20px 0;
+}
+
+@media screen and (max-width: 900px) {
+    .faq__block {
+        flex: 0 0 100%;
+    }
+
+    .faq-container.fx {
+        display: block;
+    }
+}
+
+.faq-item {
+    border-bottom: 1px solid #ddd;
+    padding: 0.75rem 0;
+}
+
+
+
+.faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+    text-align: left;
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.icon.open {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    margin-top: 0.5rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
 }
 </style>

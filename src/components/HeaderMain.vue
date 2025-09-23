@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header container fx space_between vertical_center">
-            <div class="header__logo">
+            <div class="header__logo fx-1">
                 <router-link :to="{ name: 'main.guest' }">
                     <svg width="248" height="50" viewBox="0 0 248 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -55,10 +55,10 @@
                 </svg>
                 <p class="no-wrap">Uzbekistan, Tashkent</p>
             </div> -->
-            <div class="header__phone ml-1">
-                <a class="no-wrap" href="tel:+998907053399">+998 90 705 33 99</a>
+            <div class="header__phone mr-1">
+                <a class="no-wrap" href="tel:+998907053399">Свяжитесь: +998 90 705 33 99</a>
             </div>
-            <div class="header__auth account fx vertical_center fx-1" :class="{ active: menuopen }" v-if="user">
+            <div class="header__auth account fx vertical_center" :class="{ active: menuopen }" v-if="user">
                 <div class="userInfo">
                     <div v-if="user.avatar" class="avatar"
                         v-bind:style="{ 'background-image': 'url(' + url + '/files/user/' + user.avatar + ')' }">
@@ -101,7 +101,7 @@
 
 
             </div>
-            <div class="header__auth guest fx vertical_center fx-1" :class="{ active: menuopen }" v-else>
+            <div class="header__auth guest fx vertical_center " :class="{ active: menuopen }" v-else>
                 <div class="btn btn-primary" @click="addClass(0)">Войти</div>
                 <div class="btn btn-primary-outline" @click="addClass(1)">Регистрация</div>
             </div>

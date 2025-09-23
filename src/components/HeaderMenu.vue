@@ -25,7 +25,7 @@
 
                 <!-- <li><router-link :to="{ name: 'main.brands' }">Наши услуги</router-link></li> -->
                 <!-- <li><router-link :to="{ name: 'main.brands' }">Что выкупаем</router-link></li> -->
-                <li><router-link :to="{ name: 'main.index.dealer' }">Инвесторам</router-link></li>
+                <!-- <li><router-link :to="{ name: 'main.index.dealer' }">Инвесторам</router-link></li> -->
                 <li><router-link :to="{ name: 'main.auksion.dealer' }">Каталог машин</router-link></li>
                 <!-- <li><router-link :to="{ name: 'main.auksionguest' }">Каталог машин</router-link></li> -->
 

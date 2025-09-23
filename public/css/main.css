@@ -80,6 +80,10 @@ h4, .h4 {
   margin-left: 1rem;
 }
 
+.mr-1 {
+  margin-right: 1rem;
+}
+
 .text-black {
   color: black;
 }
@@ -1161,9 +1165,6 @@ h2.heading {
 }
 .mainPage .benefit .body__items--each {
   margin-bottom: 60px;
-}
-.mainPage .benefit .body__items--each:last-child {
-  margin-bottom: 0;
 }
 .mainPage .benefit .body__items--each p {
   padding-left: 15px;

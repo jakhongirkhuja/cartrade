@@ -55,7 +55,8 @@
                             fill="#CB0000" />
                     </svg>
                     <h3>Составление договора</h3>
-                    <p>В офисе мы составим договор о продаже или покупке авто в быстрые сроки</p>
+                    <p>В офисе мы озвучим окончательную цену, и при положительном результате будем составлять договор о
+                        выкупе или продаже</p>
                 </div>
             </div>
         </div>
@@ -85,7 +86,26 @@
         </div>
 
         <ReviewSlider />
+        <div class="faqs container">
+            <h2 class="heading">FAQs</h2>
+            <div class="faq-container">
+                <div v-for="(faq, index) in faqs" :key="index" class="faq-item">
+                    <button class="faq-question" @click="toggle(index)">
+                        <span>{{ faq.question }}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" class="icon" :class="{ open: openIndex === index }">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
 
+                    <transition name="fade">
+                        <div v-if="openIndex === index" class="faq-answer">
+                            {{ faq.answer }}
+                        </div>
+                    </transition>
+                </div>
+            </div>
+        </div>
 
 
     </div>
@@ -103,8 +123,123 @@ export default {
     },
     data() {
         return {
-
+            openIndex: null,
+            faqs: [
+                {
+                    question: "Кто может стать инвестором?",
+                    answer: "Частные лица и компании после регистрации и прохождения верификации. Нужно будет вам связаться через ТГ-чат."
+                },
+                {
+                    question: "Как работает инвестирование?",
+                    answer: "Вы выбираете конкретную машину из списка доступных сделок, инвестируете сумму (часть или всю). Когда автомобиль перепродаётся, вы получаете вложенную сумму + заранее оговорённый процент прибыли."
+                },
+                {
+                    question: "Какая доходность?",
+                    answer: "Доходность зависит от сделки и обычно формируется из разницы при перепродаже автомобиля. В среднем это может быть от 20 до 50% с прибыли одной сделки, куда вы вложили свои средства. Зависит от индивидуальных договоренностей с компанией."
+                },
+                {
+                    question: "Как рассчитывается моя доля прибыли?",
+                    answer: "Система автоматически делит прибыль пропорционально вашей инвестиции."
+                },
+                {
+                    question: "Когда я получу деньги обратно?",
+                    answer: "После завершения сделки (в среднем чз 1-2 недели)."
+                },
+                {
+                    question: "Как я могу вывести средства?",
+                    answer: "Вы подаёте заявку в компанию чз ТГ-чат, и деньги перечисляются на вашу карту/счёт."
+                },
+                {
+                    question: "Какие есть риски?",
+                    answer: "Риски минимизируются юридической проверкой и диагностикой автомобилей, а также системой резервирования сделок. Но, как и в любой инвестиционной модели, доход не гарантируется (все будет прописано в личном договоре о сотрудничестве)."
+                },
+                {
+                    question: "Какие дополнительные услуги вы предлагаете?",
+                    answer: `•  Страховка авто (партнёры).
+•  Помощь в оформлении документов.
+•  Комиссионная перепродажа. 
+•  VIP-размещение объявлений на нашем сайте.
+•  Реклама для автосервисов, моек, страховых компаний на нашем сайте.`
+                },
+                {
+                    question: "Безопасно ли инвестировать и продавать через вас?",
+                    answer: "Да. Все сделки проходят через договоры, с юридической проверкой и прозрачным распределением средств."
+                },
+                {
+                    question: "Кто хранит деньги инвесторов?",
+                    answer: "Деньги резервируются на счёте до завершения сделки. Переводы происходят автоматически через систему расчётов."
+                },
+                {
+                    question: "Нужно ли мне приезжать лично?",
+                    answer: `Продавцам — да, для диагностики и оформления договора.
+Инвесторам — не обязательно, можем работать онлайн.`
+                }
+            ]
         }
     },
+    methods: {
+        toggle(index) {
+            this.openIndex = this.openIndex === index ? null : index;
+        },
+    }
 }
 </script>
+<style lang="css" scoped>
+.faqs {
+    padding-bottom: 50px;
+}
+
+.faq-container {
+    max-width: 600px;
+
+    font-family: system-ui, sans-serif;
+}
+
+
+
+.faq-item {
+    border-bottom: 1px solid #ddd;
+    padding: 0.75rem 0;
+}
+
+
+
+.faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+}
+
+.icon {
+    width: 22px;
+    height: 22px;
+    color: #666;
+    transition: transform 0.3s ease;
+}
+
+.icon.open {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    margin-top: 0.5rem;
+    color: #555;
+    line-height: 1.5;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

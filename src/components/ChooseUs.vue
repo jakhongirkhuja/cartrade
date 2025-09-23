@@ -18,19 +18,20 @@
                 <div class="benefit__content--bg-mobi">
                     <img src="/img/carmobi.jpg" alt="">
                 </div>
-                <div class="body__container fx">
+                <div class="body__container">
                     <div class="body__items">
                         <div class="body__items--each fx vertical_center">
                             <img src="/icons/benefit-1.svg" alt="benefit-1">
-                            <p>Подбор и покупка авто под ваш запрос — от бюджетных моделей до премиум</p>
+                            <p>Можем выкупить ваше авто сразу. Мы работаем с любыми машинами которые на ходу.</p>
                         </div>
                         <div class="body__items--each fx vertical_center">
                             <img src="/icons/benefit-2.svg" alt="benefit-2">
-                            <p>Честные цены: фиксированная комиссия, без скрытых платежей</p>
+                            <p>После проверки и оценки, мы можем предложить вам выгодную цену</p>
                         </div>
                         <div class="body__items--each fx vertical_center">
                             <img src="/icons/benefit-3.svg" alt="benefit-3">
-                            <p>Проверка и ремонт авто перед продажей — гарантия качества</p>
+                            <p>Мы подтверждаем результаты диагностики, гарантируем прозрачность сделки и прикрепляем к
+                                вашему автомобилю отметку о проверке на нашей площадке</p>
                         </div>
                     </div>
                     <div class="body__items">
@@ -44,7 +45,9 @@
                         </div>
                         <div class="body__items--each fx vertical_center">
                             <img src="/icons/benefit-6.svg" alt="benefit-6">
-                            <p>Возможность отказа в течение 5 дней после сделки.</p>
+                            <p>Если автомобиль продаётся напрямую нашей компанией, мы закрепляем за ним фирменную
+                                отметку качества и предоставляем возможность возврата в течение 3-х дней после покупки
+                            </p>
                         </div>
                     </div>
                 </div>
