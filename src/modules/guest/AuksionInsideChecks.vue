@@ -29,110 +29,52 @@
                                 v-bind:style="{ 'background-image': 'url(' + url + '/files/cars/' + imagecar.image + ')' }"
                                 v-for="imagecar in car.images"></div>
                         </div>
-                        <div class="car__mobile">
-                            <BetComponent></BetComponent>
 
-                        </div>
-                        <div class="car__char bg__car">
-                            <h4 class="title">Обзор</h4>
-                            <div class="car__char--items">
-                                <p>Марка</p>
-                                <p>{{ car.car_mark.name }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Модель</p>
-                                <p>{{ car.car_model.name }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Цвет</p>
-                                <p>{{ JSON.parse(car.color.name)[0] }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Тип вождения</p>
-                                <p>{{ car.drive_types }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Передача инфекции</p>
-                                <p>{{ JSON.parse(car.transmission.name)[0] }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Состояние</p>
-                                <p>{{ JSON.parse(car.condation.name)[0] }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Год</p>
-                                <p>{{ car.year }} год</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Пробег</p>
-                                <p>{{ car.mileage }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Тип топлива</p>
-                                <p>{{ JSON.parse(car.car_fuil_type.name)[0] }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Объем двигателя</p>
-                                <p>{{ car.engine_capacity }} л</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Двери</p>
-                                <p>{{ car.doors }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>Цилиндры</p>
-                                <p>{{ car.cylinders }}</p>
-                            </div>
-                            <div class="car__char--items">
-                                <p>ВИН</p>
-                                <p>{{ car.vin }}</p>
-                            </div>
-                        </div>
-                        <div class="car__body bg__car">
-                            <h4 class="title">Описание</h4>
-                            <p>
-                                {{ car.body }}
-                            </p>
-                        </div>
+                        <div class="checks" v-if="checks.length > 0">
+                            <div class="checks-list">
+                                <div v-for="check in checks" :key="check.id || check.car_check_id"
+                                    class="check-item flex flex-col md:flex-row md:items-center md:justify-between gap-3 p-3 border-b rounded-md"
+                                    :class="{
+                                        'status-ok': check.status === true,
+                                        'status-bad': check.status === false,
+                                        'status-null': check.status === null || check.status === undefined
+                                    }">
+                                    <!-- Left: Check title -->
+                                    <div class="check-left font-semibold text-gray-800">
+                                        {{ check.check?.order ?? check.order ?? '—' }}) {{ check.check?.title_ru ||
+                                            check.title || '—' }}
+                                    </div>
 
-                        <div class="car__func bg__car">
-                            <h4 class="title">Функции</h4>
-                            <template v-for="fun in JSON.parse(car.functions)">
-                                <div class="car__func--items" v-if="fun.title.length > 0">
-                                    <h3>{{ fun.title }}</h3>
-                                    <ul>
-                                        <li v-for="body in fun.body.split(',')">{{ body }}</li>
-                                    </ul>
+                                    <!-- Right: Status + Comment -->
+                                    <div
+                                        class="check-right flex flex-col md:flex-row md:items-center gap-2 text-sm bg-gray-50 p-2 rounded border w-full md:w-auto">
+                                        <!-- Status -->
+                                        <span v-if="check.status"
+                                            class="text-green-600 font-medium flex items-center gap-1">
+                                            ✅ Исправный
+                                        </span>
+                                        <span v-else class="text-red-600 font-medium flex items-center gap-1">
+                                            ❌ Неисправный
+                                        </span>
+
+                                        <!-- Comment -->
+                                        <span v-if="check.comment" class="text-gray-700">
+                                            {{ check.comment }}
+                                        </span>
+                                        <span v-else class="text-gray-400 italic">
+                                            Без комментария
+                                        </span>
+                                    </div>
                                 </div>
-                            </template>
+                            </div>
 
-                        </div>
-                        <div class="bg__car checks" v-if="car.check_results.length > 0">
-                            <h4 class="title">Полный перечень проверок по частям автомобиля</h4>
-                            <router-link :to="{ name: 'main.auksion.inside.dealer.checks', params: { id: car.id } }"
-                                class="btn btn-primary">Открыть
-                                список</router-link>
 
                         </div>
                     </div>
                     <div class="car__block--actions" v-if="!loading">
 
                     </div>
-                    <div class="car__block--actions" v-else>
-                        <div class="owning" v-if="owner">
-                            <div class="btn btn-primary w-100" @click="removeCar">Удалить объявление</div>
-                            <router-link :to="{ name: 'cabinet.edit.auksion', params: { id: car.id } }"
-                                class="btn btn-primary-outline w-100">Редактировать объявление</router-link>
-                        </div>
 
-                        <div v-else>
-                            <!-- <p class="title">Завершение аукциона через:</p> -->
-
-                            <BetComponent :buy_price="car.buy_price" :timeStart="time_start" :timeEnd="time_end"
-                                :auth=auth></BetComponent>
-                        </div>
-
-                    </div>
                 </div>
 
             </div>
@@ -160,7 +102,7 @@ export default {
             scrollLeft: 0,
             car: null,
             time_start: null,
-
+            checks: [],
             time_end: null,
             images: ['https://s3-alpha-sig.figma.com/img/91dc/8f0a/334d1aa1dca640d1260f281fb9c5a2d4?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=juFeEiPA8CoP36ZD5BrMo2roIkPOEOEy2v0J5tQuK4cPQRA4wLJAO2XdE4aLwxkAaBgRq1PjNAdOKQ2RkM8Ys8ExkVtQii2rpdj0yBObRDu9Ob9nk93KKJsQwcESVyp2WE~IS8Dxd8bIif9oo5Rz7dJXVeckMW97W3iHDzx8KsP6QE1l-Catp6i3-PRmJ01bZpFymvSLZK0JHf-kQ6alsZDFZP7-u1mZlLZbCfsHvGnt9igaS87E1NvDvQRiNCNF1t-WlmAVf17c81zAmNQ0PiTWQEqr89DymCAu8WzDYuttUWJmrOliGGS-OZtcUmbqrSdogPONQj3v4sNsC5j~Zg__']
         }
@@ -242,6 +184,9 @@ export default {
                 if (response.status == 200) {
                     if (json) {
                         this.car = json;
+                        this.checks = Array.isArray(json.check_results)
+                            ? [...json.check_results].sort((a, b) => (a.check?.order ?? 0) - (b.check?.order ?? 0))
+                            : [];
                         // this.time_start = json.time_start;
                         // this.time_end = json.time_end;
                         this.poster = this.url + '/files/cars/' + this.car.images[0].image
@@ -309,10 +254,175 @@ export default {
     },
 }
 </script>
+
 <style>
 .swiper-slide {
     width: 160px !important;
 
 
+}
+
+.checks-list {}
+
+@media (min-width: 720px) {
+    .checks-list {}
+}
+
+/* card */
+.check-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+
+    padding: 14px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+    border: 1px solid #e6eef7;
+    /* мягкий светлый контур */
+    box-shadow: 0 6px 18px rgba(21, 35, 60, 0.06);
+    transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease;
+}
+
+/* hover / focus look */
+.check-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(21, 35, 60, 0.12);
+    border-color: #cfe6ff;
+}
+
+/* left block (title) */
+.check-left {
+    display: flex;
+    flex-direction: column;
+}
+
+.check-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #102a43;
+}
+
+.check-sub {
+    font-size: 12px;
+    color: #6b7c8a;
+    margin-top: 4px;
+}
+
+/* right block (controls) */
+.check-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 220px;
+    justify-content: flex-end;
+}
+
+.check-right span:first-child {
+    width: 240px;
+    text-align: left;
+}
+
+.check-right span:last-child {
+    width: 500px;
+    text-align: center;
+}
+
+.check-right input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* comment input */
+.comment {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid #e6eef7;
+    min-width: 140px;
+    outline: none;
+    font-size: 13px;
+    transition: border-color .12s ease, box-shadow .12s ease;
+}
+
+.comment:focus {
+    border-color: #85b7ff;
+    box-shadow: 0 6px 18px rgba(133, 183, 255, 0.12);
+}
+
+/* status accent styles (left border) */
+.check-item.status-ok {
+    border-left: 6px solid #16a34a;
+    /* зелёный акцент */
+}
+
+.check-item.status-bad {
+    border-left: 6px solid #ef4444;
+    /* красный акцент */
+}
+
+.check-item.status-null {
+    border-left: 6px solid #f59e0b;
+    /* оранжевый для неопределённого */
+}
+
+@media (max-width: 1000px) {
+
+    .check-right span:last-child {
+        width: fit-content;
+    }
+
+    .check-item {
+        display: block;
+    }
+}
+
+@media (max-width: 900px) {
+
+
+    .check-item {
+        display: block;
+    }
+
+    .check-left {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .check-right span {
+        display: block;
+    }
+
+    .check-right {
+        display: block;
+        text-align: center;
+    }
+
+    .check-right span:first-child {
+        text-align: center;
+        width: 100%;
+    }
+
+    .check-right span:last-child {
+        text-align: center;
+        width: 100%;
+        margin-top: 8px;
+    }
+}
+
+
+/* subtle responsive tweak */
+@media (max-width: 420px) {
+    .check-right {
+        min-width: 0;
+        gap: 8px;
+    }
+
+    .comment {
+        min-width: 100px;
+        font-size: 12px;
+    }
 }
 </style>

@@ -244,6 +244,7 @@
                 flex-wrap: wrap;
             }
         }
+        
         .body__items{
             @include respond-phone{
                 margin-bottom: 30px;
@@ -540,4 +541,14 @@
             left: 258px;
         }
     }
+}
+.car__types{
+    @include respond-tab{
+        display: block;
+    } 
+}
+.car__types--each{
+    @include respond-tab{
+        margin-bottom: 1rem;
+    } 
 }

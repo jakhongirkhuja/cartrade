@@ -64,9 +64,9 @@
         </div>
         <ServiceSold />
         <ChooseUs />
-        <div class="checking p-80 text-center">
+        <div class="checking p-80 text-center container">
             <h2 class="heading">Критерии при проверке автомобиля</h2>
-            <div class="container">
+            <div class="">
                 <div class="checking__container ">
                     <div class="checking__items fx">
                         <div class="inside">
@@ -147,6 +147,63 @@
                     </div>
                 </div>
             </div>
+            <h2 class="heading">Полный список технических проверок авто</h2>
+            <div class="car__types fx m-0 w-100 justify_center gap-1 mb-2">
+                <div class="car__types--each">
+                    <div class="btn btn-primary" @click="openCarTypeList('ice')">ДВС</div>
+                </div>
+                <div class="car__types--each">
+                    <div class="btn btn-primary" @click="openCarTypeList('electro')">Электро</div>
+                </div>
+                <div class="car__types--each">
+                    <div class="btn btn-primary" @click="openCarTypeList('hybrid')">Гибрид</div>
+                </div>
+            </div>
+            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="ice">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border px-4 py-2">#</th>
+                        <th class="border px-4 py-2">Пункт проверки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(check, index) in checks" :key="check.id">
+                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
+                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="electro">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border px-4 py-2">#</th>
+                        <th class="border px-4 py-2">Пункт проверки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(check, index) in checkselectro" :key="check.id">
+                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
+                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="hybrid">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="border px-4 py-2">#</th>
+                        <th class="border px-4 py-2">Пункт проверки</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(check, index) in checkshybrid" :key="check.id">
+                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
+                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <div class="documents container">
             <h2 class="heading">Необходимые документы при продаже авто</h2>
@@ -165,6 +222,7 @@
                     <p>Если женаты: паспорт и свидетельство о браке супруги или супруга</p>
                 </div>
             </div>
+
         </div>
         <ReviewSlider />
         <!-- <BuyEarly /> -->
@@ -264,6 +322,9 @@ export default {
         return {
             url: import.meta.env.VITE_APP_REST_ENDPOINT,
             marks: [],
+            ice: false,
+            hybrid: false,
+            electro: false,
             openIndex: null,
             openIndexSeller: null,
             faqsSeller: [
@@ -380,10 +441,23 @@ export default {
                 { name: "Hyundai", logo: "/logo/hyundai.png" },
                 { name: "Ford", logo: "/logo/ford.png" }
             ],
+            checks: [],
+            checkselectro: [],
+            checkshybrid: [],
             imageEaryle: 'https://s3-alpha-sig.figma.com/img/f4b3/84d4/1dafdfe426668c8439a158835e201cce?Expires=1722211200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=l0sfYs27HusQEndMlPwNEOGwSQ~fGx651KCWEAH2QZyN2gWmaB9yhxsi23V108pIShS91n5goC8wkyzvDs2ilcqZ4VJ8kflFe1SDgI~DXWd6woQ1RfBrwKvOkyxf4OM2~IZ2GHAFnP-rzi439JFZIg1tFJ3bx9PwuLu4OsvFsUpj9I1rvZHCCDPwRkU7hh03w8PPFqFrk8VG99XalDPRNHnN8NRaIR4KVtAnMxmGZRSE3P-TtdTn2qnbaK5MuL5UDRLDov6qIv~plCfCyZ1knSLgMng2xrRjbCMos-04tBUegr-~WV5o-5SYG4~kV1CmkCX0fukWuNaVjmgwMa8FPA__',
         }
     },
     methods: {
+        statusText(status) {
+            switch (status) {
+                case 'ok':
+                    return 'Норма'
+                case 'fault':
+                    return 'Неисправность'
+                default:
+                    return 'Не проверено'
+            }
+        },
         toggleSeller(index) {
             this.openIndexSeller = this.openIndexSeller === index ? null : index;
         },
@@ -396,6 +470,47 @@ export default {
             authStore.setActive(true, type);
             const anotherpop = usePopUpStore();
             anotherpop.toggleActive(true);
+        },
+        async loadCheck(type) {
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url + 'api/checks?type=' + type, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const json = await response.json();
+                if (type == 'ice') {
+                    this.checks = json;
+                }
+                if (type == 'hybrid') {
+                    this.checkshybrid = json;
+                }
+                if (type == 'electro') {
+                    this.checkselectro = json;
+                }
+
+
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+        openCarTypeList(type) {
+            this.hybrid = false;
+            this.electro = false;
+            this.ice = false;
+            if (type == 'ice') {
+                this.ice = true;
+            }
+            if (type == 'hybrid') {
+                this.hybrid = true;
+            }
+            if (type == 'electro') {
+                this.electro = true;
+            }
         },
         async loadMarks() {
             try {
@@ -450,6 +565,9 @@ export default {
         }
     },
     created() {
+        this.loadCheck('ice');
+        this.loadCheck('electro');
+        this.loadCheck('hybrid');
         // this.loadMarks();
     },
 }

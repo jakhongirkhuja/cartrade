@@ -16,7 +16,6 @@
                         </label>
                     </div>
                 </div>
-
                 <!-- Фото (обязательное хотя бы одно) -->
                 <div class="foto">
                     <h4>Фото *</h4>
@@ -223,11 +222,61 @@
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-3 justify-between">
                     <div class="btn btn-primary" @click="submitformAdd">Обновить</div>
+                    <div v-if="user && user.role == 'admin'" class="btn btn-primary" @click="openchecklist">Проверки
+                        авто
+                    </div>
                 </div>
             </div>
+            <div class="form checklist">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Тип авто</label>
+                        <select class="form-control" v-model="auto_type_checked" @change="getcheckvalue">
+                            <option value="">Выберите</option>
+                            <option v-for="type in auto_type" :key="type" :value="type">
+                                {{ type }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <table class="table-auto w-full w-100 border border-gray-300 mt-2"
+                            v-if="checks && checks.length > 0">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border px-4 py-2">#</th>
+                                    <th class="border px-4 py-2">Пункт проверки</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(check, index) in checks" :key="check.id">
+                                    <td class="border px-4 py-2 text-center">{{ check.order }}</td>
+                                    <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
 
+                                    <!-- выбор статуса -->
+                                    <td class="border px-4 py-2 text-center">
+                                        <select v-model="check.status" class=" form-control px-2 py-1 border rounded">
+
+                                            <option :value="true">✅ Исправный</option>
+                                            <option :value="false">❌ Неисправный</option>
+                                        </select>
+                                    </td>
+
+                                    <!-- поле комментария -->
+                                    <td class="border px-4 py-2 pl-1">
+                                        <input type="text" v-model="check.comment" placeholder="Комментарий"
+                                            class="form-control" />
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="mt-4 text-right" v-if="checks && checks.length > 0">
+                            <button @click="saveChecks" class="btn btn-primary">Сохранить результаты</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -250,7 +299,12 @@ export default {
             colors: [],
             transmissions: [],
             fuils: [],
-
+            auto_type_checked: null,
+            auto_type: [
+                'electro',
+                'hybrid',
+                'ice',
+            ],
             // выбранные значения
             selectedMark: null,
             selectedModel: null,
@@ -279,7 +333,7 @@ export default {
             salon: 5,
             engine: 5,
             carbody: 5,
-
+            user: null,
             // динамические характеристики (функции)
             rows: [
                 { title: '', body: '' }
@@ -288,16 +342,82 @@ export default {
             // служебные
             guest: false,
             errors: {}, // сюда кладём ошибки при валидации
-
+            checklist: false,
             // временные демо-данные (можно убрать)
             avatar: 'https://s3-alpha-sig.figma.com/img/ab6e/a6b2/4a90e78a6adef6fdee5f81d6a60ba5c0?Expires=1722211200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=ZwL9OvlKppwGeQGkysOtbx08oxs~L7XclTew8RUhtMGNWoyYQYAFbPtFb3DeLUXj4Iow0vXcYTSCqJScuDxNBwMzZNrmgFRCGjjxcc0-EtuLNLfet66~RKiIgoEM~kq~TxyO3Ma7UjwDL1KUrPPHnbOrmhA~h7Pt4Y9qht1a10Vde4Ha65VeXcyTQQBXIWjhyqEkY9MGoI3j~HqPIFi~mBlP8frdyAH4Re6OKSh1hUXux3HPoQdBbY5bMcZJPuzJkEQl~ZnOQsA2Qk48vuMJDtj2vSdlR5gcoWA-BOquGPVvN7kYS8p6d3DcBNNAW9QPB0XO3SRwlXguj6k8zSmB4w__',
             features: ['Бензин', 'Автомат', '77329', 'Седан', 'Новый', '2006 г.', 'бежевый металлик', 'Полный привод'],
             image: 'https://s3-alpha-sig.figma.com/img/7779/2e6a/3cdfa39a42910327da49edfc1e447a21?Expires=1721606400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QmzJCiaVFkC0fRuAi6f2~OYgxS9E8OCZ0cGFrW3W1XLV~F1WrLddUub2n0FFTisAwUjzp9CUXu5wO2HTlC~lrNzQB6ygTeqfw2HiR1xqpYxhzIqMIezx~Jz6F7lWYqNqioHxIb~vyCGPDVkXSuTk8BtuTf1GwS5s~kYsSbxA31yi~HpCuSWtPBZUUoe3bqnAbkqCYCU3JDY3Qq4R4qxXrVFEXbTTiTwwEv6dRHSYt0a~1FWsJ5yoa3mC4S4lrL2Rymqqak2M5FoGvYhWEDKDGYVSnTZsfFPX5stA~~EZLL6frmiPu9zWxmCMPEyaue7L3pdk14A07~6Fm5yvUo3JvQ__',
-
+            checks: [],
 
         }
     },
     methods: {
+        async loadCheck(type, checkResults = []) {
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url + 'api/checks?type=' + type, {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const json = await response.json();
+
+                const list = json;
+
+                this.checks = Array.isArray(list)
+                    ? list.map((c) => ({
+                        ...c,
+                        status: null,
+                        comment: "",
+                    }))
+                    : [];
+                this.checks.forEach(check => {
+                    const existing = checkResults.find(r => r.car_check_id === check.id);
+
+                    if (existing) {
+                        check.status = existing.status;
+                        check.comment = existing.comment;
+                    }
+                });
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        },
+        async saveChecks() {
+            if (this.auto_type_checked == null) {
+                alert('Выберите тип')
+                return;
+            }
+            try {
+                let token = localStorage.getItem('token');
+                await fetch(this.url + 'api/cabinet/car/checks/' + this.$route.params.id + '/type/' + this.auto_type_checked, {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    body: JSON.stringify({
+                        checks: this.checks
+                    })
+                })
+                alert("Результаты сохранены!");
+            } catch (error) {
+                console.error("Ошибка сохранения:", error);
+                alert("Ошибка при сохранении");
+            }
+        },
+        getcheckvalue() {
+            if (this.auto_type_checked) {
+                this.loadCheck(this.auto_type_checked);
+            }
+        },
+        openchecklist() {
+            this.checklist = !this.checklist;
+        },
         async loadFilters() {
             try {
                 let token = localStorage.getItem('token');
@@ -605,6 +725,11 @@ export default {
                     this.time_end = json.auksion?.time_end;
                     this.rows.splice(0, this.rows.length);
                     this.images = json.images;
+                    this.auto_type_checked = json.auto_type;
+                    if (json.auto_type) {
+                        this.loadCheck(json.auto_type, json.check_results);
+
+                    }
                     JSON.parse(json.functions).forEach(element => {
 
                         this.rows.push({ title: element.title, body: element.body });
@@ -622,12 +747,33 @@ export default {
             } catch (error) {
                 console.error('Ошибка:', error);
             }
-        }
+        },
+        async checkUser() {
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url + 'api/user', {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const json = await response.json();
+                if (response.status == 200) {
+                    this.user = json;
+                }
+            } catch (error) {
+
+                console.log(error);
+            }
+        },
     },
     created() {
-
+        this.checkUser();
         this.loadFilters();
         this.getAuksion();
+
     },
 }
 </script>
