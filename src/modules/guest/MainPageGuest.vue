@@ -7,15 +7,14 @@
                 <div class="rectangle rectangle_left"></div>
                 <div class="rectangle rectangle_left"></div>
                 <div class="content">
-                    <h1>КУПИМ СРАЗУ ИЛИ ПОМОЖЕМ ПРОДАТЬ ВАМ АВТО!</h1>
-                    <h2>Мы выкупаем ваше авто сразу или поможем продать через нашу
-                        площадку. Все будет комфортно для вас, прозрачно и безопасно.</h2>
+                    <h1>ПОМОЖЕМ ВАМ БЫСТРО ПРОДАТЬ ВАШЕ АВТО</h1>
+                    <h2>Все будет комфортно и безопасно для вас, бесплатая диагностика, фото и сопровождение сделки</h2>
                     <div class="content__action">
                         <img src="/img/car.png" alt="">
-                        <div class="content__action-btns">
+                        <!-- <div class="content__action-btns">
                             <div class="btn btn-primary vibrate-once" @click="addClass(0)">Продать авто</div>
 
-                        </div>
+                        </div> -->
                     </div>
                     <small>100% прозрачные сделки • Безопасные расчёты • Гарантия выгоды</small>
                 </div>
@@ -101,7 +100,7 @@
                                 <li>&#x2022; Гарантия</li>
                                 <li>&#x2022; Сервисная книжка</li>
                                 <li>&#x2022; Перепробег</li>
-                                <li>&#x2022; Кол-во свободных мест в ПТС</li>
+                                <li>&#x2022; Технический паспорт автомобиля</li>
                             </ul>
                         </div>
                     </div>
@@ -159,51 +158,72 @@
                     <div class="btn btn-primary" @click="openCarTypeList('hybrid')">Гибрид</div>
                 </div>
             </div>
-            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="ice">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border px-4 py-2">#</th>
-                        <th class="border px-4 py-2">Пункт проверки</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(check, index) in checks" :key="check.id">
-                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
-                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+            <div class="checks ice" v-if="ice">
+                <div class="checks__category" v-for="(check, index) in checks" :key="check.id">
+                    <div class="checks__category--title">
+                        <h2><span>{{ check.order }}</span> {{ check.title_ru }}</h2>
+                    </div>
+                    <div class="checks__category--subcategory" v-for="(sub_category, index) in check.sub_categories"
+                        :key="sub_category.id">
+                        <div class="checks__category--subcategory--title">
+                            <h3><span>{{ sub_category.order }}</span> {{ sub_category.title_ru }}</h3>
+                        </div>
+                        <div class="checks__category--carChecks" v-for="(carCheck, index) in sub_category.car_checks"
+                            :key="carCheck.id">
+                            <div class="checks__category--carChecks--title">
+                                <p><span>{{ carCheck.order }}</span> {{ carCheck.title_ru }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="electro">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border px-4 py-2">#</th>
-                        <th class="border px-4 py-2">Пункт проверки</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(check, index) in checkselectro" :key="check.id">
-                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
-                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+                </div>
 
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table-auto w-full border border-gray-300 m-0 mt-2" v-if="hybrid">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border px-4 py-2">#</th>
-                        <th class="border px-4 py-2">Пункт проверки</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="(check, index) in checkshybrid" :key="check.id">
-                        <td class="border px-4 py-2 text-center">{{ check.order }}</td>
-                        <td class="border px-4 py-2 text-left">{{ check.title_ru }}</td>
+            </div>
+            <div class="checks electro" v-if="electro">
+                <div class="checks__category" v-for="(check, index) in checkselectro" :key="check.id">
+                    <div class="checks__category--title">
+                        <h2><span>{{ check.order }}</span> {{ check.title_ru }}</h2>
+                    </div>
+                    <div class="checks__category--subcategory" v-for="(sub_category, index) in check.sub_categories"
+                        :key="sub_category.id">
+                        <div class="checks__category--subcategory--title">
+                            <h3><span>{{ sub_category.order }}</span> {{ sub_category.title_ru }}</h3>
+                        </div>
+                        <div class="checks__category--carChecks" v-for="(carCheck, index) in sub_category.car_checks"
+                            :key="carCheck.id">
+                            <div class="checks__category--carChecks--title">
+                                <p><span>{{ carCheck.order }}</span> {{ carCheck.title_ru }}</p>
+                            </div>
+                        </div>
+                    </div>
 
-                    </tr>
-                </tbody>
-            </table>
+                </div>
+
+            </div>
+            <div class="checks electro" v-if="hybrid">
+                <div class="checks__category" v-for="(check, index) in checkshybrid" :key="check.id">
+                    <div class="checks__category--title">
+                        <h2><span>{{ check.order }}</span> {{ check.title_ru }}</h2>
+                    </div>
+                    <div class="checks__category--subcategory" v-for="(sub_category, index) in check.sub_categories"
+                        :key="sub_category.id">
+                        <div class="checks__category--subcategory--title">
+                            <h3><span>{{ sub_category.order }}</span> {{ sub_category.title_ru }}</h3>
+                        </div>
+                        <div class="checks__category--carChecks" v-for="(carCheck, index) in sub_category.car_checks"
+                            :key="carCheck.id">
+                            <div class="checks__category--carChecks--title">
+                                <p><span>{{ carCheck.order }}</span> {{ carCheck.title_ru }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
         </div>
         <div class="documents container">
             <h2 class="heading">Необходимые документы при продаже авто</h2>
@@ -499,17 +519,21 @@ export default {
             }
         },
         openCarTypeList(type) {
-            this.hybrid = false;
-            this.electro = false;
-            this.ice = false;
+
             if (type == 'ice') {
-                this.ice = true;
+                this.ice = !this.ice;
+                this.hybrid = false;
+                this.electro = false;
             }
             if (type == 'hybrid') {
-                this.hybrid = true;
+                this.hybrid = !this.hybrid;
+                this.electro = false;
+                this.ice = false;
             }
             if (type == 'electro') {
-                this.electro = true;
+                this.electro = !this.electro;
+                this.hybrid = false;
+                this.ice = false;
             }
         },
         async loadMarks() {
@@ -667,5 +691,128 @@ export default {
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
+}
+
+/* Container */
+.checks {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Category */
+.checks__category {
+    margin-bottom: 25px;
+    /* border-left: 5px solid #CB0000; */
+    padding-left: 15px;
+    transition: transform 0.2s ease;
+}
+
+.checks__category:hover {
+    transform: translateX(5px);
+}
+
+/* Category Title */
+.checks__category--title h2 {
+    font-size: 1.8rem;
+    color: #CB0000;
+    margin-bottom: 15px;
+    position: relative;
+    font-size: 1rem;
+}
+
+.checks__category--title h2 span {
+    background-color: #CB0000;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    text-align: center;
+    line-height: 28px;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Subcategory */
+.checks__category--subcategory {
+    margin-left: 20px;
+    margin-bottom: 15px;
+    border-left: 3px solid #CB0000;
+    padding-left: 10px;
+}
+
+.checks__category--subcategory--title h3 {
+    font-size: 1.4rem;
+    color: #CB0000;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.checks__category--subcategory--title h3 span {
+    background-color: #CB0000;
+    color: #fff;
+    border-radius: 50%;
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    line-height: 22px;
+    margin-right: 8px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Car Checks */
+.checks__category--carChecks {
+    margin-left: 15px;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.checks__category--carChecks:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.checks__category--carChecks--title p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.checks__category--carChecks--title p span {
+    font-weight: bold;
+    color: #CB0000;
+    margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checks {
+        padding: 0px;
+    }
+
+    .checks__category--subcategory {
+        margin-left: 2px;
+    }
+
+    .checks__category--title h2 {
+        font-size: 0.8rem;
+    }
+
+    .checks__category--subcategory--title h3 {
+        font-size: 0.7rem;
+    }
 }
 </style>

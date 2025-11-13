@@ -86,6 +86,16 @@ const routes =  [
                 component:  ()=>import ('@/modules/guest/Contacts.vue'),
             },
             {
+                path: 'sell-auto',
+                name: 'main.howtosell',
+                component:  ()=>import ('@/modules/guest/Howtosell.vue'),
+            },
+            {
+                path: 'buy-auto',
+                name: 'main.howtobuy',
+                component:  ()=>import ('@/modules/guest/Howtobuy.vue'),
+            },
+            {
                 path: 'legal-information',
                 name: 'main.legalinformation',
                 component:  ()=>import ('@/modules/guest/Legal.vue'),

@@ -53,6 +53,9 @@
                     font-weight: 500;
                     padding-bottom: 30px;
                 }
+                .link{
+                    text-decoration: underline;
+                }
                 .body{
                     display: flex;
                     @include respond-phone{
@@ -207,6 +210,9 @@
             }
             .btn{
                 margin-top: 40px;
+            }
+            .no-padd-top{
+                margin-top: 0;
             }
         }
     }

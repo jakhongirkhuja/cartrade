@@ -12,8 +12,9 @@
                 </div>
                 <div class="info fx-1">
 
-                    <div class="name"><span>{{ familyName }} {{ name }}</span> <span>Ваш тариф: <i v-if="tarif">{{
-                        tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }">Выбрать
+                    <div class="name"><span>{{ familyName }} {{ name }}</span> <span style="display: none;">Ваш тариф:
+                            <i v-if="tarif">{{
+                                tarif.name }}</i> <router-link v-else :to="{ name: 'cabinet.tarif.dealerer' }">Выбрать
                                 тариф</router-link> </span> <span v-if="tarif && tarif_till"> Действует до: {{
                                     this.tarif_till }}</span> </div>
                     <div class="body ">
@@ -42,7 +43,7 @@
                 </div>
             </div>
             <div class="user__ads">
-                <div class="title"><span>Мои ставки</span> <span></span> </div>
+                <div class="title"><span>Мои брони</span> <span></span> </div>
                 <div class="user__ads__block">
                     <div class="aukstion__block container">
                         <template v-if="cars.length > 0">
@@ -74,9 +75,9 @@
                                         <div class="actions__price--origin fx">
                                             <!-- <div class="info">Начальная ставка:</div> -->
                                             <div class="price">
-                                                {{ car.car.start_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
+                                                {{ car.car.rent_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
                                                 }}
-                                                сум</div>
+                                                сум в сум</div>
                                         </div>
 
                                         <div class="action__price--bet">
@@ -155,7 +156,7 @@ export default {
         },
         async togglePayment() {
             try {
-                let token = localStorage.getItem('token');
+                // let token = localStorage.getItem('token');
                 const finalResult = {
                     "amount": this.newBalance,
                 }
@@ -179,7 +180,7 @@ export default {
                     },
 
                 });
-                const json = await response.json();
+                // const json = await response.json();
                 if (response.status == 200) {
                     this.checkPayStart = false;
                     this.userInfo();

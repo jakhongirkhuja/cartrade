@@ -21,34 +21,36 @@
                 <div class="body__container">
                     <div class="body__items">
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-1.svg" alt="benefit-1">
-                            <p>Можем выкупить ваше авто сразу. Мы работаем с любыми машинами которые на ходу.</p>
+                            <!-- <img src="/icons/benefit-1.svg" alt="benefit-1"> -->
+                            <p>1) Принимаем <b>любые автомобили,</b> которые на ходу</p>
                         </div>
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-2.svg" alt="benefit-2">
-                            <p>После проверки и оценки, мы можем предложить вам выгодную цену</p>
+                            <!-- <img src="/icons/benefit-2.svg" alt="benefit-2"> -->
+                            <p>2) Проводим <b>бесплатную выездную проверку (100+ точек)</b></p>
                         </div>
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-3.svg" alt="benefit-3">
-                            <p>Мы подтверждаем результаты диагностики, гарантируем прозрачность сделки и прикрепляем к
-                                вашему автомобилю отметку о проверке на нашей площадке</p>
+                            <!-- <img src="/icons/benefit-3.svg" alt="benefit-3"> -->
+                            <p>3) Проверяем авто по <b>юридической части</b></p>
                         </div>
                     </div>
                     <div class="body__items">
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-4.svg" alt="benefit-4">
-                            <p>Бесплатная юридическая проверка</p>
+                            <!-- <img src="/icons/benefit-4.svg" alt="benefit-4"> -->
+                            <p>4) Делаем <b>бесплатное фото и видео</b></p>
                         </div>
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-5.svg" alt="benefit-5">
-                            <p>Бесплатная выездная диагностика (150+ точек).</p>
+                            <!-- <img src="/icons/benefit-5.svg" alt="benefit-5"> -->
+                            <p>5) Даём <b>честную оценку</b> и объясняем каждый пункт</p>
                         </div>
                         <div class="body__items--each fx vertical_center">
-                            <img src="/icons/benefit-6.svg" alt="benefit-6">
-                            <p>Если автомобиль продаётся напрямую нашей компанией, мы закрепляем за ним фирменную
-                                отметку качества и предоставляем возможность возврата в течение 3-х дней после покупки
-                            </p>
+                            <!-- <img src="/icons/benefit-6.svg" alt="benefit-6"> -->
+                            <p>6) Гарантируем <b>прозрачность</b> — результаты проверки прикрег профилю вашего авто</p>
                         </div>
+                        <div class="body__items--each fx vertical_center">
+                            <!-- <img src="/icons/benefit-6.svg" alt="benefit-6"> -->
+                            <p>7) В отдельных случаях <b>выкупаем авто сразу</b></p>
+                        </div>
+
                     </div>
                 </div>
             </div>

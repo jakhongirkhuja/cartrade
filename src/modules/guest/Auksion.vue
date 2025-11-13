@@ -111,7 +111,7 @@
                                     :to="{ name: 'main.auksion.inside.dealer', params: { id: car.id } }">{{
                                         car.car_mark.name }}
                                     {{ car.car_model.name }} - {{ car.year }}</router-link></h2>
-                            <div class="info__rate fx">
+                            <div class="info__rate fx" style="display: none;">
                                 <div class="name">Салон</div>
                                 <div class="rates">
                                     <template v-for="index in car.salon">
@@ -124,7 +124,7 @@
                                     </template>
                                 </div>
                             </div>
-                            <div class="info__rate fx">
+                            <div class="info__rate fx" style="display: none;">
                                 <div class="name">Двигатель</div>
                                 <div class="rates">
                                     <template v-for="index in car.engine">
@@ -137,7 +137,7 @@
                                     </template>
                                 </div>
                             </div>
-                            <div class="info__rate fx">
+                            <div class="info__rate fx" style="display: none;">
                                 <div class="name">Кузов</div>
                                 <div class="rates">
                                     <template v-for="index in car.carbody">
@@ -165,13 +165,13 @@
                         <div class="actions">
                             <div class="actions__price--origin">
                                 <!-- <div class="info">Начальная ставка:</div> -->
-                                <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
+                                <div class="price" v-html="formatPrice(car.rent_price ?? 0) + ' сум в день'"></div>
                             </div>
 
-                            <!-- <div class="action__price--bet">
+                            <div class="action__price--bet">
                                 <router-link :to="{ name: 'main.auksion.inside.dealer', params: { id: car.id } }"
-                                    class="btn btn-primary">Сделать ставку</router-link>
-                            </div> -->
+                                    class="btn btn-primary">Забронировать</router-link>
+                            </div>
                         </div>
                         <div class="mobile__view">
                             <div class="charakter fx">

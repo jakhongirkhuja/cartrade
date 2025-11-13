@@ -11,7 +11,7 @@
     </template> -->
 
     <div class="form__block">
-        <FormVue title="Оставьте заявку и мы свяжемся с вами в ближайшее время"></FormVue>
+        <FormVue title="Оставьте заявку, чтобы приобрести этот автомобиль"></FormVue>
     </div>
 </template>
 <script>

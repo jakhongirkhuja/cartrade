@@ -3,7 +3,11 @@
 <template>
     <div class="auth">
         <div class="auksion__edit container">
+
             <div class="form">
+                <router-link class="btn btn-primary-outline no-padd-top mb-1" :to="{ name: 'cabinet.main' }">Назад к
+                    каталогу</router-link>
+
                 <!-- Название -->
                 <div class="row">
                     <div class="col-12">
@@ -184,9 +188,15 @@
                         <input type="text" v-model="cylinders"
                             :class="['form-control', errors.cylinders ? 'is-invalid' : '']" placeholder="6" />
                     </div>
-                    <div class="col-8">
-                        <label>VIN *</label>
+                    <div class="col-4">
+                        <label>Номер кузова *</label>
                         <input type="text" v-model="vin" :class="['form-control', errors.vin ? 'is-invalid' : '']"
+                            placeholder="2D456THA798700213GT212" />
+                    </div>
+                    <div class="col-4">
+                        <label>Номер мотора *</label>
+                        <input type="text" v-model="engine_number"
+                            :class="['form-control', errors.engine_number ? 'is-invalid' : '']"
                             placeholder="2D456THA798700213GT212" />
                     </div>
                 </div>
@@ -214,14 +224,68 @@
                     </div>
                 </div>
                 <!-- Цена -->
+                <!-- Цена -->
                 <div class="row">
-                    <div class="timing">
-                        <label>Стартовая цена *</label>
-                        <input type="number" v-model="start_price"
-                            :class="['form-control', errors.start_price ? 'is-invalid' : '']" placeholder="120000000" />
+                    <div class="col-4">
+                        <div class="timing">
+                            <label>Цена на 1 день *</label>
+                            <input type="number" v-model="rent_price"
+                                :class="['form-control', errors.rent_price ? 'is-invalid' : '']"
+                                placeholder="120000000" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="timing">
+                            <label>Лимит км/день *</label>
+                            <input type="number" v-model="rent_limit_km"
+                                :class="['form-control', errors.rent_limit_km ? 'is-invalid' : '']" placeholder="300" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="timing">
+                            <label for="">Депозит</label>
+                            <input type="number" v-model="rent_deposit"
+                                :class="['form-control', errors.rent_deposit ? 'is-invalid' : '']"
+                                placeholder="300 000" />
+
+                        </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="info fx-1">
+                            <div v-if="technical_passport_preview" style="margin-top: 15px;">
+                                <img :src="technical_passport_preview" alt="Passport Preview"
+                                    style="max-width: 200px; border-radius: 8px;" />
+                            </div>
+                            <input type="file" @change="uploadFilePassport" accept="image/*" id="uploadTextPassport"
+                                hidden />
+                            <label for="uploadTextPassport" class="btn btn-primary">Загружите
+                                Технический паспорт</label><br />
 
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="info fx-1">
+                            <div v-if="insurance_preview" style="margin-top: 15px;">
+                                <img :src="insurance_preview" alt="insurance Preview"
+                                    style="max-width: 200px; border-radius: 8px;" />
+                            </div>
+                            <input type="file" @change="uploadFileInsurance" accept="image/*" id="uploadTextInsurance"
+                                hidden />
+                            <label for="uploadTextInsurance" class="btn btn-primary">Загружите
+                                Страховой полис ОСАГО/КАСКО</label><br />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="text-center">Выберите файл не больше 3MB, Минимальное разрешение 300x300 px
+                            в JPG или PNG
+                            формате</span>
+                    </div>
+                </div>
                 <div class="row mt-3 justify-between">
                     <div class="btn btn-primary" @click="submitformAdd">Обновить</div>
                     <div v-if="user && user.role == 'admin'" class="btn btn-primary" @click="openchecklist">Проверки
@@ -229,7 +293,7 @@
                     </div>
                 </div>
             </div>
-            <div class="form checklist">
+            <div class="form checklist" v-if="user && user.role == 'admin'">
                 <div class="row">
                     <div class="col-12">
                         <label>Тип авто</label>
@@ -313,6 +377,7 @@ export default {
             selectedColor: null,
             selectedTransmission: null,
             selectedFuil: null,
+            engine_number: '',
 
             // форма
             title: '',
@@ -328,12 +393,17 @@ export default {
             time_end: '',
             start_price: '',
             buy_price: '',
-
+            rent_price: '',
             // оценки (по умолчанию ставим 5)
             salon: 5,
             engine: 5,
             carbody: 5,
             user: null,
+            technical_passport: null,
+            technical_passport_preview: null,
+            insurance_preview: null,
+            insurance: null,
+            rent_limit_km: null,
             // динамические характеристики (функции)
             rows: [
                 { title: '', body: '' }
@@ -352,6 +422,34 @@ export default {
         }
     },
     methods: {
+        uploadFilePassport(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Файл слишком большой! Максимум 3MB.");
+                return;
+            }
+
+            this.technical_passport = file;
+            this.technical_passport_preview = URL.createObjectURL(file);
+        },
+        uploadFileInsurance(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Файл слишком большой! Максимум 3MB.");
+                return;
+            }
+
+            this.insurance = file;
+            this.insurance_preview = URL.createObjectURL(file);
+        },
         async loadCheck(type, checkResults = []) {
             try {
                 let token = localStorage.getItem('token');
@@ -584,7 +682,7 @@ export default {
                 cylinders: this.cylinders,
                 drive_types: this.drive_types,
                 vin: this.vin,
-                start_price: this.start_price,
+                // start_price: this.start_price,
             };
 
             let hasError = false;
@@ -623,6 +721,9 @@ export default {
                     "doors": this.doors,
                     "cylinders": this.cylinders,
                     "vin": this.vin,
+                    "rent_limit_km": this.rent_limit_km,
+                    "rent_price": this.rent_price,
+                    "engine_number": this.engine_number,
                     "start_price": this.start_price,
                     "buy_price": this.buy_price,
                     "body": this.body,
@@ -633,6 +734,7 @@ export default {
                     "salon": this.salon,
                     "engine": this.engine,
                     "carbody": this.carbody,
+                    "type": 'rent',
 
                 }
 
@@ -644,7 +746,12 @@ export default {
 
                 }
 
-
+                if (this.technical_passport) {
+                    data.append('technical_passport', this.technical_passport);
+                }
+                if (this.insurance) {
+                    data.append('insurance', this.insurance);
+                }
                 const response = await fetch(this.url + 'api/cabinet/car/edit/' + this.$route.params.id, {
                     method: 'POST',
                     body: data,
@@ -707,6 +814,8 @@ export default {
                     this.selectedColor = json.car_color_id;
                     this.selectedTransmission = json.transmission_id;
                     this.selectedFuil = json.fuil_type_id;
+                    // this.technical_passport = json.technical_passport;
+                    // this.insurance = json.insurance;
                     this.drive_types = json.drive_types;
                     this.year = json.year;
                     this.mileage = json.mileage;
@@ -719,13 +828,24 @@ export default {
                     this.salon = json.salon;
                     this.engine = json.engine;
                     this.carbody = json.carbody;
-                    this.start_price = json.start_price;
+                    // this.start_price = json.start_price;
                     this.buy_price = json.buy_price;
+                    this.engine_number = json.engine_number;
                     this.time_start = json.auksion?.time_start;
                     this.time_end = json.auksion?.time_end;
                     this.rows.splice(0, this.rows.length);
                     this.images = json.images;
+                    this.rent_limit_km = json.rent_limit_km;
+                    this.rent_price = json.rent_price;
+                    this.rent_deposit = json.rent_deposit;
+                    this.engine_number = json.engine_number
                     this.auto_type_checked = json.auto_type;
+                    if (json.technical_passport) {
+                        this.technical_passport_preview = this.url + 'files/others/' + json.technical_passport;
+                    }
+                    if (json.insurance) {
+                        this.insurance_preview = this.url + 'files/others/' + json.insurance;
+                    }
                     if (json.auto_type) {
                         this.loadCheck(json.auto_type, json.check_results);
 

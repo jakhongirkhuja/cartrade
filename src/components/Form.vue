@@ -55,6 +55,7 @@ export default {
                     "familyName": this.familyName,
                     "phoneNumber": this.phoneNumber.replace(/\D/g, ""),
                     "email": this.email,
+                    "link": window.location.href
                 }
 
 

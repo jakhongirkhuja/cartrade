@@ -163,9 +163,15 @@
                         <input type="text" v-model="cylinders"
                             :class="['form-control', errors.cylinders ? 'is-invalid' : '']" placeholder="6" />
                     </div>
-                    <div class="col-8">
-                        <label>VIN *</label>
+                    <div class="col-4">
+                        <label>Номер кузова *</label>
                         <input type="text" v-model="vin" :class="['form-control', errors.vin ? 'is-invalid' : '']"
+                            placeholder="2D456THA798700213GT212" />
+                    </div>
+                    <div class="col-4">
+                        <label>Номер мотора *</label>
+                        <input type="text" v-model="engine_number"
+                            :class="['form-control', errors.engine_number ? 'is-invalid' : '']"
                             placeholder="2D456THA798700213GT212" />
                     </div>
                 </div>
@@ -194,13 +200,66 @@
                 </div>
                 <!-- Цена -->
                 <div class="row">
-                    <div class="timing">
-                        <label>Стартовая цена *</label>
-                        <input type="number" v-model="start_price"
-                            :class="['form-control', errors.start_price ? 'is-invalid' : '']" placeholder="120000000" />
+                    <div class="col-4">
+                        <div class="timing">
+                            <label>Цена на 1 день *</label>
+                            <input type="number" v-model="rent_price"
+                                :class="['form-control', errors.rent_price ? 'is-invalid' : '']"
+                                placeholder="120000000" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="timing">
+                            <label>Лимит км/день *</label>
+                            <input type="number" v-model="rent_limit_km"
+                                :class="['form-control', errors.rent_limit_km ? 'is-invalid' : '']" placeholder="300" />
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="timing">
+                            <label for="">Депозит</label>
+                            <input type="number" v-model="rent_deposit"
+                                :class="['form-control', errors.rent_deposit ? 'is-invalid' : '']"
+                                placeholder="300 000" />
+
+                        </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="info fx-1">
+                            <div v-if="technical_passport" style="margin-top: 15px;">
+                                <img :src="technical_passport_preview" alt="Passport Preview"
+                                    style="max-width: 200px; border-radius: 8px;" />
+                            </div>
+                            <input type="file" @change="uploadFilePassport" accept="image/*" id="uploadTextPassport"
+                                hidden />
+                            <label for="uploadTextPassport" class="btn btn-primary">Загружите
+                                Технический паспорт</label><br />
 
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="info fx-1">
+                            <div v-if="insurance" style="margin-top: 15px;">
+                                <img :src="insurance_preview" alt="insurance Preview"
+                                    style="max-width: 200px; border-radius: 8px;" />
+                            </div>
+                            <input type="file" @change="uploadFileInsurance" accept="image/*" id="uploadTextInsurance"
+                                hidden />
+                            <label for="uploadTextInsurance" class="btn btn-primary">Загружите
+                                Страховой полис ОСАГО/КАСКО</label><br />
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <span class="text-center">Выберите файл не больше 3MB, Минимальное разрешение 300x300 px
+                            в JPG или PNG
+                            формате</span>
+                    </div>
+                </div>
                 <div class="row mt-3">
                     <div class="btn btn-primary" @click="submitformAdd">Добавить</div>
                 </div>
@@ -246,11 +305,19 @@ export default {
             cylinders: '',
             drive_types: '',
             vin: '',
+            engine_number: '',
             body: '',
             time_start: '',
             time_end: '',
             start_price: '',
             buy_price: '',
+            rent_price: 200000,
+            technical_passport: null,
+            technical_passport_preview: null,
+            insurance_preview: null,
+            insurance: null,
+            rent_limit_km: 300,
+            rent_deposit: 250000,
 
             // оценки (по умолчанию ставим 5)
             salon: 5,
@@ -273,6 +340,34 @@ export default {
         }
     },
     methods: {
+        uploadFilePassport(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Файл слишком большой! Максимум 3MB.");
+                return;
+            }
+
+            this.technical_passport = file;
+            this.technical_passport_preview = URL.createObjectURL(file);
+        },
+        uploadFileInsurance(event) {
+
+            const file = event.target.files[0];
+
+            if (!file) return;
+
+            if (file.size > 3 * 1024 * 1024) {
+                alert("Файл слишком большой! Максимум 3MB.");
+                return;
+            }
+
+            this.insurance = file;
+            this.insurance_preview = URL.createObjectURL(file);
+        },
         async loadFilters() {
             try {
                 let token = localStorage.getItem('token');
@@ -357,13 +452,16 @@ export default {
                 selectedColor: this.selectedColor,
                 selectedTransmission: this.selectedTransmission,
                 selectedFuil: this.selectedFuil,
+                rent_limit_km: this.rent_limit_km,
+                technical_passport: this.technical_passport,
+                insurance: this.insurance,
                 year: this.year,
                 mileage: this.mileage,
                 engine_capacity: this.engine_capacity,
                 cylinders: this.cylinders,
                 drive_types: this.drive_types,
                 vin: this.vin,
-                start_price: this.start_price,
+                engine_number: this.engine_number,
             };
 
             let hasError = false;
@@ -402,6 +500,7 @@ export default {
                     "doors": this.doors,
                     "cylinders": this.cylinders,
                     "vin": this.vin,
+                    "engine_number": this.engine_number,
                     "start_price": this.start_price,
                     "buy_price": this.buy_price,
                     "body": this.body,
@@ -412,6 +511,9 @@ export default {
                     "salon": this.salon,
                     "engine": this.engine,
                     "carbody": this.carbody,
+                    "rent_limit_km": this.rent_limit_km,
+                    "rent_price": this.rent_price,
+                    "type": 'rent'
 
                 }
 
@@ -421,11 +523,13 @@ export default {
                     data.append(key, finalResult[key]);
 
                 }
+
                 this.uploads.forEach((image, index) => {
                     if (image.image) data.append(`images[${index}]`, image.image);
 
                 });
-
+                data.append("technical_passport", this.technical_passport);
+                data.append("insurance", this.insurance);
                 const response = await fetch(this.url + 'api/cabinet/car', {
                     method: 'POST',
                     body: data,
@@ -441,7 +545,8 @@ export default {
                     alert(json.message);
                 }
                 if (response.status == 201 || response.status == 200) {
-                    alert('auksion has been created');
+                    alert('Добавлено');
+
                     this.$router.push({ name: 'cabinet.main' });
                 }
                 console.log(response.status);

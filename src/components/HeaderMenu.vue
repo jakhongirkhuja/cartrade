@@ -31,6 +31,8 @@
 
                 <li><router-link :to="{ name: 'main.reviews' }">Отзывы</router-link></li>
                 <li><router-link :to="{ name: 'main.contacts' }">Контакты</router-link></li>
+                <li><router-link :to="{ name: 'main.howtosell' }">Как продать</router-link></li>
+                <li><router-link :to="{ name: 'main.howtobuy' }">Как купить</router-link></li>
             </ul>
         </div>
     </div>

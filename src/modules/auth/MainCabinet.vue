@@ -11,13 +11,28 @@
                 <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">
                 </div>
                 <div class="info fx-1">
+                    <router-link class="link" :to="{ name: 'cabinet.edit.user' }">Редактировать</router-link>
                     <div class="name">{{ familyName }} {{ name }}</div>
+
                     <div class="body ">
                         <div class="phoneNumber form-control">+{{ phoneNumber ?
                             phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '' }}</div>
                         <div class="email form-control">{{ email }}</div>
+
                     </div>
+                    <div class="others">
+                        <div class="balance">
+                            <div class="transactions" style="padding-top: 5px;">
+                                <router-link class="link" :to="{ name: 'cabinet.transactions.dealer' }">Ваше
+                                    транзакции</router-link>
+                            </div>
+                        </div>
+
+                    </div>
+
                 </div>
+
+
             </div>
             <div class="user__ads">
                 <div class="title"><span>Мои объявления</span> <span
@@ -50,7 +65,7 @@
                                 <div class="actions">
                                     <div class="actions__price--origin fx">
                                         <!-- <div class="info">Начальная ставка:</div> -->
-                                        <div class="price" v-html="formatPrice(car.start_price) + ' сум'"></div>
+                                        <div class="price" v-html="formatPrice(car.rent_price) + ' сум в день'"></div>
 
                                     </div>
 

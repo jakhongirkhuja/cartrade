@@ -27,10 +27,12 @@
                 <div class="role" v-if="regType == 1">
 
                     <div class="role__block">
-                        <div class="role__each">Клиент</div>
-                        <!-- <div class="role__each" @click="role = 0" :class="role == 0 ? 'active' : ''">Клиент</div> -->
-                        <!-- <div class="role__each" @click="role = 1" :class="role == 1 ? 'active' : ''">Автодилер</div> -->
-                        <!-- <div class="role__switch" :class="role == 1 ? 'active' : ''"></div> -->
+                        <!-- <div class="role__each">Клиент</div> -->
+                        <div class="role__each" @click="role = 0" :class="role == 0 ? 'active' : ''">Стать арендатором
+                        </div>
+                        <div class="role__each" @click="role = 1" :class="role == 1 ? 'active' : ''">Сдать авто
+                        </div>
+                        <div class="role__switch" :class="role == 1 ? 'active' : ''"></div>
                     </div>
 
                 </div>
@@ -175,7 +177,7 @@ export default {
             ],
             underheading: [
                 'Войдите в аккаунт для дальнейшего оформления заказа и его отслеживания ',
-                'Зарегистрируйте свой мобильный номер телефона в нашем сервисе ',
+                'Зарегистрируйтесь и заполните поля строго согласно паспорту — после этого мы проверим данные на мошенничество',
                 'Напишите номер телефона и мы отправим вам СМС с кодом подтверждения',
             ],
 
@@ -273,13 +275,13 @@ export default {
                     localStorage.setItem('token', json.message.token);
                     // this.$router.push({name: 'cabinet.main', refresh: true });
                     this.closeAuth();
-                    if (json.message.user.role == 'dealer') {
-                        window.location.replace(window.location.origin + "/cabinet-dealer");
+                    if (json.message.user.role == 'rent') {
+                        window.location.replace(window.location.origin + "/cabinet");
 
                     } else if (json.message.user.role == 'admin') {
                         window.location.replace(window.location.origin + "/cabinet/admin");
                     } else {
-                        window.location.replace(window.location.origin + "/cabinet");
+                        window.location.replace(window.location.origin + "/cabinet-dealer");
                     }
 
                 }
@@ -339,10 +341,10 @@ export default {
                     localStorage.setItem('token', json.message.token);
                     this.$router.push({ name: 'cabinet.main', refresh: true });
                     this.closeAuth();
-                    if (this.role == 0) {
+                    if (this.role == 1) {
                         window.location.replace(window.location.origin + "/cabinet");
                     }
-                    if (this.role == 1) {
+                    if (this.role == 0) {
                         window.location.replace(window.location.origin + "/cabinet-dealer");
                     }
 

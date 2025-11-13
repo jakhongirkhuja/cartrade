@@ -69,7 +69,7 @@ a {
 }
 
 b, strong {
-  font-weight: 500;
+  font-weight: 700;
 }
 
 h4, .h4 {
@@ -240,6 +240,10 @@ a:link, a:visited {
 .col-4 {
   flex: 0 0 33.333333%;
   max-width: 33.333333%;
+}
+
+.mb-1 {
+  margin-bottom: 1rem;
 }
 
 .text-left {
@@ -2738,6 +2742,10 @@ footer .line {
   cursor: pointer;
   position: relative;
   z-index: 1;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
 }
 .authentication__form--self .role__each.active {
   color: white;
@@ -3063,6 +3071,9 @@ footer .line {
   font-weight: 500;
   padding-bottom: 30px;
 }
+.auth__userInfo .user .info .link {
+  text-decoration: underline;
+}
 .auth__userInfo .user .info .body {
   display: flex;
 }
@@ -3214,6 +3225,9 @@ footer .line {
 }
 .auth .auksion__edit .form .btn {
   margin-top: 40px;
+}
+.auth .auksion__edit .form .no-padd-top {
+  margin-top: 0;
 }
 .auth .tarif {
   display: flex;
