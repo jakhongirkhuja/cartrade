@@ -3,47 +3,14 @@
 <template>
     <div class="auth">
         <div class="auth__userInfo container p-80">
-            <div class="user row">
-
-                <div v-if="avatar" class="avatar"
-                    v-bind:style="{ 'background-image': 'url(' + url + '/files/user/' + avatar + ')' }">
-                </div>
-                <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">
-                </div>
-                <div class="info fx-1">
-                    <router-link class="link" :to="{ name: 'cabinet.edit.user' }">Редактировать</router-link>
-                    <div class="name">{{ familyName }} {{ name }}</div>
-
-                    <div class="body ">
-                        <div class="phoneNumber form-control">+{{ phoneNumber ?
-                            phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '' }}</div>
-                        <div class="email form-control">{{ email }}</div>
-
-                    </div>
-                    <div class="others">
-                        <div class="balance">
-                            <div class="transactions" style="padding-top: 5px;">
-                                <router-link class="link" :to="{ name: 'cabinet.transactions.dealer' }">Ваше
-                                    транзакции</router-link>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
 
             <div class="user__ads">
 
                 <div class="title gap-1 title__block" v-if="user?.role == 'rent'">
-                    <span class="title__each " :class="{ active: !showOrder }" @click="changeTab(0)">Мои
-                        объявления</span>/
-                    <span class="fx-1 title__each" :class="{ active: showOrder }" @click="changeTab(1)">Мои
+
+                    <span class="fx-1 title__each">Мои
                         заказы</span>
-                    <span v-if="user?.role == 'rent'" @click="$router.push({ name: 'cabinet.add.auksion' })"
-                        class="btn btn-primary">Добавить</span>
+
                 </div>
                 <div class="title" v-else> <span>Мои Брони</span></div>
 
@@ -140,9 +107,9 @@
                                 </div>
                                 <div class="statuses">
                                     <div class="statuses__main mb-1">
-                                        <p><b>Статус оплаты: </b><span>{{ statusCheck(booking.status) }}</span></p>
+                                        <p><b>Оплата: </b><span>{{ statusCheck(booking.status) }}</span></p>
                                         <div v-if="booking.status == 'pending'" class="link">Оплатить</div>
-                                        <p><b>Статус аренды: </b><span>{{
+                                        <p><b>Статус: </b><span>{{
                                             rentStatusCheck(booking.rent_status) }}</span>
                                         </p>
 
@@ -209,25 +176,42 @@
                                 </div>
                                 <div class="statuses">
                                     <div class="statuses__main mb-1">
-                                        <p><b>Статус оплаты: </b><span>{{ statusCheck(booking.status) }}</span></p>
+                                        <p><b>Оплата: </b><span>{{ statusCheck(booking.status) }}</span></p>
                                         <div v-if="booking.status == 'pending'" class="link">Оплатить</div>
-                                        <p class="mb-1"><b>Статус аренды: </b>
-                                            <span>
-                                                <select class="form-control" v-model="rent_status_selected">
-                                                    <option disabled selected value="0">Выбрать</option>
-                                                    <option v-for="(label, key) in rent_status" :key="key" :value="key">
-                                                        {{ label }}
-                                                    </option>
-                                                </select>
-                                            </span>
 
-                                        </p>
-                                        <div class="action__price--bet" @click="submitStatusChange(booking.id)">
-                                            <div class="btn btn-primary">
-                                                Обновить
-                                            </div>
+                                        <div class="status-toggle status_change" v-if="!booking.rent_status">
+                                            <button
+                                                :class="['status-btn', rent_status_selected === 'accepted' ? 'active accepted' : '']"
+                                                @click="rent_status_selected = 'accepted'">
+                                                ✔️ Принят?
+                                            </button>
+
+                                            <button
+                                                :class="['status-btn', rent_status_selected === 'rejected' ? 'active rejected' : '']"
+                                                @click="rent_status_selected = 'rejected'">
+                                                ❌ Отклонить?
+                                            </button>
 
                                         </div>
+                                        <div v-if="rent_status_selected == 'rejected' && !booking.rent_status">
+                                            <form @submit.prevent="onSubmitReject(booking.id)" class="reject_reason">
+                                                <input type="text" class="form-control" required
+                                                    v-model="reject_comment"
+                                                    placeholder="Просьба сообщить причину отклонения">
+                                                <button class="btn btn-dark" type="submit">Отправить</button>
+                                            </form>
+                                        </div>
+                                        <div v-if="rent_status_selected == 'accepted' && !booking.rent_status">
+                                            <router-link class="go-to-order-btn mt-1 d-block"
+                                                :to="{ name: 'cabinet.main.bookings.each', params: { id: booking.id } }">
+                                                🔗 Перейти к заказу
+                                            </router-link>
+
+
+                                        </div>
+                                        <p class="mt-2" v-if="booking.rent_status"><b>Статус: </b><span>{{
+                                            rentStatusCheck(booking.rent_status)
+                                                }}</span></p>
 
                                     </div>
 
@@ -279,18 +263,18 @@ export default {
             email: null,
             cars: [],
             bookings: [],
-            rent_status_selected: 0,
-            rent_status:
-            {
-                accepted: 'Принял',
-                car_given: 'Передано',
-                in_use: 'В использовании',
-                completed: 'Завершено',
-                rejected: 'Отклонено',
-            },
+            reject_comment: '',
+            rent_status_selected: '',
+            rent_status: [
+                { value: 'accepted', label: 'Принято', icon: '✔️' },
+                { value: 'car_given', label: 'Передано', icon: '🚗' },
+                { value: 'in_use', label: 'В использовании', icon: '🔄' },
+                { value: 'completed', label: 'Завершено', icon: '🏁' },
+                { value: 'rejected', label: 'Отклонено', icon: '❌' },
+            ],
             user: null,
             phoneNumber: null,
-            showOrder: false
+            showOrder: true
         }
     },
     methods: {
@@ -344,6 +328,35 @@ export default {
             }
             return message;
         },
+        async onSubmitReject(id) {
+            const finalResult = {
+                "comment": this.reject_comment,
+                "rent_status": this.rent_status_selected,
+                "booking_id": id
+            }
+            var data = new FormData()
+
+            for (const key in finalResult) {
+                data.append(key, finalResult[key]);
+
+            }
+            const response = await fetch(this.url + 'api/cabinet/car/bookings/changeStatus', {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Accept-Language': 'en-US,en;q=0.8',
+                    "accept": "application/json",
+                    'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                },
+
+            });
+            const json = await response.json();
+            if (response.status == 200) {
+                alert('updated');
+            } else {
+                alert(json.message);
+            }
+        },
         async userInfo() {
             try {
                 let token = localStorage.getItem('token');
@@ -365,7 +378,7 @@ export default {
                     this.phoneNumber = json.phoneNumber;
 
                     if (this.user.role == 'rent') {
-                        this.getCars();
+                        this.getBookings();
                     }
                     if (this.user.role == 'client') {
                         this.getBookings();
@@ -455,3 +468,37 @@ export default {
     },
 }
 </script>
+<style>
+.status-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.status-btn {
+    padding: 8px 14px;
+    border: 1px solid #ccc;
+    background: #f4f4f4;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.status-btn:hover {
+    background: #e9e9e9;
+}
+
+.status-btn.active {
+    color: #fff;
+    border-color: transparent;
+}
+
+.status-btn.accepted.active {
+    background: #4caf50;
+    /* green */
+}
+
+.status-btn.rejected.active {
+    background: #f44336;
+    /* red */
+}
+</style>

@@ -21,7 +21,7 @@ a{
 }
 $maxWidth-header : 1240px;
 $maxWidth: 1360px;
-$primary: #fd9b00;
+$primary: #a92d2c;
 $red: #CB0000;
 $headercolor: #242424;
 .container-header{
@@ -32,9 +32,14 @@ $headercolor: #242424;
     display: flex;
     
 }
+.d-block{
+    display: block;
+    width: fit-content;
+}
 .gap-1{
     gap: 1rem;
 }
+
 .no-wrap{
     white-space: nowrap;
 }
@@ -83,6 +88,9 @@ h4, .h4 {
 }
 .mb-2{
     margin-bottom: 2rem;
+}
+.mt-1{
+    margin-top: 0.5rem;
 }
 .mt-2{
     margin-top: 2rem;
@@ -207,6 +215,14 @@ a:link, a:visited {
 .mb-1{
     margin-bottom: 1rem;
 }
+.link{
+    text-decoration: underline;
+    color: #a92d2c;
+    cursor: pointer;
+}
+.link:hover{
+    color: #CB0000;
+}
 .text-left {
     text-align: left!important;
 }
@@ -220,7 +236,7 @@ a:link, a:visited {
 }
 
 .text-primary {
-    color: #d8990e !important;
+    color: #a92d2c !important;
 }
 .btn-danger {
     background: #ff6868;

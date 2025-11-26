@@ -155,7 +155,7 @@
                                     <!-- Результат -->
                                     <p v-if="message" class="message">{{ message }}</p>
 
-                                    <form @submit.prevent="submitToRent" class="text-left" v-if="bookActive">
+                                    <form @submit.prevent="createOrderBooking" class="text-left" v-if="bookActive">
                                         <div class="mb-1"><b>Время получения:</b> {{ new
                                             Date(book_pickup).toLocaleString('ru-RU', {
                                                 dateStyle: 'full',
@@ -302,6 +302,56 @@ export default {
             });
 
             return disabled;
+        },
+        formatDate(date) {
+            let d = new Date(date);
+            let year = d.getFullYear();
+            let month = String(d.getMonth() + 1).padStart(2, '0');
+            let day = String(d.getDate()).padStart(2, '0');
+            let hours = String(d.getHours()).padStart(2, '0');
+            let minutes = String(d.getMinutes()).padStart(2, '0');
+            let seconds = String(d.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+        async createOrderBooking() {
+            try {
+
+                const finalResult = {
+
+                    'start_date': this.formatDate(this.pickup),
+                    'end_date': this.formatDate(this.dropoff),
+                    "car_id": this.$route.params.id,
+
+                }
+
+                var data = new FormData()
+
+                for (const key in finalResult) {
+                    data.append(key, finalResult[key]);
+
+                }
+                const response = await fetch(this.url + 'api/cabinet/car/bookings/create', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'Accept-Language': 'en-US,en;q=0.8',
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                    },
+
+                });
+                const json = await response.json();
+
+                if (response.status == 201 || response.status == 200) {
+                    if (json.success) {
+                        alert(json.link);
+                    }
+                }
+
+
+            } catch (error) {
+                console.log(error);
+            }
         },
         async checkAvailability() {
             this.bookActive = false;

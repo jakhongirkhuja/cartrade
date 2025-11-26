@@ -12,6 +12,16 @@ const routes =  [
                 component:  ()=>import ('@/modules/auth/MainCabinet.vue'),
             },
             {
+                path: 'bookings',
+                name: 'cabinet.main.bookings',
+                component:  ()=>import ('@/modules/auth/MainCabinetBooking.vue'),
+            },
+            {
+                path: 'bookings/:id',
+                name: 'cabinet.main.bookings.each',
+                component:  ()=>import ('@/modules/auth/MainCabinetBookingEach.vue'),
+            },
+            {
                 path: 'user-edit',
                 name: 'cabinet.edit.user',
                 component:  ()=>import ('@/modules/auth/MainCabinetUserEdit.vue'),
