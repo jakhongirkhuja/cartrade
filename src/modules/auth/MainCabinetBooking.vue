@@ -97,12 +97,12 @@
                                         Date(booking.start_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
                                     <p><b>Время возврата: </b><span>{{ new
                                         Date(booking.end_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
 
                                 </div>
                                 <div class="statuses">
@@ -166,12 +166,12 @@
                                         Date(booking.start_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
                                     <p><b>Время возврата: </b><span>{{ new
                                         Date(booking.end_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
 
                                 </div>
                                 <div class="statuses">

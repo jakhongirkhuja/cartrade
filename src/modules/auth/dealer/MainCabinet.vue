@@ -46,70 +46,74 @@
                 <div class="title"><span>Мои брони</span> <span></span> </div>
                 <div class="user__ads__block">
                     <div class="aukstion__block container">
-                        <template v-if="cars.length > 0">
-                            <template v-for="car in cars" :key="car.id">
-                                <div class="aukstion__block--items" v-if="car.car">
+                        <div class="user__bookings__block">
 
+                            <template v-if="bookings.length > 0">
+                                <div class="aukstion__block--items" v-for="booking in bookings" :key="booking.id">
                                     <a href="#" class="poster"
-                                        v-bind:style="{ 'background-image': 'url(' + url + '/files/cars/' + car.car.images[0].image + ')' }"></a>
+                                        v-bind:style="{ 'background-image': 'url(' + url + '/files/cars/' + booking.car?.images[0].image + ')' }"></a>
                                     <div class="info">
-                                        <h2 class="info__title"><a href="#">{{ car.car.car_mark.name }}
-                                                {{ car.car.car_model.name }} - {{ car.car.ear }}</a></h2>
+                                        <h2 class="info__title"><router-link
+                                                :to="{ name: 'main.auksion.inside', params: { id: booking.car?.id } }">{{
+                                                    booking.car?.car_mark.name }} {{ booking.car?.car_model.name }}
+                                                -
+                                                {{ booking.car?.year }}</router-link></h2>
 
-                                        <div class="info__features row">
+                                        <div class="info__rent mb-1">
+                                            <p><b>Время получения: </b><span>{{ new
+                                                Date(booking.start_date).toLocaleString('ru-RU', {
+                                                    dateStyle: 'full',
+                                                    timeStyle: 'short'
+                                                }) }}</span></p>
+                                            <p><b>Время возврата: </b><span>{{ new
+                                                Date(booking.end_date).toLocaleString('ru-RU', {
+                                                    dateStyle: 'full',
+                                                    timeStyle: 'short'
+                                                }) }}</span></p>
 
-                                            <div class="items">{{ JSON.parse(car.car.car_fuil_type.name)[0] }}</div>
-                                            <div class="items">{{ JSON.parse(car.car.transmission.name)[0] }}</div>
-                                            <div class="items">{{ car.car.mileage }}</div>
-                                            <div class="items">{{ JSON.parse(car.car.condation.name)[0] }}</div>
-                                            <div class="items">{{ JSON.parse(car.car.car_body_type.name)[0] }}</div>
-                                            <div class="items">{{ JSON.parse(car.car.color.name)[0] }}</div>
-                                            <div class="items">{{ car.car.year }} г</div>
-                                            <!-- <div class="items" v-for="feature in features" :key="feature">{{ feature }}</div> -->
                                         </div>
-                                        <div class="row">
-                                            <p class="paying">Оплатить</p>
+                                        <div class="statuses">
+                                            <div class="statuses__main mb-1">
+                                                <p><b>Оплата: </b><span>{{ statusCheck(booking.status) }}</span></p>
+                                                <router-link class="go-to-order-btn mt-1 d-block"
+                                                    :to="{ name: 'cabinet.main.dealer.booking', params: { id: booking.id } }">
+                                                    🔗 Перейти к заказу
+                                                </router-link>
+                                                <p class="mt-2" v-if="booking.rent_status"><b>Статус: </b><span>{{
+                                                    rentStatusCheck(booking.rent_status)
+                                                        }}</span></p>
+
+                                            </div>
+
+
                                         </div>
                                     </div>
                                     <div class="actions">
                                         <div class="actions__price--origin fx">
                                             <!-- <div class="info">Начальная ставка:</div> -->
-                                            <div class="price">
-                                                {{ car.car.rent_price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')
-                                                }}
-                                                сум в сум</div>
+                                            <div class="price" v-html="formatPrice(booking.total_price) + ' сум'">
+                                            </div>
+
                                         </div>
 
-                                        <div class="action__price--bet">
-                                            <div class="btn btn-primary-outline" v-if="!car.sold">
-                                                <CountdownTimer :timeStart="car.time_start" :timeEnd="car.time_end" />
-                                            </div>
-                                            <span class="notbutton"
-                                                v-else-if="car.sold_user_id == user_id">Успешно!</span>
-                                            <span class="notbutton"
-                                                v-else-if="car.sold_user_id != user_id">Отменён</span>
-                                        </div>
+
                                     </div>
                                     <div class="mobile__view">
                                         <div class="charakter fx">
                                             <div class="items fx">
                                                 <img src="/icons/trail.svg" alt="">
-                                                <p>{{ car.car.mileage }}</p>
+                                                <p>{{ booking.car?.mileage }}</p>
                                             </div>
                                             <div class="items fx">
                                                 <img src="/icons/fuil.svg" alt="">
-                                                <p>{{ JSON.parse(car.car.car_fuil_type.name)[0] }}</p>
+                                                <p>{{ JSON.parse(booking.car?.car_fuil_type.name)[0] }}</p>
                                             </div>
                                         </div>
 
                                     </div>
                                 </div>
-
                             </template>
-                        </template>
-                        <template v-else>
-                            Пусто
-                        </template>
+                        </div>
 
                         <div class="auksion__block--pagination" v-if="cars.length > 0">
                             <ul class="pagination">
@@ -141,6 +145,7 @@ export default {
             familyName: '',
             email: null,
             balance: 0,
+            bookings: [],
             cars: [],
             user_id: null,
             phoneNumber: null,
@@ -153,6 +158,48 @@ export default {
     methods: {
         payStart() {
             this.checkPayStart = true;
+        },
+        formatPrice(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '&nbsp;');
+        },
+        statusCheck(value) {
+            let message = '';
+            switch (value) {
+                case 'pending':
+                    message = 'в ожидании'
+                    break;
+                case 'payed':
+                    message = 'оплачено'
+                    break;
+                default:
+                    break;
+            }
+            return message;
+        },
+        rentStatusCheck(value) {
+            let message = '';
+
+            switch (value) {
+                case 'accepted':
+                    message = 'Одобрено'
+                    break;
+                case 'car_given':
+                    message = 'Машина отдана'
+                    break;
+                case 'in_use':
+                    message = 'Вы пользуетесь'
+                    break;
+                case 'completed':
+                    message = 'Вы завершили'
+                    break;
+                case 'rejected':
+                    message = 'Отказано'
+                    break;
+
+                default:
+                    break;
+            }
+            return message;
         },
         async togglePayment() {
             try {
@@ -195,6 +242,28 @@ export default {
                 console.error('Ошибка:', error);
             }
         },
+        async getBookings() {
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url + 'api/cabinet/car/bookings', {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const json = await response.json();
+                if (response.status == 200) {
+
+                    this.bookings = json.data;
+                    console.log(this.bookings);
+
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async userInfo() {
             try {
                 let token = localStorage.getItem('token');
@@ -225,6 +294,7 @@ export default {
                         this.tarif_till = formattedDate;
                     }
                     this.getTarif(json.tarif_id);
+                    this.getBookings();
                 }
             } catch (error) {
                 console.log(error);

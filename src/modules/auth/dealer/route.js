@@ -12,6 +12,11 @@ const routes =  [
                 component:  ()=>import ('@/modules/auth/dealer/MainCabinet.vue'),
             },
             {
+                path: 'bookings/:id',
+                name: 'cabinet.main.dealer.booking',
+                component:  ()=>import ('@/modules/auth/dealer/MainCabinetBookingEach.vue'),
+            },
+            {
                 path: 'user-edit',
                 name: 'cabinet.edit.user.dealer',
                 component:  ()=>import ('@/modules/auth/MainCabinetUserEdit.vue'),

@@ -165,7 +165,7 @@ export default {
                     message = 'Вы пользуетесь'
                     break;
                 case 'completed':
-                    message = 'Вы завершили'
+                    message = 'Завершен'
                     break;
                 case 'rejected':
                     message = 'Отказано'
