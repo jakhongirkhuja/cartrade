@@ -43,6 +43,47 @@
 
             </div>
             <div class="user edit savepassword">
+                <div class="title">Паспортные данные</div>
+                <div class="userform">
+                    <div class="userform--each-input">
+                        <label for="">Серия и номер паспорта</label>
+                        <input type="text" placeholder="Серия и номер паспорта" :disabled="passport_status"
+                            v-model="passport_number" class="form-control">
+                        <label for="">Дата выдачи</label>
+                        <input type="date" placeholder="Дата выдачи" v-model="passport_given"
+                            :disabled="passport_status" class="form-control">
+                        <label for="">Дата истечения срока</label>
+                        <input type="date" placeholder="Дата истечения срока" v-model="passport_expired"
+                            :disabled="passport_status" class="form-control">
+                        <label for="">ПИНФЛ</label>
+                        <input type="number" placeholder="ПИНФЛ" v-model="passport_inn" :disabled="passport_status"
+                            class="form-control">
+
+                        <div class="info fx-1">
+                            <div v-if="passport_preview" style="margin-top: 15px;">
+                                <img :src="passport_preview" alt="Passport Preview"
+                                    style="max-width: 200px; border-radius: 8px;" />
+                            </div>
+                            <div v-if="show_pdf_name" style="margin-top: 15px;">
+                                <p>{{ show_pdf_name }}</p>
+                            </div>
+
+                            <input type="file" @change="uploadFilePassport" accept="image/*, application/pdf"
+                                id="uploadPassport" hidden />
+                            <label v-if="!passport_status" for="uploadPassport" class="btn btn-primary">Загружите
+                                паспорт</label><br />
+                            <span v-if="!passport_status">Выберите файл не больше 3MB, Минимальное разрешение 300x300 px
+                                в JPG,PNG, PDF
+                                формате</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="action" v-if="!passport_status">
+                    <div class="btn btn-primary mt-2" @click="editPassportInfo">Сохранить</div>
+                </div>
+
+            </div>
+            <div class="user edit savepassword">
                 <div class="title">Сбросить пароль</div>
                 <div class="userform">
                     <div class="userform--each-input">
@@ -57,43 +98,12 @@
                 </div>
 
             </div>
-            <div class="user edit savepassword">
-                <div class="title">Паспортные данные</div>
-                <div class="userform">
-                    <div class="userform--each-input">
-                        <input type="text" placeholder="Серия и номер паспорта" :disabled="passport_status"
-                            v-model="passport_number" class="form-control">
-                        <input type="date" placeholder="Дата выдачи" v-model="passport_given"
-                            :disabled="passport_status" class="form-control">
-                        <input type="date" placeholder="Дата истечения срока" v-model="passport_expired"
-                            :disabled="passport_status" class="form-control">
-                        <input type="number" placeholder="ПИНФЛ" v-model="passport_inn" :disabled="passport_status"
-                            class="form-control">
 
-                        <div class="info fx-1">
-                            <div v-if="passport_preview" style="margin-top: 15px;">
-                                <img :src="passport_preview" alt="Passport Preview"
-                                    style="max-width: 200px; border-radius: 8px;" />
-                            </div>
-                            <input type="file" @change="uploadFilePassport" accept="image/*" id="uploadPassport"
-                                hidden />
-                            <label v-if="!passport_status" for="uploadPassport" class="btn btn-primary">Загружите
-                                паспорт</label><br />
-                            <span v-if="!passport_status">Выберите файл не больше 3MB, Минимальное разрешение 300x300 px
-                                в JPG или PNG
-                                формате</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="action" v-if="!passport_status">
-                    <div class="btn btn-primary mt-2" @click="editPassportInfo">Сохранить</div>
-                </div>
-
-            </div>
         </div>
     </div>
 </template>
 <script>
+import { useToast, POSITION } from "vue-toastification";
 export default {
     data() {
         return {
@@ -104,7 +114,7 @@ export default {
             familyName: null,
             phoneNumber: null,
             email: null,
-
+            show_pdf_name: null,
             password: null,
             new_password: null,
             repeat_new_password: null,
@@ -136,12 +146,17 @@ export default {
             if (!file) return;
 
             if (file.size > 3 * 1024 * 1024) {
-                alert("Файл слишком большой! Максимум 3MB.");
+                useToast().error('Файл слишком большой! Максимум 3MB');
+
                 return;
             }
-
+            if (file.type != 'application/pdf') {
+                this.passport_preview = URL.createObjectURL(file);
+            } else {
+                this.show_pdf_name = file.name;
+            }
             this.passport_photo = file;
-            this.passport_preview = URL.createObjectURL(file);
+
         },
         async checkUser() {
             try {
@@ -167,7 +182,9 @@ export default {
                         this.passport_inn = json.passport.passport_inn;
                         this.passport_number = json.passport.passport_number;
                         this.passport_status = json.passport.status;
-                        this.passport_preview = this.url + '/files/passport/' + json.passport.passport_photo;
+                        if (json.passport.passport_photo.split('.')[1] != 'pdf') {
+                            this.passport_preview = this.url + '/files/passport/' + json.passport.passport_photo;
+                        }
                     } else {
                         this.passport_status = false;
                     }
@@ -226,9 +243,14 @@ export default {
             if (!this.passport_expired || !this.passport_given ||
                 !this.passport_inn || !this.passport_number || !this.passport_photo
             ) {
-                alert('Заполните все поля');
+                useToast().error('Заполните все поля', {
+                    timeout: 2000
+                });
+
+
                 return;
             }
+
             try {
                 let token = localStorage.getItem('token');
                 const finalResult = {
@@ -259,9 +281,15 @@ export default {
                 });
                 const json = await response.json();
                 if (response.status == 200) {
-                    alert('Паспорт загружен');
+
+                    useToast().success('Паспорт загружен', {
+                        timeout: 5000
+                    });
                 } else {
                     alert(json.message);
+                    useToast().error(json.message, {
+                        timeout: 5000
+                    });
                 }
                 console.log(json);
 

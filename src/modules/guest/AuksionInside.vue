@@ -134,21 +134,12 @@
                                     <p class="title">Бронирование автомобиля</p>
 
                                     <form @submit.prevent="checkAvailability">
-                                        <!-- Дата и время получения -->
+
                                         <div class="form-group">
                                             <label for="pickup">Дата и время получения</label>
-                                            <VueDatePicker v-model="pickup" :time-config="timeConfig"
-                                                :disabled-dates="disabledDates" :min-date="now" />
+                                            <VueDatePicker v-model="pickup" :defaultValue="new Date()" range
+                                                multi-calendars :min-date="now" />
                                         </div>
-
-                                        <!-- Дата и время возврата -->
-                                        <div class="form-group">
-                                            <label for="dropoff">Дата и время возврата</label>
-                                            <VueDatePicker v-model="dropoff" :time-config="timeConfig"
-                                                :disabled-dates="disabledDates" :min-date="pickup || now" />
-                                        </div>
-
-                                        <!-- Проверка доступности -->
                                         <button type="submit">Проверить доступность</button>
                                     </form>
 
@@ -194,6 +185,7 @@
     </div>
 </template>
 <script>
+import { useToast, POSITION } from "vue-toastification";
 import '@vuepic/vue-datepicker/dist/main.css'
 import BetComponent from '@/components/BetComponent.vue';
 import { useAuthStore } from '@/stores/auth';
@@ -222,7 +214,7 @@ export default {
             scrollLeft: 0,
             car: null,
             time_start: null,
-            pickup: '',
+            pickup: [new Date(), new Date()],
             dropoff: '',
             now: new Date(),
             message: '',
@@ -318,8 +310,8 @@ export default {
 
                 const finalResult = {
 
-                    'start_date': this.formatDate(this.pickup),
-                    'end_date': this.formatDate(this.dropoff),
+                    'start_date': this.formatDate(this.pickup[0]),
+                    'end_date': this.formatDate(this.pickup[1]),
                     "car_id": this.$route.params.id,
 
                 }
@@ -344,8 +336,18 @@ export default {
 
                 if (response.status == 201 || response.status == 200) {
                     if (json.success) {
-                        alert(json.link);
+                        let link = json.link;
+                        useToast().success('Успешно');
+
                     }
+                } else {
+                    if (response.status == 400) {
+                        useToast().error('Вы не загрузили данные вашего паспорта');
+                    } else {
+                        useToast().error(json.message);
+                    }
+
+
                 }
 
 
@@ -356,29 +358,26 @@ export default {
         async checkAvailability() {
             this.bookActive = false;
 
-            if (!this.pickup || !this.dropoff) {
-                this.message = 'Пожалуйста, выберите дату и время.';
+
+            if (!this.pickup[0] || !this.pickup[1]) {
+                this.message = 'Пожалуйста, Дату и время получения.';
+                useToast().error('Пожалуйста, Дату и время получения');
                 return;
             }
 
-            if (this.dropoff <= this.pickup) {
-                this.message = 'Дата возврата должна быть позже даты получения.';
-                return;
-            }
+            // // Проверка перекрытия с недоступными интервалами:
+            // const conflict = this.unavailableIntervals.some(iv => {
+            //     return this.pickup < iv.end && this.dropoff > iv.start;
+            // });
 
-            // Проверка перекрытия с недоступными интервалами:
-            const conflict = this.unavailableIntervals.some(iv => {
-                return this.pickup < iv.end && this.dropoff > iv.start;
-            });
-
-            if (conflict) {
-                this.message = 'Выбранное время занято, пожалуйста, выберите другое.';
-            }
+            // if (conflict) {
+            //     this.message = 'Выбранное время занято, пожалуйста, выберите другое.';
+            // }
             this.book_dropoff = '';
             this.book_pickup = '';
             try {
                 let token = localStorage.getItem('token');
-                const response = await fetch(this.url + 'api/auksion/check-availibility?start_date=' + new Date(this.pickup).toISOString() + '&end_date=' + new Date(this.dropoff).toISOString() + '&car_id=' + this.$route.params.id, {
+                const response = await fetch(this.url + 'api/auksion/check-availibility?start_date=' + new Date(this.pickup[0]).toISOString() + '&end_date=' + new Date(this.pickup[1]).toISOString() + '&car_id=' + this.$route.params.id, {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json",
@@ -392,8 +391,8 @@ export default {
                     this.message = json.message;
                     if (json.available) {
                         this.bookActive = true;
-                        this.book_pickup = this.pickup;
-                        this.book_dropoff = this.dropoff;
+                        this.book_pickup = this.pickup[0]
+                        this.book_dropoff = this.pickup[1]
                     }
 
                 }

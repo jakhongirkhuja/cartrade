@@ -180,11 +180,12 @@
                                         <div v-if="booking.status == 'pending'" class="link">Оплатить</div>
 
                                         <div class="status-toggle status_change" v-if="!booking.rent_status">
-                                            <button
+                                            <router-link
+                                                :to="{ name: 'cabinet.main.bookings.each', params: { id: booking.id } }"
                                                 :class="['status-btn', rent_status_selected === 'accepted' ? 'active accepted' : '']"
                                                 @click="rent_status_selected = 'accepted'">
                                                 ✔️ Принят?
-                                            </button>
+                                            </router-link>
 
                                             <button
                                                 :class="['status-btn', rent_status_selected === 'rejected' ? 'active rejected' : '']"
@@ -201,7 +202,7 @@
                                                 <button class="btn btn-dark" type="submit">Отправить</button>
                                             </form>
                                         </div>
-                                        <div v-if="rent_status_selected == 'accepted' && !booking.rent_status">
+                                        <div>
                                             <router-link class="go-to-order-btn mt-1 d-block"
                                                 :to="{ name: 'cabinet.main.bookings.each', params: { id: booking.id } }">
                                                 🔗 Перейти к заказу
@@ -322,6 +323,9 @@ export default {
                 case 'rejected':
                     message = 'Отказано'
                     break;
+                case 'completed-defect':
+                    message = 'Завершено с дефектом';
+                    break;
 
                 default:
                     break;
@@ -353,6 +357,7 @@ export default {
             const json = await response.json();
             if (response.status == 200) {
                 alert('updated');
+                this.getBookings();
             } else {
                 alert(json.message);
             }
@@ -481,6 +486,7 @@ export default {
     border-radius: 6px;
     cursor: pointer;
     transition: 0.2s;
+    font-size: 14px;
 }
 
 .status-btn:hover {

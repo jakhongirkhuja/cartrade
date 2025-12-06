@@ -1,5 +1,7 @@
 <template>
-    <div class="steps">
+    <div class="steps"
+        v-if="(user?.role == 'rent' && booking && booking.rent_status != 'rejected') || (user?.role == 'client' && booking && booking.rent_status != 'rejected' && booking.status != 'pending' && booking.rent_status)">
+
         <div v-for="(step, stepIndex) in steps" :key="step.id" class="step"
             :class="{ active: step.id === currentStep }">
             <div class="step__line"></div>
@@ -24,7 +26,7 @@
                                     <img v-if="previews[step.id][index]" :src="previews[step.id][index]"
                                         class="preview-img" alt="preview" />
                                     <span>{{ file.name }}</span>
-                                    <button @click="removeFile(step.id, index)">Удалять</button>
+                                    <button @click="removeFile(step.id, step.model2, index)">Удалять</button>
                                 </div>
                             </div>
 
@@ -72,50 +74,37 @@
             </div>
 
         </div>
+
+
         <div v-if="previewImages" class="modal-backdrop" @click="closePreview(stepIndex)">
             <div class="modal-content" @click.stop>
                 <img :src="previewImages" class="modal-img" />
                 <button class="close-btn" @click="closePreview(stepIndex)">×</button>
             </div>
         </div>
-        <template v-if="user">
-            <div>
-                <!-- Hidden template, used for DOCX generation -->
-                <div id="agreement-template" style="display:none; padding:20px; font-size:16px; line-height:1.3">
-                    <p>ДОГОВОР АРЕНДЫ ТРАНСПОРТНОГО СРЕДСТВА</p>
-
-                    <p>
-                        Гражданин Узбекистана
-                        <b>{{ user.name }}</b>,
-                        {{ user.passport.passport_given }} года рождения,
-                        паспорт: {{ user.passport.passport_number }},
-                        адрес: {{ user.familyName }},
-                        («Арендодатель»)
-                    </p>
-
-
-                </div>
-
-                <!-- Optional download button if needed -->
-                <button @click="downloadDocx">Скачать договор</button>
-            </div>
-        </template>
 
     </div>
+    <!-- <div @click="downloadDocx">download</div> -->
+    <div class="div" style="display: none; ">
+        <div id="element_to_print">
+            <PdfGenerated :user="user" :car="car" :booking="booking" />
+        </div>
+    </div>
+
 </template>
 
 <script setup>
 import { ref, watch, reactive } from 'vue';
 import { useRoute } from 'vue-router';
-
+import html2pdf from 'html2pdf.js';
 import { saveAs } from "file-saver";
-let htmlDocx;
-if (typeof window !== "undefined") {
-    htmlDocx = require("html-docx-js/dist/html-docx.js");
-}
-const { user, history } = defineProps({
+import PdfGenerated from './PdfGenerated.vue';
+
+const { user, history, booking } = defineProps({
     history: Array,
-    user: Object
+    user: Object,
+    car: Object,
+    booking: Object,
 });
 const latestStep = ref(1);
 const currentStep = ref(latestStep + 1);
@@ -143,12 +132,18 @@ watch(
         });
         latestStep.value = maxStep;
         currentStep.value = maxStep + 1;
+        const step11 = steps?.value.find(s => s.id == 1);
+        if (step11 && user?.role == 'client') {
+            step11.text = '';
+
+        }
         const step2 = steps?.value.find(s => s.id == 5);
         if (step2 && user?.role == 'client') {
+            step2.inputActive = true;
             step2.buttons.push({ label: "Далее", class: "btn-action", onClick: () => stepsSubmit(5, true) });
         }
         else {
-            step2.buttons.push({ label: "Обновить", class: "btn-action", onClick: () => next });
+            step2.buttons.push({ label: "Обновить", class: "btn-action", onClick: () => next() });
         }
         const step3 = steps?.value.find(s => s.id == 6);
         if (step3 && user?.role == 'client') {
@@ -158,7 +153,11 @@ watch(
             step3.buttons.push({ label: "Далее", class: "btn-action", onClick: () => stepsSubmit(6, true) });
         }
         else {
-            step3.buttons.push({ label: "Обновить", class: "btn-action", onClick: () => next });
+            step3.buttons.push({ label: "Обновить", class: "btn-action", onClick: () => next() });
+        }
+        const step8 = steps?.value.find(s => s.id == 8);
+        if (step8 && user?.role == 'client') {
+            step8.text = '';
         }
     },
     { immediate: true } // Run immediately if history already has value
@@ -195,7 +194,9 @@ const closePreview = (stepIndex) => {
     previewImages.value = null;
 };
 
-const next = () => currentStep.value++;
+const next = () => {
+    window.location.reload();
+}
 // const prev = () => currentStep.value--;
 const finish = () => alert("Аренда завершена");
 
@@ -291,7 +292,7 @@ steps.value = [
         placeholder2: "Перетащите файлы сюда или нажмите, чтобы загрузить",
         model2: "clientImages",
         input: true,
-        inputActive: true,
+        inputActive: false,
         multiple: true,
         function: () => handleFiles('clientImages', 3),
         buttons: []
@@ -306,12 +307,12 @@ steps.value = [
     },
     {
         id: 7,
-        title: "Этап 7 — Распечатайте договор",
+        title: "Этап 7 — Распечатка договор",
         status: false,
         inputActive: false,
         text: "Распечатайте договор. В случае, если договор не подписан, арендатор не будет обязан возмещать ущерб за дефекты или ДТП, произошедшие после окончания аренды",
         buttons: [
-            { label: "Скачать договор", class: "btn-ok", onClick: next },
+            { label: "Скачать договор", class: "btn-ok", onClick: () => downloadDocx() },
             { label: "Далее", class: "btn-action", onClick: () => stepsSubmit(7, true) }
 
         ]
@@ -351,12 +352,26 @@ function uploadPhotos() {
     fileInput.value.click();
 }
 const downloadDocx = () => {
-    const element = document.getElementById("agreement-template");
+    var element = document.getElementById('element_to_print');
+    var opt = {
+        margin: 10,
+        filename: 'myfile.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 5 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
 
-    if (!element) return;
+    // New Promise-based usage:
+    // html2pdf().set(opt).from(element).save();
 
-    const blob = htmlDocx.asBlob(element.innerHTML);
-    saveAs(blob, "agreement.docx");
+    // Old monolithic-style usage:
+    html2pdf(element, opt);
+    // const element = document.getElementById("agreement-template");
+
+    // if (!element) return;
+
+    // const blob = htmlDocx.asBlob(element.innerHTML);
+    // saveAs(blob, "agreement.docx");
 };
 // Handle manual file selection
 function handleFiles(event, stepModel, stepId) {
@@ -408,7 +423,7 @@ function processFiles(files, stepModel, stepId) {
     });
 }
 
-function removeFile(stepId, index) {
+function removeFile(stepId, model, index) {
     form.value[model].splice(index, 1);
     uploadedFiles.value[stepId].splice(index, 1);
     previews.value[stepId].splice(index, 1);

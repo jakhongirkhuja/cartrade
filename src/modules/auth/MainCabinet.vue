@@ -15,10 +15,8 @@
                     <div class="name">{{ familyName }} {{ name }}</div>
 
                     <div class="body ">
-                        <div class="phoneNumber form-control">+{{ phoneNumber ?
+                        <div class="phoneNumber">+{{ phoneNumber ?
                             phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '' }}</div>
-                        <div class="email form-control">{{ email }}</div>
-
                     </div>
                     <div class="others">
                         <div class="balance">
@@ -40,8 +38,9 @@
                 <div class="title gap-1 title__block" v-if="user?.role == 'rent'">
                     <span class="title__each " :class="{ active: !showOrder }" @click="changeTab(0)">Мои
                         объявления</span>/
-                    <span class="fx-1 title__each" :class="{ active: showOrder }" @click="changeTab(1)">Мои
-                        заказы</span>
+                    <router-link class="fx-1 title__each" :to="{ name: 'cabinet.main.bookings' }">Мои
+                        заказы</router-link>
+
                     <span v-if="user?.role == 'rent'" @click="$router.push({ name: 'cabinet.add.auksion' })"
                         class="btn btn-primary">Добавить</span>
                 </div>
@@ -74,7 +73,8 @@
                                 <div class="actions">
                                     <div class="actions__price--origin fx">
                                         <!-- <div class="info">Начальная ставка:</div> -->
-                                        <div class="price" v-html="formatPrice(car.rent_price) + ' сум в день'"></div>
+                                        <div class="price" v-html="formatPrice(car.rent_price) + ' сум в день'">
+                                        </div>
 
                                     </div>
 
@@ -130,12 +130,12 @@
                                         Date(booking.start_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
                                     <p><b>Время возврата: </b><span>{{ new
                                         Date(booking.end_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
 
                                 </div>
                                 <div class="statuses">
@@ -199,12 +199,12 @@
                                         Date(booking.start_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
                                     <p><b>Время возврата: </b><span>{{ new
                                         Date(booking.end_date).toLocaleString('ru-RU', {
                                             dateStyle: 'full',
                                             timeStyle: 'short'
-                                            }) }}</span></p>
+                                        }) }}</span></p>
 
                                 </div>
                                 <div class="statuses">

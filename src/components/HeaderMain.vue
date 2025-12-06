@@ -73,7 +73,11 @@
                     </svg>
                     <div class="dropdown">
                         <template v-if="user && (user.role == 'client' || user.role == 'rent')">
-                            <router-link :to="{ name: 'cabinet.main' }" class="dropdown__items">Мой
+                            <router-link v-if="user.role == 'rent'" :to="{ name: 'cabinet.main' }"
+                                class="dropdown__items">Мой
+                                профиль</router-link>
+                            <router-link v-if="user.role == 'client'" :to="{ name: 'cabinet.main.dealer' }"
+                                class="dropdown__items">Мой
                                 профиль</router-link>
                             <router-link :to="{ name: 'cabinet.edit.user' }" class="dropdown__items">Настройки
                                 профиля</router-link>

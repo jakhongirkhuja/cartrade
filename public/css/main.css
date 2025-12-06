@@ -2198,7 +2198,7 @@ h2.heading {
   overflow: hidden;
 }
 .aukstion .car__block--actions, .aukstion .car__block .car__mobile {
-  width: 400px;
+  width: 480px;
   padding: 30px;
   text-align: center;
 }
@@ -3258,10 +3258,10 @@ footer .line {
   color: #222;
 }
 .auth__userInfo .user__ads .title .time-value__status-not {
-  color: #2ca92e;
+  color: #a92d2c;
 }
 .auth__userInfo .user__ads .title .time-value__status-ok {
-  color: #a92d2c;
+  color: #2ca92e;
 }
 .auth__userInfo .user__ads .title .time-separator {
   width: 100%;

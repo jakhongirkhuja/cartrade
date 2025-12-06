@@ -11,6 +11,37 @@
                 <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">
                 </div>
                 <div class="info fx-1">
+                    <router-link class="link" :to="{ name: 'cabinet.edit.user' }">Редактировать</router-link>
+                    <div class="name">{{ familyName }} {{ name }}</div>
+
+                    <div class="body ">
+                        <div class="phoneNumber">+{{ phoneNumber ?
+                            phoneNumber.replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5') : '' }}</div>
+
+
+                    </div>
+                    <div class="others">
+                        <div class="balance">
+                            <div class="transactions" style="padding-top: 5px;">
+                                <router-link class="link" :to="{ name: 'cabinet.transactions.dealer' }">Ваше
+                                    транзакции</router-link>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+            <!-- <div class="user row">
+
+                <div v-if="avatar" class="avatar"
+                    v-bind:style="{ 'background-image': 'url(' + url + '/files/user/' + avatar + ')' }">
+                </div>
+                <div v-else class="avatar" v-bind:style="{ 'background-image': 'url(/logo/logo_trade.svg)' }">
+                </div>
+                <div class="info fx-1">
 
                     <div class="name"><span>{{ familyName }} {{ name }}</span> <span style="display: none;">Ваш тариф:
                             <i v-if="tarif">{{
@@ -41,7 +72,7 @@
                     </div>
 
                 </div>
-            </div>
+            </div> -->
             <div class="user__ads">
                 <div class="title"><span>Мои брони</span> <span></span> </div>
                 <div class="user__ads__block">
@@ -184,16 +215,19 @@ export default {
                     message = 'Одобрено'
                     break;
                 case 'car_given':
-                    message = 'Машина отдана'
+                    message = 'Вам отдали машину'
                     break;
                 case 'in_use':
                     message = 'Вы пользуетесь'
                     break;
                 case 'completed':
-                    message = 'Вы завершили'
+                    message = 'Завершено'
                     break;
                 case 'rejected':
                     message = 'Отказано'
+                    break;
+                case 'completed-defect':
+                    message = 'Завершено с дефектом';
                     break;
 
                 default:

@@ -78,7 +78,7 @@
                     </div>
                 </div>
                 <div class="body">
-                    <RentSteps :history="bookings?.history" :user="user" />
+                    <RentSteps :history="bookings?.history" :user="user" :car="bookings?.car" :booking="bookings" />
                 </div>
             </div>
         </div>

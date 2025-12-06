@@ -11,7 +11,8 @@
                         {{ bookings?.car?.year }}</router-link></h2>
             </div>
             <div class="user__ads">
-                <div class="title" v-if="user?.role == 'rent' && bookings">
+
+                <div class="title" v-if="bookings">
                     <div class="order-card">
                         <div class="order-header">
                             <h3>Заказ № {{ bookings.order_number }}</h3>
@@ -19,19 +20,13 @@
 
                         <div class="order-info">
                             <div class="info-row">
-                                <span class="label">Клиент:</span>
+                                <span class="label">Владелец:</span>
                                 <span class="value">
-                                    {{ bookings.user?.name }} {{ bookings.user?.familyName }}
+                                    {{ bookings.car.user?.name }} {{ bookings.car.user?.familyName }}
                                 </span>
                             </div>
 
-                            <div class="info-row">
-                                <span class="label">Телефон:</span>
-                                <span class="value">
-                                    <a :href="'tel:' + bookings.user?.phoneNumber">{{
-                                        formatPhone(bookings.user?.phoneNumber) }}</a>
-                                </span>
-                            </div>
+
                         </div>
                     </div>
                     <div class="status__block">
@@ -78,7 +73,8 @@
                     </div>
                 </div>
                 <div class="body">
-                    <RentSteps :history="bookings?.history" :user="user" />
+
+                    <RentSteps :history="bookings?.history" :user="user" :car="bookings?.car" :booking="bookings" />
                 </div>
             </div>
         </div>
