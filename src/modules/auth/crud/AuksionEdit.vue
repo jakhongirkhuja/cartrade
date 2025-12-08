@@ -345,6 +345,7 @@
     </div>
 </template>
 <script>
+import { useToast, POSITION } from "vue-toastification";
 export default {
     data() {
         return {
@@ -429,7 +430,8 @@ export default {
             if (!file) return;
 
             if (file.size > 3 * 1024 * 1024) {
-                alert("Файл слишком большой! Максимум 3MB.");
+                useToast().error('Файл слишком большой! Максимум 3MB');
+
                 return;
             }
 
@@ -443,7 +445,7 @@ export default {
             if (!file) return;
 
             if (file.size > 3 * 1024 * 1024) {
-                alert("Файл слишком большой! Максимум 3MB.");
+                useToast().error('Файл слишком большой! Максимум 3MB');
                 return;
             }
 
@@ -698,7 +700,8 @@ export default {
             });
 
             if (hasError) {
-                alert("Заполните все обязательные поля!");
+                useToast().error('Заполните все обязательные поля');
+
                 return;
             }
             // if(this.fullname.length==0 || this.body.length==0) return;

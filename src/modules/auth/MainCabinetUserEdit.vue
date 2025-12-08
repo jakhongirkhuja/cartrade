@@ -42,7 +42,7 @@
                 </div>
 
             </div>
-            <div class="user edit savepassword">
+            <div class="user edit savepassword" v-if="!passport_status">
                 <div class="title">Паспортные данные</div>
                 <div class="userform">
                     <div class="userform--each-input">
@@ -55,6 +55,10 @@
                         <label for="">Дата истечения срока</label>
                         <input type="date" placeholder="Дата истечения срока" v-model="passport_expired"
                             :disabled="passport_status" class="form-control">
+                        <label for="">Дата рождения</label>
+                        <input type="date" placeholder="Дата рождения" v-model="passport_birth"
+                            :disabled="passport_status" class="form-control">
+
                         <label for="">ПИНФЛ</label>
                         <input type="number" placeholder="ПИНФЛ" v-model="passport_inn" :disabled="passport_status"
                             class="form-control">
@@ -124,6 +128,7 @@ export default {
             passport_given: null,
             passport_inn: null,
             passport_number: null,
+            passport_birth: null,
             passport_preview: null,
             passport_status: true,
             features: ['Бензин', 'Автомат', '77329', 'Седан', 'Новый', '2006 г.', 'бежевый металлик', 'Полный привод'],
@@ -182,6 +187,7 @@ export default {
                         this.passport_inn = json.passport.passport_inn;
                         this.passport_number = json.passport.passport_number;
                         this.passport_status = json.passport.status;
+                        this.passport_birth = json.passport_birth;
                         if (json.passport.passport_photo.split('.')[1] != 'pdf') {
                             this.passport_preview = this.url + '/files/passport/' + json.passport.passport_photo;
                         }
@@ -250,6 +256,9 @@ export default {
 
                 return;
             }
+            if (this.passport_status) {
+                return;
+            }
 
             try {
                 let token = localStorage.getItem('token');
@@ -258,6 +267,7 @@ export default {
                     "passport_given": this.passport_given,
                     "passport_inn": this.passport_inn,
                     "passport_number": this.passport_number,
+                    'passport_birth': this.passport_birth,
 
                 }
 
@@ -302,7 +312,11 @@ export default {
             }
         },
         async editPasswordChange() {
-            if (this.password.length == 0 || this.new_password.length == 0 || this.repeat_new_password.length == 0 || (this.new_password != this.repeat_new_password)) return;
+            if (this.password.length == 0 || this.new_password.length == 0 || this.repeat_new_password.length == 0 || (this.new_password != this.repeat_new_password)) {
+
+                return;
+            }
+
             try {
                 let token = localStorage.getItem('token');
                 const finalResult = {

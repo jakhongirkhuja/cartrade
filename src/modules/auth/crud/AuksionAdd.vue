@@ -268,6 +268,7 @@
     </div>
 </template>
 <script>
+import { useToast, POSITION } from "vue-toastification";
 export default {
     data() {
         return {
@@ -347,7 +348,7 @@ export default {
             if (!file) return;
 
             if (file.size > 3 * 1024 * 1024) {
-                alert("Файл слишком большой! Максимум 3MB.");
+                useToast().error('Файл слишком большой! Максимум 3MB');
                 return;
             }
 
@@ -361,7 +362,7 @@ export default {
             if (!file) return;
 
             if (file.size > 3 * 1024 * 1024) {
-                alert("Файл слишком большой! Максимум 3MB.");
+                useToast().error('Файл слишком большой! Максимум 3MB');
                 return;
             }
 
@@ -455,6 +456,7 @@ export default {
                 rent_limit_km: this.rent_limit_km,
                 technical_passport: this.technical_passport,
                 insurance: this.insurance,
+                rent_deposit: this.rent_deposit,
                 year: this.year,
                 mileage: this.mileage,
                 engine_capacity: this.engine_capacity,
@@ -477,7 +479,7 @@ export default {
             });
 
             if (hasError) {
-                alert("Заполните все обязательные поля!");
+                useToast().error('Заполните все обязательные поля');
                 return;
             }
             // if(this.fullname.length==0 || this.body.length==0) return;
@@ -513,6 +515,7 @@ export default {
                     "carbody": this.carbody,
                     "rent_limit_km": this.rent_limit_km,
                     "rent_price": this.rent_price,
+                    "rent_deposit": this.rent_deposit,
                     "type": 'rent'
 
                 }

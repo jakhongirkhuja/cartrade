@@ -232,8 +232,10 @@ export default {
         },
         async loginForm() {
             const phoneNumber = this.phone.replace(/\D/g, "");
-            if (phoneNumber.length != 12 || this.password.length <= 5) return;
-
+            if (phoneNumber.length != 12 || this.password.length == 0) {
+                useToast().error('Заполните все поля');
+                return;
+            }
             try {
                 let token = localStorage.getItem('token');
                 const finalResult = {
@@ -261,6 +263,7 @@ export default {
 
                 });
                 const json = await response.json();
+
                 if (json.error) {
 
                     useToast().error(json.message.ru, {
@@ -300,7 +303,10 @@ export default {
         },
         async registerForm() {
             const phoneNumber = this.phone.replace(/\D/g, "");
-            if (this.name.length == 0 || this.familyname.length == 0 || this.password.length == 0 || phoneNumber.length != 12) return;
+            if (this.name.length == 0 || this.familyname.length == 0 || this.password.length == 0 || phoneNumber.length != 12) {
+                useToast().error('Заполните все поля');
+                return
+            };
             try {
 
                 let token = localStorage.getItem('token');
@@ -334,10 +340,12 @@ export default {
                 });
                 const json = await response.json();
                 if (json.error) {
-                    alert(json.message.ru);
+                    useToast().error(json.message.ru);
+
                 } else {
 
-                    alert(json.message.response.ru);
+                    useToast().error(json.message.response.ru);
+
                     localStorage.setItem('token', json.message.token);
                     this.$router.push({ name: 'cabinet.main', refresh: true });
                     this.closeAuth();
@@ -351,10 +359,6 @@ export default {
                 }
                 this.phoneblock = false;
                 this.insideNew = false;
-
-
-
-
 
 
             } catch (error) {
