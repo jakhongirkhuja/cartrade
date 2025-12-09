@@ -41,7 +41,7 @@
                     <router-link class="fx-1 title__each" :to="{ name: 'cabinet.main.bookings' }">Мои
                         заказы</router-link>
 
-                    <span v-if="user?.role == 'rent'" @click="$router.push({ name: 'cabinet.add.auksion' })"
+                    <span v-if="user?.role == 'rent'" @click="checkPassportExist()"
                         class="btn btn-primary">Добавить</span>
                 </div>
                 <div class="title" v-else> <span>Мои Брони</span></div>
@@ -267,6 +267,8 @@
     </div>
 </template>
 <script>
+import { useToast } from 'vue-toastification';
+
 export default {
     data() {
         return {
@@ -294,6 +296,18 @@ export default {
         }
     },
     methods: {
+        checkPassportExist() {
+
+            if (this.user?.passport) {
+                this.$router.push({ name: 'cabinet.add.auksion' })
+
+            } else {
+                useToast().error('Паспортные данные отсутствуют, либо ожидают одобрения модератора.');
+                return;
+            }
+
+
+        },
         changeTab(value) {
             if (value) {
                 this.showOrder = true;

@@ -669,6 +669,10 @@ export default {
             }
         },
         async submitformAdd() {
+            if (!this.user?.passport) {
+                useToast().error('Паспортные данные отсутствуют, либо ожидают одобрения модератора.');
+                return;
+            }
             const requiredFields = {
                 title: this.title,
                 selectedMark: this.selectedMark,

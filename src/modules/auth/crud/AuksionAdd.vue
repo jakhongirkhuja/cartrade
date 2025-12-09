@@ -324,7 +324,7 @@ export default {
             salon: 5,
             engine: 5,
             carbody: 5,
-
+            user: null,
             // динамические характеристики (функции)
             rows: [
                 { title: '', body: '' }
@@ -443,7 +443,32 @@ export default {
                 this.uploads.push({ imageUrl: null, image: null });
             }
         },
+        async userInfo() {
+            try {
+                let token = localStorage.getItem('token');
+                const response = await fetch(this.url + 'api/user/', {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "accept": "application/json",
+                        'Authorization': 'Bearer ' + token,
+                    }
+                });
+                const json = await response.json();
+                if (response.status == 200) {
+
+                    this.user = json;
+
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        },
         async submitformAdd() {
+            if (!this.user?.passport) {
+                useToast().error('Паспортные данные отсутствуют, либо ожидают одобрения модератора.');
+                return;
+            }
             const requiredFields = {
                 title: this.title,
                 selectedMark: this.selectedMark,
@@ -566,6 +591,7 @@ export default {
         }
     },
     created() {
+        this.userInfo();
         this.loadFilters();
     },
 }

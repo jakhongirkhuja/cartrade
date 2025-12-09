@@ -94,6 +94,10 @@
                     </label>
                     <label for="" class="forgetpassword" @click="regType = 2; this.phone = null;">Забыли пароль?</label>
                 </div>
+                <div class="privacy" v-if="regType == 1">Нажимая на кнопку, вы принимаете условия
+                    <router-link class="mb-03 link" :to="{ name: 'main.legalinformation.termofuse' }">пользовательского
+                        соглашения</router-link>
+                </div>
                 <div class="btn btn-primary w-100" v-if="regType == 0" @click="loginForm">Войти</div>
                 <div class="btn btn-primary w-100" v-else-if="regType == 1" @click="registerForm">Регистрация</div>
                 <div class="btn btn-primary w-100" v-else @click="recoveryForm">Восстановить</div>

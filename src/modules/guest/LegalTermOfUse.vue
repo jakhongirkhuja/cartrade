@@ -8,7 +8,7 @@
                 <div class="pdf-container">
                     <!-- <embed src="/files/policy.pdf" type="application/pdf" width="100%" height="600px" /> -->
                     <!-- or -->
-                    <iframe src="/files/term-of-use.pdf" width="100%" height="600px"></iframe>
+                    <iframe src="/files/term-of-use_new.pdf" width="100%" height="600px"></iframe>
                 </div>
             </div>
         </div>
